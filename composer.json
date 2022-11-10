@@ -1,0 +1,24 @@
+{
+  "name": "web-fu/mapper",
+  "type": "library",
+  "description": "Map anything into anything",
+  "license": "MIT",
+  "require": {
+    "ext-json": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "WebFu\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "WebFu\\MapperTest\\": "tests/MapperTest"
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.5",
+    "friendsofphp/php-cs-fixer": "^3.13",
+    "phpstan/phpstan": "^1.9"
+  }
+}
