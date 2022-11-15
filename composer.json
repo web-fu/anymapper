@@ -4,7 +4,8 @@
   "description": "Map anything into anything",
   "license": "MIT",
   "require": {
-    "ext-json": "*"
+    "ext-json": "*",
+    "azjezz/psl": "^2.1"
   },
   "autoload": {
     "psr-4": {
