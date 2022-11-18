@@ -40,8 +40,13 @@ class ClassAnalyzer
             ) {
                 $this->setters[$method->getName()] = $method;
             }
-            if (($reflection->getName() === $method->getReturnType()?->getName())
-                and $method->isAbstract()
+            $returnTypeName = $method->getReturnType()?->getName();
+            if ((
+                $reflection->getName() === $returnTypeName
+                or 'self' === $returnTypeName
+                or 'static' === $returnTypeName
+            )
+            and $method->isStatic()
             ) {
                 $this->generators[$method->getName()] = $method;
             }

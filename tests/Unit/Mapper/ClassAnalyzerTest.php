@@ -62,4 +62,17 @@ class ClassAnalyzerTest extends TestCase
             'trait',
         ], array_keys($properties));
     }
+
+    public function testGetGenerators(): void
+    {
+        $class = new FakeEntity();
+        $classAnalyzer = new ClassAnalyzer($class);
+        $generators = $classAnalyzer->getGenerators();
+
+        $this->assertEqualsCanonicalizing([
+            'createStatic',
+            'createSelf',
+            'create',
+        ], array_keys($generators));
+    }
 }

@@ -37,6 +37,21 @@ class FakeEntity extends FakeParentEntity
     {
     }
 
+    public static function createStatic(): static
+    {
+        return new static();
+    }
+
+    public static function createSelf(): self
+    {
+        return new self();
+    }
+
+    public static function create(): FakeEntity
+    {
+        return new FakeEntity();
+    }
+
     public function getty(): void
     {
     }
