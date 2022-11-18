@@ -14,7 +14,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "WebFu\\MapperTest\\": "tests/MapperTest"
+      "WebFu\\Tests\\": "tests/"
     }
   },
   "require-dev": {
