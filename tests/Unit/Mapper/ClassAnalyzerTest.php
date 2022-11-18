@@ -30,6 +30,8 @@ class ClassAnalyzerTest extends TestCase
             'isPublic',
             'getParentProperty',
             'isParentProperty',
+            'getTraitProperty',
+            'isTraitProperty',
             '__get',
         ], array_keys($getters));
     }
@@ -43,6 +45,7 @@ class ClassAnalyzerTest extends TestCase
         $this->assertEqualsCanonicalizing([
             'setPublic',
             'setParentProperty',
+            'setTraitProperty',
             '__set',
         ], array_keys($setters));
     }
@@ -58,6 +61,7 @@ class ClassAnalyzerTest extends TestCase
             'public_2',
             'public_3',
             'parent',
+            'trait',
         ], array_keys($properties));
     }
 }

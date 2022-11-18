@@ -6,6 +6,8 @@ namespace WebFu\Tests\Fake;
 
 class FakeEntity extends FakeParentEntity
 {
+    use FakeTrait;
+
     public mixed $public_1;
     public mixed $public_2;
     public mixed $public_3;
