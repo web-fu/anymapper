@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace WebFu\Tests\Fake;
 
-class FakeEntity
+class FakeEntity extends FakeParentEntity
 {
     public mixed $public_1;
     public mixed $public_2;

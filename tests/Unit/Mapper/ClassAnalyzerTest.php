@@ -25,9 +25,11 @@ class ClassAnalyzerTest extends TestCase
         $classAnalyzer = new ClassAnalyzer($class);
         $getters = $classAnalyzer->getGetters();
 
-        $this->assertEquals([
+        $this->assertEqualsCanonicalizing([
             'getPublic',
             'isPublic',
+            'getParentProperty',
+            'isParentProperty',
             '__get',
         ], array_keys($getters));
     }
@@ -38,8 +40,9 @@ class ClassAnalyzerTest extends TestCase
         $classAnalyzer = new ClassAnalyzer($class);
         $setters = $classAnalyzer->getSetters();
 
-        $this->assertEquals([
+        $this->assertEqualsCanonicalizing([
             'setPublic',
+            'setParentProperty',
             '__set',
         ], array_keys($setters));
     }
@@ -50,10 +53,11 @@ class ClassAnalyzerTest extends TestCase
         $classAnalyzer = new ClassAnalyzer($class);
         $properties = $classAnalyzer->getProperties();
 
-        $this->assertEquals([
+        $this->assertEqualsCanonicalizing([
             'public_1',
             'public_2',
             'public_3',
+            'parent',
         ], array_keys($properties));
     }
 }
