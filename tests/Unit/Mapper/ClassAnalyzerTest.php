@@ -57,9 +57,7 @@ class ClassAnalyzerTest extends TestCase
         $properties = $classAnalyzer->getProperties();
 
         $this->assertEqualsCanonicalizing([
-            'public_1',
-            'public_2',
-            'public_3',
+            'public',
             'parent',
             'trait',
         ], array_keys($properties));

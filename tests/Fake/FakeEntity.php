@@ -8,9 +8,9 @@ class FakeEntity extends FakeParentEntity
 {
     use FakeTrait;
 
-    public mixed $public_1;
-    public mixed $public_2;
-    public mixed $public_3;
+    public mixed $public;
+    protected mixed $protected;
+    private mixed $private;
 
     public function __construct()
     {
@@ -29,6 +29,14 @@ class FakeEntity extends FakeParentEntity
         $this->getPrivate();
     }
 
+    public function setPublic(): void
+    {
+    }
+
+    public function __set(string $key, mixed $value): void
+    {
+    }
+
     public function getty(): void
     {
     }
@@ -38,14 +46,6 @@ class FakeEntity extends FakeParentEntity
     }
 
     private function getPrivate(): void
-    {
-    }
-
-    public function setPublic(): void
-    {
-    }
-
-    public function __set(string $key, mixed $value): void
     {
     }
 }
