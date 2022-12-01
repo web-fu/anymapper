@@ -26,8 +26,9 @@ class ClassAnalyzerTest extends TestCase
         $getters = $classAnalyzer->getGetters();
 
         $this->assertEqualsCanonicalizing([
-            'getPublic',
-            'isPublic',
+            'getByConstructor',
+            'getBySetter',
+            'isStandard',
             'getParentProperty',
             'isParentProperty',
             'getTraitProperty',
@@ -43,7 +44,8 @@ class ClassAnalyzerTest extends TestCase
         $setters = $classAnalyzer->getSetters();
 
         $this->assertEqualsCanonicalizing([
-            'setPublic',
+            'setBySetter',
+            'setOverrodePublic',
             'setParentProperty',
             'setTraitProperty',
             '__set',
@@ -57,6 +59,7 @@ class ClassAnalyzerTest extends TestCase
         $properties = $classAnalyzer->getProperties();
 
         $this->assertEqualsCanonicalizing([
+            'overrodePublic',
             'public',
             'parent',
             'trait',
