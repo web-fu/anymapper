@@ -6,6 +6,7 @@ namespace WebFu\Mapper;
 
 class ClassAnalyzer implements AnalyzerInterface
 {
+    private object $originalObject;
     /** @var \ReflectionProperty[] */
     private array $properties = [];
     private \ReflectionMethod|null $constructor = null;
@@ -18,6 +19,7 @@ class ClassAnalyzer implements AnalyzerInterface
 
     public function __construct(object $class)
     {
+        $this->originalObject = $class;
         $reflection = new \ReflectionClass($class);
 
         $this->init($reflection);
@@ -152,11 +154,11 @@ class ClassAnalyzer implements AnalyzerInterface
 
     public function getPropertyValue(string $path): mixed
     {
-        return $this->properties[$path]->getValue();
+        return $this->properties[$path]->getValue($this->originalObject);
     }
 
     public function setPropertyValue(string $path, mixed $value): void
     {
-        $this->properties[$path]->setValue($value);
+        $this->properties[$path]->setValue($this->originalObject, $value);
     }
 }

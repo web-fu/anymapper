@@ -168,4 +168,22 @@ class ClassAnalyzerTest extends TestCase
         yield ['setTraitProperty'];
         yield ['__set'];
     }
+
+    public function testGetPropertyValue(): void
+    {
+        $class = new FakeEntity();
+        $class->public = 'public';
+        $classAnalyzer = new ClassAnalyzer($class);
+
+        $this->assertEquals('public', $classAnalyzer->getPropertyValue('public'));
+    }
+
+    public function testSetPropertyValue(): void
+    {
+        $class = new FakeEntity();
+        $classAnalyzer = new ClassAnalyzer($class);
+        $classAnalyzer->setPropertyValue('public', 'public');
+
+        $this->assertEquals('public', $class->public);
+    }
 }
