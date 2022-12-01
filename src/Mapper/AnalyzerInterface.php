@@ -6,8 +6,10 @@ namespace WebFu\Mapper;
 
 interface AnalyzerInterface
 {
-    public function getGettablePaths(): array;
-    public function getGettablePath(string $path): ?\Reflector;
-    public function getSettablePaths(): array;
-    public function getSettablePath(string $path): ?\Reflector;
+    /** @return string[] */
+    public function getGettableNames(): array;
+    public function getGettableMethod(string $path): ?\ReflectionMethod;
+    /** @return string[] */
+    public function getSettableNames(): array;
+    public function getSettableMethod(string $path): ?\ReflectionMethod;
 }

@@ -23,7 +23,7 @@ class ArrayAnalyzerTest extends TestCase
             'foo',
             'bar',
             'baz',
-        ], $arrayAnalyzer->getGettablePaths());
+        ], $arrayAnalyzer->getGettableNames());
     }
 
     public function testSettablePaths(): void
@@ -40,7 +40,7 @@ class ArrayAnalyzerTest extends TestCase
             'foo',
             'bar',
             'baz',
-        ], $arrayAnalyzer->getSettablePaths());
+        ], $arrayAnalyzer->getSettableNames());
     }
 
     /**
@@ -56,7 +56,7 @@ class ArrayAnalyzerTest extends TestCase
 
         $arrayAnalyzer = new ArrayAnalyzer($array);
 
-        $this->assertInstanceOf(\Reflector::class, $arrayAnalyzer->getGettablePath($path));
+        $this->assertInstanceOf(\Reflector::class, $arrayAnalyzer->getGettableMethod($path));
     }
 
     public function gettablePathProvider(): \Iterator
@@ -79,7 +79,7 @@ class ArrayAnalyzerTest extends TestCase
 
         $arrayAnalyzer = new ArrayAnalyzer($array);
 
-        $this->assertInstanceOf(\Reflector::class, $arrayAnalyzer->getSettablePath($path));
+        $this->assertInstanceOf(\Reflector::class, $arrayAnalyzer->getSettableMethod($path));
     }
 
     public function settablePathProvider(): \Iterator

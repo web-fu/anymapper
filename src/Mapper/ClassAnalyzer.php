@@ -6,10 +6,14 @@ namespace WebFu\Mapper;
 
 class ClassAnalyzer implements AnalyzerInterface
 {
+    /** @var \ReflectionProperty[] */
     private array $properties = [];
     private \ReflectionMethod|null $constructor = null;
+    /** @var \ReflectionMethod[] */
     private array $generators = [];
+    /** @var \ReflectionMethod[]  */
     private array $getters = [];
+    /** @var \ReflectionMethod[]  */
     private array $setters = [];
 
     public function __construct(object $class)
@@ -82,14 +86,14 @@ class ClassAnalyzer implements AnalyzerInterface
         return $this->setters;
     }
 
-    public function getGettablePaths(): array
+    public function getGettableNames(): array
     {
         $propertyNames = array_keys($this->getProperties());
         $functionNames = array_keys($this->getGetters());
         return array_merge($propertyNames, $functionNames);
     }
 
-    public function getGettablePath(string $path): ?\Reflector
+    public function getGettableMethod(string $path): ?\ReflectionMethod
     {
         foreach ($this->getGetters() as $name => $method) {
             if ($name === $path) {
@@ -98,21 +102,21 @@ class ClassAnalyzer implements AnalyzerInterface
         }
         foreach ($this->getProperties() as $name => $property) {
             if ($name === $path) {
-                return $property;
+                return new \ReflectionMethod($this, 'getPropertyValue');
             }
         }
 
         return null;
     }
 
-    public function getSettablePaths(): array
+    public function getSettableNames(): array
     {
         $propertyNames = array_keys($this->getProperties());
         $functionNames = array_keys($this->getSetters());
         return array_merge($propertyNames, $functionNames);
     }
 
-    public function getSettablePath(string $path): ?\Reflector
+    public function getSettableMethod(string $path): ?\ReflectionMethod
     {
         foreach ($this->getSetters() as $name => $method) {
             if ($name === $path) {
@@ -121,10 +125,20 @@ class ClassAnalyzer implements AnalyzerInterface
         }
         foreach ($this->getProperties() as $name => $property) {
             if ($name === $path) {
-                return $property;
+                return new \ReflectionMethod($this, 'setPropertyValue');
             }
         }
 
         return null;
+    }
+
+    public function getPropertyValue(string $path): mixed
+    {
+        return $this->properties[$path]->getValue();
+    }
+
+    public function setPropertyValue(string $path, mixed $value): void
+    {
+        $this->properties[$path]->setValue($value);
     }
 }

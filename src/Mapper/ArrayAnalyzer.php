@@ -16,12 +16,12 @@ class ArrayAnalyzer implements AnalyzerInterface
         $this->data = $data;
     }
 
-    public function getGettablePaths(): array
+    public function getGettableNames(): array
     {
         return array_keys($this->data);
     }
 
-    public function getGettablePath(string $path): ?\Reflector
+    public function getGettableMethod(string $path): ?\ReflectionMethod
     {
         if (!array_key_exists($path, $this->data)) {
             return null;
@@ -29,12 +29,12 @@ class ArrayAnalyzer implements AnalyzerInterface
         return new \ReflectionMethod($this, 'getIndex');
     }
 
-    public function getSettablePaths(): array
+    public function getSettableNames(): array
     {
         return array_keys($this->data);
     }
 
-    public function getSettablePath(string $path): ?\Reflector
+    public function getSettableMethod(string $path): ?\ReflectionMethod
     {
         if (!array_key_exists($path, $this->data)) {
             return null;

@@ -97,7 +97,7 @@ class ClassAnalyzerTest extends TestCase
             'getTraitProperty',
             'isTraitProperty',
             '__get',
-        ], $classAnalyzer->getGettablePaths());
+        ], $classAnalyzer->getGettableNames());
     }
 
     /**
@@ -108,7 +108,7 @@ class ClassAnalyzerTest extends TestCase
         $class = new FakeEntity();
         $classAnalyzer = new ClassAnalyzer($class);
 
-        $this->assertInstanceOf(\Reflector::class, $classAnalyzer->getGettablePath($path));
+        $this->assertInstanceOf(\Reflector::class, $classAnalyzer->getGettableMethod($path));
     }
 
     public function gettablePathProvider(): \Iterator
@@ -142,7 +142,7 @@ class ClassAnalyzerTest extends TestCase
             'setParentProperty',
             'setTraitProperty',
             '__set',
-        ], $classAnalyzer->getSettablePaths());
+        ], $classAnalyzer->getSettableNames());
     }
 
     /**
@@ -153,7 +153,7 @@ class ClassAnalyzerTest extends TestCase
         $class = new FakeEntity();
         $classAnalyzer = new ClassAnalyzer($class);
 
-        $this->assertInstanceOf(\Reflector::class, $classAnalyzer->getGettablePath($path));
+        $this->assertInstanceOf(\Reflector::class, $classAnalyzer->getSettableMethod($path));
     }
 
     public function settablePathProvider(): \Iterator
