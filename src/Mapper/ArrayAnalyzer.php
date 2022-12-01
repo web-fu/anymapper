@@ -23,7 +23,7 @@ class ArrayAnalyzer implements AnalyzerInterface
 
     public function getGettablePath(string $path): ?\Reflector
     {
-        if (!array_keys($this->data)) {
+        if (!array_key_exists($path, $this->data)) {
             return null;
         }
         return new \ReflectionMethod($this, 'getIndex');
@@ -36,7 +36,7 @@ class ArrayAnalyzer implements AnalyzerInterface
 
     public function getSettablePath(string $path): ?\Reflector
     {
-        if (!array_keys($this->data)) {
+        if (!array_key_exists($path, $this->data)) {
             return null;
         }
         return new \ReflectionMethod($this, 'setIndex');
