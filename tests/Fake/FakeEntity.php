@@ -31,7 +31,7 @@ class FakeEntity extends FakeParentEntity
     /*
      * Constructor function MUST be called as first function ONLY if not otherwise specified
      */
-    public function __construct(string $byConstructor = '')
+    public function __construct(string $byConstructor = 'byConstructor')
     {
         $this->byConstructor = $byConstructor.' is set by constructor';
     }
