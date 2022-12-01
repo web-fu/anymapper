@@ -89,7 +89,7 @@ class ClassAnalyzer implements AnalyzerInterface
         return array_merge($propertyNames, $functionNames);
     }
 
-    public function getGettablePath(string $path): \Reflector
+    public function getGettablePath(string $path): ?\Reflector
     {
         foreach ($this->getGetters() as $name => $method) {
             if ($name === $path) {
@@ -102,7 +102,7 @@ class ClassAnalyzer implements AnalyzerInterface
             }
         }
 
-        throw new AnalyzerException($path.' not found');
+        return null;
     }
 
     public function getSettablePaths(): array
@@ -112,7 +112,7 @@ class ClassAnalyzer implements AnalyzerInterface
         return array_merge($propertyNames, $functionNames);
     }
 
-    public function getSettablePath(string $path): \Reflector
+    public function getSettablePath(string $path): ?\Reflector
     {
         foreach ($this->getSetters() as $name => $method) {
             if ($name === $path) {
@@ -125,6 +125,6 @@ class ClassAnalyzer implements AnalyzerInterface
             }
         }
 
-        throw new AnalyzerException($path.' not found');
+        return null;
     }
 }
