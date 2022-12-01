@@ -78,4 +78,43 @@ class ClassAnalyzerTest extends TestCase
             'create',
         ], array_keys($generators));
     }
+
+    public function testGettablePaths(): void
+    {
+        $class = new FakeEntity();
+        $classAnalyzer = new ClassAnalyzer($class);
+
+        $this->assertEqualsCanonicalizing([
+            'overrodePublic',
+            'public',
+            'parent',
+            'trait',
+            'getByConstructor',
+            'getBySetter',
+            'isStandard',
+            'getParentProperty',
+            'isParentProperty',
+            'getTraitProperty',
+            'isTraitProperty',
+            '__get',
+        ], $classAnalyzer->getGettablePaths());
+    }
+
+    public function testSettablePaths(): void
+    {
+        $class = new FakeEntity();
+        $classAnalyzer = new ClassAnalyzer($class);
+
+        $this->assertEqualsCanonicalizing([
+            'overrodePublic',
+            'public',
+            'parent',
+            'trait',
+            'setBySetter',
+            'setOverrodePublic',
+            'setParentProperty',
+            'setTraitProperty',
+            '__set',
+        ], $classAnalyzer->getSettablePaths());
+    }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace WebFu\Mapper;
 
-class ClassAnalyzer
+class ClassAnalyzer implements AnalyzerInterface
 {
     private array $properties = [];
     private \ReflectionMethod|null $constructor = null;
@@ -42,11 +42,11 @@ class ClassAnalyzer
             }
             $returnTypeName = $method->getReturnType()?->getName();
             if ((
-                $reflection->getName() === $returnTypeName
-                or 'self' === $returnTypeName
-                or 'static' === $returnTypeName
-            )
-            and $method->isStatic()
+                    $reflection->getName() === $returnTypeName
+                    or 'self' === $returnTypeName
+                    or 'static' === $returnTypeName
+                )
+                and $method->isStatic()
             ) {
                 $this->generators[$method->getName()] = $method;
             }
@@ -80,5 +80,19 @@ class ClassAnalyzer
     public function getSetters(): array
     {
         return $this->setters;
+    }
+
+    public function getGettablePaths(): array
+    {
+        $propertyNames = array_keys($this->getProperties());
+        $functionNames = array_keys($this->getGetters());
+        return array_merge($propertyNames, $functionNames);
+    }
+
+    public function getSettablePaths(): array
+    {
+        $propertyNames = array_keys($this->getProperties());
+        $functionNames = array_keys($this->getSetters());
+        return array_merge($propertyNames, $functionNames);
     }
 }
