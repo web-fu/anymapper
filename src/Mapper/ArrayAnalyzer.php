@@ -6,10 +6,13 @@ namespace WebFu\Mapper;
 
 class ArrayAnalyzer implements AnalyzerInterface
 {
+    /**
+     * @var mixed[]
+     */
     private array $data;
 
     /**
-     * @param array $data
+     * @param mixed[] $data
      */
     public function __construct(array $data)
     {
@@ -47,7 +50,7 @@ class ArrayAnalyzer implements AnalyzerInterface
         return $this->data[$key];
     }
 
-    public function setIndex(string $key, mixed $value)
+    public function setIndex(string $key, mixed $value): void
     {
         $this->data[$key] = $value;
     }

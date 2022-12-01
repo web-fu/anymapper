@@ -61,6 +61,9 @@ class ClassAnalyzer implements AnalyzerInterface
         }
     }
 
+    /**
+     * @return \ReflectionProperty[]
+     */
     public function getProperties(): array
     {
         return $this->properties;
@@ -71,21 +74,33 @@ class ClassAnalyzer implements AnalyzerInterface
         return $this->constructor;
     }
 
+    /**
+     * @return \ReflectionMethod[]
+     */
     public function getGenerators(): array
     {
         return $this->generators;
     }
 
+    /**
+     * @return \ReflectionMethod[]
+     */
     public function getGetters(): array
     {
         return $this->getters;
     }
 
+    /**
+     * @return \ReflectionMethod[]
+     */
     public function getSetters(): array
     {
         return $this->setters;
     }
 
+    /**
+     * @return string[]
+     */
     public function getGettableNames(): array
     {
         $propertyNames = array_keys($this->getProperties());
@@ -109,6 +124,9 @@ class ClassAnalyzer implements AnalyzerInterface
         return null;
     }
 
+    /**
+     * @return string[]
+     */
     public function getSettableNames(): array
     {
         $propertyNames = array_keys($this->getProperties());
