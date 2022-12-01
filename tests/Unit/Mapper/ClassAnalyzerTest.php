@@ -100,6 +100,33 @@ class ClassAnalyzerTest extends TestCase
         ], $classAnalyzer->getGettablePaths());
     }
 
+    /**
+     * @dataProvider gettablePathProvider
+     */
+    public function testGettablePath(string $path): void
+    {
+        $class = new FakeEntity();
+        $classAnalyzer = new ClassAnalyzer($class);
+
+        $this->assertInstanceOf(\Reflector::class, $classAnalyzer->getGettablePath($path));
+    }
+
+    public function gettablePathProvider(): \Iterator
+    {
+        yield ['overrodePublic'];
+        yield ['public'];
+        yield ['parent'];
+        yield ['trait'];
+        yield ['getByConstructor'];
+        yield ['getBySetter'];
+        yield ['isStandard'];
+        yield ['getParentProperty'];
+        yield ['isParentProperty'];
+        yield ['getTraitProperty'];
+        yield ['isTraitProperty'];
+        yield ['__get'];
+    }
+
     public function testSettablePaths(): void
     {
         $class = new FakeEntity();
@@ -116,5 +143,29 @@ class ClassAnalyzerTest extends TestCase
             'setTraitProperty',
             '__set',
         ], $classAnalyzer->getSettablePaths());
+    }
+
+    /**
+     * @dataProvider settablePathProvider
+     */
+    public function testSettablePath(string $path): void
+    {
+        $class = new FakeEntity();
+        $classAnalyzer = new ClassAnalyzer($class);
+
+        $this->assertInstanceOf(\Reflector::class, $classAnalyzer->getGettablePath($path));
+    }
+
+    public function settablePathProvider(): \Iterator
+    {
+        yield ['overrodePublic'];
+        yield ['public'];
+        yield ['parent'];
+        yield ['trait'];
+        yield ['setBySetter'];
+        yield ['setOverrodePublic'];
+        yield ['setParentProperty'];
+        yield ['setTraitProperty'];
+        yield ['__set'];
     }
 }

@@ -21,8 +21,34 @@ class ArrayAnalyzer implements AnalyzerInterface
         return array_keys($this->data);
     }
 
+    public function getGettablePath(string $path): \Reflector
+    {
+        if (!array_keys($this->data)) {
+            throw new AnalyzerException($path.' not found');
+        }
+        return new \ReflectionMethod($this, 'getIndex');
+    }
+
     public function getSettablePaths(): array
     {
         return array_keys($this->data);
+    }
+
+    public function getSettablePath(string $path): \Reflector
+    {
+        if (!array_keys($this->data)) {
+            throw new AnalyzerException($path.' not found');
+        }
+        return new \ReflectionMethod($this, 'setIndex');
+    }
+
+    public function getIndex(string $key): mixed
+    {
+        return $this->data[$key];
+    }
+
+    public function setIndex(string $key, mixed $value)
+    {
+        $this->data[$key] = $value;
     }
 }

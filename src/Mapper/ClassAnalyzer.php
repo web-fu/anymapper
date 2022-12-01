@@ -89,10 +89,42 @@ class ClassAnalyzer implements AnalyzerInterface
         return array_merge($propertyNames, $functionNames);
     }
 
+    public function getGettablePath(string $path): \Reflector
+    {
+        foreach ($this->getGetters() as $name => $method) {
+            if ($name === $path) {
+                return $method;
+            }
+        }
+        foreach ($this->getProperties() as $name => $property) {
+            if ($name === $path) {
+                return $property;
+            }
+        }
+
+        throw new AnalyzerException($path.' not found');
+    }
+
     public function getSettablePaths(): array
     {
         $propertyNames = array_keys($this->getProperties());
         $functionNames = array_keys($this->getSetters());
         return array_merge($propertyNames, $functionNames);
+    }
+
+    public function getSettablePath(string $path): \Reflector
+    {
+        foreach ($this->getSetters() as $name => $method) {
+            if ($name === $path) {
+                return $method;
+            }
+        }
+        foreach ($this->getProperties() as $name => $property) {
+            if ($name === $path) {
+                return $property;
+            }
+        }
+
+        throw new AnalyzerException($path.' not found');
     }
 }
