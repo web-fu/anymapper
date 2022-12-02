@@ -29,6 +29,7 @@ class ArrayAnalyzer implements AnalyzerInterface
         if (!array_key_exists($path, $this->data)) {
             return null;
         }
+
         return new \ReflectionMethod($this, 'getIndex');
     }
 
@@ -42,6 +43,7 @@ class ArrayAnalyzer implements AnalyzerInterface
         if (!array_key_exists($path, $this->data)) {
             return null;
         }
+
         return new \ReflectionMethod($this, 'setIndex');
     }
 

@@ -4,37 +4,31 @@ declare(strict_types=1);
 
 namespace WebFu\Analyzer;
 
-use ReflectionClass;
-use ReflectionMethod;
-use ReflectionNamedType;
-use ReflectionProperty;
-use ReflectionUnionType;
-
 class ClassAnalyzer implements AnalyzerInterface
 {
     private object $originalObject;
-    /** @var ReflectionProperty[] */
+    /** @var \ReflectionProperty[] */
     private array $properties = [];
-    private ReflectionMethod|null $constructor = null;
-    /** @var ReflectionMethod[] */
+    private \ReflectionMethod|null $constructor = null;
+    /** @var \ReflectionMethod[] */
     private array $generators = [];
-    /** @var ReflectionMethod[]  */
+    /** @var \ReflectionMethod[] */
     private array $getters = [];
-    /** @var ReflectionMethod[]  */
+    /** @var \ReflectionMethod[] */
     private array $setters = [];
 
     public function __construct(object $class)
     {
         $this->originalObject = $class;
-        $reflection = new ReflectionClass($class);
+        $reflection = new \ReflectionClass($class);
 
         $this->init($reflection);
     }
 
     /**
-     * @param ReflectionClass<object> $reflection
+     * @param \ReflectionClass<object> $reflection
      */
-    private function init(ReflectionClass $reflection): void
+    private function init(\ReflectionClass $reflection): void
     {
         if ($parent = $reflection->getParentClass()) {
             $this->init($parent);
@@ -44,7 +38,7 @@ class ClassAnalyzer implements AnalyzerInterface
             $this->constructor = $reflection->getConstructor();
         }
 
-        foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
+        foreach ($reflection->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
             if ('__get' === $method->getName()
                 or preg_match('#^get[A-Z]+|is[A-Z]+#', $method->getName())
             ) {
@@ -55,7 +49,7 @@ class ClassAnalyzer implements AnalyzerInterface
             ) {
                 $this->setters[$method->getName()] = $method;
             }
-            /** @var ReflectionNamedType|ReflectionUnionType|null $returnType */
+            /** @var \ReflectionNamedType|\ReflectionUnionType|null $returnType */
             $returnType = $method->getReturnType();
             $returnTypeNames = $this->typeList($returnType);
 
@@ -71,26 +65,26 @@ class ClassAnalyzer implements AnalyzerInterface
             }
         }
 
-        foreach ($reflection->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
+        foreach ($reflection->getProperties(\ReflectionProperty::IS_PUBLIC) as $property) {
             $this->properties[$property->getName()] = $property;
         }
     }
 
     /**
-     * @return ReflectionProperty[]
+     * @return \ReflectionProperty[]
      */
     public function getProperties(): array
     {
         return $this->properties;
     }
 
-    public function getConstructor(): ReflectionMethod|null
+    public function getConstructor(): \ReflectionMethod|null
     {
         return $this->constructor;
     }
 
     /**
-     * @return ReflectionMethod[]
+     * @return \ReflectionMethod[]
      */
     public function getGenerators(): array
     {
@@ -98,7 +92,7 @@ class ClassAnalyzer implements AnalyzerInterface
     }
 
     /**
-     * @return ReflectionMethod[]
+     * @return \ReflectionMethod[]
      */
     public function getGetters(): array
     {
@@ -106,7 +100,7 @@ class ClassAnalyzer implements AnalyzerInterface
     }
 
     /**
-     * @return ReflectionMethod[]
+     * @return \ReflectionMethod[]
      */
     public function getSetters(): array
     {
@@ -120,10 +114,11 @@ class ClassAnalyzer implements AnalyzerInterface
     {
         $propertyNames = array_keys($this->getProperties());
         $functionNames = array_keys($this->getGetters());
+
         return array_merge($propertyNames, $functionNames);
     }
 
-    public function getGettableMethod(string $path): ReflectionMethod|null
+    public function getGettableMethod(string $path): \ReflectionMethod|null
     {
         foreach ($this->getGetters() as $name => $method) {
             if ($name === $path) {
@@ -131,7 +126,7 @@ class ClassAnalyzer implements AnalyzerInterface
             }
         }
         if (array_key_exists($path, $this->getProperties())) {
-            return new ReflectionMethod($this, 'getPropertyValue');
+            return new \ReflectionMethod($this, 'getPropertyValue');
         }
 
         return null;
@@ -144,10 +139,11 @@ class ClassAnalyzer implements AnalyzerInterface
     {
         $propertyNames = array_keys($this->getProperties());
         $functionNames = array_keys($this->getSetters());
+
         return array_merge($propertyNames, $functionNames);
     }
 
-    public function getSettableMethod(string $path): ReflectionMethod|null
+    public function getSettableMethod(string $path): \ReflectionMethod|null
     {
         foreach ($this->getSetters() as $name => $method) {
             if ($name === $path) {
@@ -155,7 +151,7 @@ class ClassAnalyzer implements AnalyzerInterface
             }
         }
         if (array_key_exists($path, $this->getProperties())) {
-            return new ReflectionMethod($this, 'setPropertyValue');
+            return new \ReflectionMethod($this, 'setPropertyValue');
         }
 
         return null;
@@ -174,15 +170,17 @@ class ClassAnalyzer implements AnalyzerInterface
     /**
      * @return string[]
      */
-    public function typeList(ReflectionNamedType|ReflectionUnionType|null $type): array
+    public function typeList(\ReflectionNamedType|\ReflectionUnionType|null $type): array
     {
         if (null === $type) {
             return ['void'];
         }
-        if ($type instanceof ReflectionNamedType) {
+
+        if ($type instanceof \ReflectionNamedType) {
             return [$type->getName()];
         }
-        return array_map(function (ReflectionNamedType $type): string {
+
+        return array_map(function (\ReflectionNamedType $type): string {
             return $type->getName();
         }, $type->getTypes());
     }
