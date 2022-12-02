@@ -6,7 +6,9 @@ namespace WebFu\Analyzer;
 
 use ReflectionClass;
 use ReflectionMethod;
+use ReflectionNamedType;
 use ReflectionProperty;
+use ReflectionUnionType;
 
 class ClassAnalyzer implements AnalyzerInterface
 {
@@ -53,12 +55,16 @@ class ClassAnalyzer implements AnalyzerInterface
             ) {
                 $this->setters[$method->getName()] = $method;
             }
-            $returnTypeName = $method->getReturnType()?->getName();
-            if ((
-                    $reflection->getName() === $returnTypeName
-                    or 'self' === $returnTypeName
-                    or 'static' === $returnTypeName
-                )
+            /** @var ReflectionNamedType|ReflectionUnionType|null $returnType */
+            $returnType = $method->getReturnType();
+            $returnTypeNames = $this->typeList($returnType);
+
+            if (
+                !empty(array_intersect($returnTypeNames, [
+                    $reflection->getName(),
+                    'self',
+                    'static',
+                ]))
                 and $method->isStatic()
             ) {
                 $this->generators[$method->getName()] = $method;
@@ -163,5 +169,21 @@ class ClassAnalyzer implements AnalyzerInterface
     public function setPropertyValue(string $path, mixed $value): void
     {
         $this->properties[$path]->setValue($this->originalObject, $value);
+    }
+
+    /**
+     * @return string[]
+     */
+    public function typeList(ReflectionNamedType|ReflectionUnionType|null $type): array
+    {
+        if (null === $type) {
+            return ['void'];
+        }
+        if ($type instanceof ReflectionNamedType) {
+            return [$type->getName()];
+        }
+        return array_map(function (ReflectionNamedType $type): string {
+            return $type->getName();
+        }, $type->getTypes());
     }
 }
