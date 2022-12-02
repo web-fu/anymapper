@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace WebFu\Tests\Unit\Mapper;
+namespace WebFu\Tests\Unit\Analyzer;
 
 use PHPUnit\Framework\TestCase;
-use WebFu\Mapper\ClassAnalyzer;
+use WebFu\Analyzer\ClassAnalyzer;
 use WebFu\Tests\Fake\FakeEntity;
 
 class ClassAnalyzerTest extends TestCase

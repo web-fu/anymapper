@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace WebFu\Tests\Unit\Mapper;
+namespace WebFu\Tests\Unit\Analyzer;
 
 use PHPUnit\Framework\TestCase;
-use WebFu\Mapper\ArrayAnalyzer;
+use WebFu\Analyzer\ArrayAnalyzer;
 
 class ArrayAnalyzerTest extends TestCase
 {
