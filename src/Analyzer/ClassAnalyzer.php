@@ -110,7 +110,7 @@ class ClassAnalyzer implements AnalyzerInterface
         return array_merge($propertyNames, $functionNames);
     }
 
-    public function getGettableMethod(string $path): ?\ReflectionMethod
+    public function getGettableMethod(string $path): \ReflectionMethod|null
     {
         foreach ($this->getGetters() as $name => $method) {
             if ($name === $path) {
@@ -136,7 +136,7 @@ class ClassAnalyzer implements AnalyzerInterface
         return array_merge($propertyNames, $functionNames);
     }
 
-    public function getSettableMethod(string $path): ?\ReflectionMethod
+    public function getSettableMethod(string $path): \ReflectionMethod|null
     {
         foreach ($this->getSetters() as $name => $method) {
             if ($name === $path) {

@@ -24,7 +24,7 @@ class ArrayAnalyzer implements AnalyzerInterface
         return array_keys($this->data);
     }
 
-    public function getGettableMethod(string $path): ?\ReflectionMethod
+    public function getGettableMethod(string $path): \ReflectionMethod|null
     {
         if (!array_key_exists($path, $this->data)) {
             return null;
@@ -37,7 +37,7 @@ class ArrayAnalyzer implements AnalyzerInterface
         return array_keys($this->data);
     }
 
-    public function getSettableMethod(string $path): ?\ReflectionMethod
+    public function getSettableMethod(string $path): \ReflectionMethod|null
     {
         if (!array_key_exists($path, $this->data)) {
             return null;
