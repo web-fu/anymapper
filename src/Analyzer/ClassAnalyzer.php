@@ -124,10 +124,8 @@ class ClassAnalyzer implements AnalyzerInterface
                 return $method;
             }
         }
-        foreach ($this->getProperties() as $name => $property) {
-            if ($name === $path) {
-                return new \ReflectionMethod($this, 'getPropertyValue');
-            }
+        if (array_key_exists($path, $this->getProperties())) {
+            return new ReflectionMethod($this, 'getPropertyValue');
         }
 
         return null;
@@ -150,10 +148,8 @@ class ClassAnalyzer implements AnalyzerInterface
                 return $method;
             }
         }
-        foreach ($this->getProperties() as $name => $property) {
-            if ($name === $path) {
-                return new \ReflectionMethod($this, 'setPropertyValue');
-            }
+        if (array_key_exists($path, $this->getProperties())) {
+            return new ReflectionMethod($this, 'setPropertyValue');
         }
 
         return null;
