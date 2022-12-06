@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace WebFu\Proxy;
 
+use WebFu\Analyzer\AnalyzerFactory;
 use WebFu\Analyzer\AnalyzerInterface;
-use WebFu\Analyzer\ArrayAnalyzer;
-use WebFu\Analyzer\ClassAnalyzer;
 
 class Proxy
 {
@@ -19,7 +18,7 @@ class Proxy
     public function __construct(object|array $element)
     {
         $this->element = $element;
-        $this->analyzer = $this->getAnalyzer($element);
+        $this->analyzer = AnalyzerFactory::create($element);
     }
 
     public function get(string $path): mixed
@@ -47,24 +46,12 @@ class Proxy
         $track = array_pop($pathTracks);
 
         $endpoint = $this->get(implode('.', $pathTracks));
-        $endpointAnalyzer = $this->getAnalyzer($endpoint);
+        $endpointAnalyzer = AnalyzerFactory::create($endpoint);
         $settable = $endpointAnalyzer->getSettableMethod($track);
         if (!$settable) {
             throw new ProxyException($track.' settable not found');
         }
 
         call_user_func([$endpointAnalyzer, $settable->getName()], $track, $value);
-    }
-
-    /**
-     * @param mixed[]|object $subject
-     */
-    protected function getAnalyzer(array|object $subject): AnalyzerInterface
-    {
-        if (is_object($subject)) {
-            return new ClassAnalyzer($subject);
-        }
-
-        return new ArrayAnalyzer($subject);
     }
 }
