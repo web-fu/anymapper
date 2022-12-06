@@ -13,6 +13,9 @@ class Proxy
     private array|object $element;
     private AnalyzerInterface $analyzer;
 
+    /**
+     * @param mixed[]|object $element
+     */
     public function __construct(object|array $element)
     {
         $this->element = $element;
@@ -24,6 +27,9 @@ class Proxy
         $pathTracks = explode('.', $path);
         $track = array_shift($pathTracks);
         $gettable = $this->analyzer->getGettableMethod($track);
+        if (!$gettable) {
+            throw new ProxyException($track.' gettable not found');
+        }
         $value = call_user_func([$this->analyzer, $gettable->getName()], $track);
 
         if (!count($pathTracks)) {
@@ -43,6 +49,9 @@ class Proxy
         $endpoint = $this->get(implode('.', $pathTracks));
         $endpointAnalyzer = $this->getAnalyzer($endpoint);
         $settable = $endpointAnalyzer->getSettableMethod($track);
+        if (!$settable) {
+            throw new ProxyException($track.' settable not found');
+        }
 
         call_user_func([$endpointAnalyzer, $settable->getName()], $track, $value);
     }
