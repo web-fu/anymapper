@@ -50,8 +50,12 @@ class Proxy
         $pathTracks = explode('.', $path);
         $track = array_pop($pathTracks);
 
-        $endpoint = $this->get(implode('.', $pathTracks));
-        $endpointAnalyzer = AnalyzerFactory::create($endpoint);
+        $endpointAnalyzer = $this->analyzer;
+        if ($pathTracks) {
+            $endpoint = $this->get(implode('.', $pathTracks));
+            $endpointAnalyzer = AnalyzerFactory::create($endpoint);
+        }
+
         $settable = $endpointAnalyzer->getSettableMethod($track);
         if (!$settable) {
             throw new ProxyException($track.' settable not found');
