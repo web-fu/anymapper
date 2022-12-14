@@ -21,6 +21,11 @@ class Proxy
         $this->analyzer = AnalyzerFactory::create($element);
     }
 
+    public function getAnalyzer(): AnalyzerInterface
+    {
+        return $this->analyzer;
+    }
+
     public function get(string $path): mixed
     {
         $pathTracks = explode('.', $path);
