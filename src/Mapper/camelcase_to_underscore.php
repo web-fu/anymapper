@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace WebFu\Mapper;
 
-function camelCaseToUnderscore(string $string): string
+function camelcase_to_underscore(string $string): string
 {
     if (empty($string)) {
         return $string;
