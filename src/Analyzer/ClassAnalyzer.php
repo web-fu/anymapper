@@ -53,7 +53,7 @@ class ClassAnalyzer implements AnalyzerInterface
             }
             /** @var \ReflectionNamedType|\ReflectionUnionType|null $returnType */
             $returnType = $method->getReturnType();
-            $returnTypeNames = $this->typeList($returnType);
+            $returnTypeNames = reflection_type_names($returnType);
 
             if (
                 !empty(array_intersect($returnTypeNames, [
@@ -186,23 +186,5 @@ class ClassAnalyzer implements AnalyzerInterface
         }
 
         return null;
-    }
-
-    /**
-     * @return string[]
-     */
-    public function typeList(\ReflectionNamedType|\ReflectionUnionType|null $type): array
-    {
-        if (null === $type) {
-            return ['void'];
-        }
-
-        if ($type instanceof \ReflectionNamedType) {
-            return [$type->getName()];
-        }
-
-        return array_map(function (\ReflectionNamedType $type): string {
-            return $type->getName();
-        }, $type->getTypes());
     }
 }
