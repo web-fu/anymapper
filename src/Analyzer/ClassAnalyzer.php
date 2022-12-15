@@ -11,7 +11,6 @@ use function WebFu\Mapper\camelcase_to_underscore;
 
 class ClassAnalyzer implements AnalyzerInterface
 {
-    private object $originalObject;
     /** @var ReflectionProperty[] */
     private array $properties = [];
     private ReflectionMethod|null $constructor = null;
@@ -24,7 +23,6 @@ class ClassAnalyzer implements AnalyzerInterface
 
     public function __construct(object $class)
     {
-        $this->originalObject = $class;
         $reflection = new ReflectionClass($class);
 
         $this->init($reflection);
