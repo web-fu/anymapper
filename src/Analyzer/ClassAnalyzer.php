@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace WebFu\Analyzer;
 
+use function WebFu\Mapper\camelcase_to_underscore;
+
 class ClassAnalyzer implements AnalyzerInterface
 {
     private object $originalObject;
@@ -105,6 +107,41 @@ class ClassAnalyzer implements AnalyzerInterface
     public function getSetters(): array
     {
         return $this->setters;
+    }
+
+    /** @return string[] */
+    public function getGettablePathMap(): array
+    {
+        $gettableNames = $this->getGettableNames();
+
+        return $this->aliasList($gettableNames);
+    }
+
+    /** @return string[] */
+    public function getSettablePathMap(): array
+    {
+        $settableNames = $this->getSettableNames();
+
+        return $this->aliasList($settableNames);
+    }
+
+    /** @return string[] */
+    private function aliasList(array $names): array
+    {
+        $aliasList = [];
+        foreach ($names as $name) {
+            $underscoreName = camelcase_to_underscore($name);
+            $aliasList[$underscoreName] = $name;
+
+            preg_match('#^(get|is|set)(?P<name>[A-Z][\w]+)#', $name, $matches);
+
+            if (isset($matches['name'])) {
+                $underscoreName = camelcase_to_underscore($matches['name']);
+                $aliasList[$underscoreName] = $name;
+            }
+        }
+
+        return $aliasList;
     }
 
     /**

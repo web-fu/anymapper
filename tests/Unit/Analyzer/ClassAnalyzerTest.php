@@ -79,6 +79,57 @@ class ClassAnalyzerTest extends TestCase
         ], array_keys($generators));
     }
 
+    public function testGetGettablePathMap(): void
+    {
+        $class = new FakeEntity();
+        $classAnalyzer = new ClassAnalyzer($class);
+
+        $gettablePathMap = $classAnalyzer->getGettablePathMap();
+
+        $this->assertEquals([
+            'parent' => 'parent',
+            'public' => 'public',
+            'overrode_public' => 'overrodePublic',
+            'trait' => 'trait',
+            'get_parent_property' => 'getParentProperty',
+            'parent_property' => 'isParentProperty',
+            'is_parent_property' => 'isParentProperty',
+            'get_by_constructor' => 'getByConstructor',
+            'by_constructor' => 'getByConstructor',
+            'get_by_setter' => 'getBySetter',
+            'by_setter' => 'getBySetter',
+            'is_standard' => 'isStandard',
+            'standard' => 'isStandard',
+            '__get' => '__get',
+            'get_trait_property' => 'getTraitProperty',
+            'trait_property' => 'isTraitProperty',
+            'is_trait_property' => 'isTraitProperty',
+        ], $gettablePathMap);
+    }
+
+    public function testGetSettablePathMap(): void
+    {
+        $class = new FakeEntity();
+        $classAnalyzer = new ClassAnalyzer($class);
+
+        $gettablePathMap = $classAnalyzer->getSettablePathMap();
+
+        $this->assertEquals([
+            'parent' => 'parent',
+            'public' => 'public',
+            'overrode_public' => 'setOverrodePublic',
+            'trait' => 'trait',
+            'set_parent_property' => 'setParentProperty',
+            'parent_property' => 'setParentProperty',
+            'set_by_setter' => 'setBySetter',
+            'by_setter' => 'setBySetter',
+            'set_overrode_public' => 'setOverrodePublic',
+            '__set' => '__set',
+            'set_trait_property' => 'setTraitProperty',
+            'trait_property' => 'setTraitProperty',
+        ], $gettablePathMap);
+    }
+
     public function testGettablePaths(): void
     {
         $class = new FakeEntity();
@@ -111,20 +162,20 @@ class ClassAnalyzerTest extends TestCase
         $this->assertInstanceOf(\Reflector::class, $classAnalyzer->getGettableMethod($path));
     }
 
-    public function gettablePathProvider(): \Iterator
+    public function gettablePathProvider(): iterable
     {
-        yield ['overrodePublic'];
-        yield ['public'];
-        yield ['parent'];
-        yield ['trait'];
-        yield ['getByConstructor'];
-        yield ['getBySetter'];
-        yield ['isStandard'];
-        yield ['getParentProperty'];
-        yield ['isParentProperty'];
-        yield ['getTraitProperty'];
-        yield ['isTraitProperty'];
-        yield ['__get'];
+        yield 'overrodePublic' => ['overrodePublic'];
+        yield 'public' => ['public'];
+        yield 'parent' => ['parent'];
+        yield 'trait' => ['trait'];
+        yield 'getByConstructor' => ['getByConstructor'];
+        yield 'getBySetter' => ['getBySetter'];
+        yield 'isStandard' => ['isStandard'];
+        yield 'getParentProperty' => ['getParentProperty'];
+        yield 'isParentProperty' => ['isParentProperty'];
+        yield 'getTraitProperty' => ['getTraitProperty'];
+        yield 'isTraitProperty' => ['isTraitProperty'];
+        yield '__get' => ['__get'];
     }
 
     public function testSettablePaths(): void
@@ -156,17 +207,17 @@ class ClassAnalyzerTest extends TestCase
         $this->assertInstanceOf(\Reflector::class, $classAnalyzer->getSettableMethod($path));
     }
 
-    public function settablePathProvider(): \Iterator
+    public function settablePathProvider(): iterable
     {
-        yield ['overrodePublic'];
-        yield ['public'];
-        yield ['parent'];
-        yield ['trait'];
-        yield ['setBySetter'];
-        yield ['setOverrodePublic'];
-        yield ['setParentProperty'];
-        yield ['setTraitProperty'];
-        yield ['__set'];
+        yield 'overrodePublic' => ['overrodePublic'];
+        yield 'public' => ['public'];
+        yield 'parent' => ['parent'];
+        yield 'trait' => ['trait'];
+        yield 'setBySetter' => ['setBySetter'];
+        yield 'setOverrodePublic' => ['setOverrodePublic'];
+        yield 'setParentProperty' => ['setParentProperty'];
+        yield 'setTraitProperty' => ['setTraitProperty'];
+        yield '__set' => ['__set'];
     }
 
     public function testGetPropertyValue(): void
