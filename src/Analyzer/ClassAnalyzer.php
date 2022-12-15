@@ -162,9 +162,6 @@ class ClassAnalyzer implements AnalyzerInterface
                 return $method;
             }
         }
-        if (array_key_exists($path, $this->getProperties())) {
-            return new \ReflectionMethod($this, 'getPropertyValue');
-        }
 
         return null;
     }
@@ -187,21 +184,8 @@ class ClassAnalyzer implements AnalyzerInterface
                 return $method;
             }
         }
-        if (array_key_exists($path, $this->getProperties())) {
-            return new \ReflectionMethod($this, 'setPropertyValue');
-        }
 
         return null;
-    }
-
-    public function getPropertyValue(string $path): mixed
-    {
-        return $this->properties[$path]->getValue($this->originalObject);
-    }
-
-    public function setPropertyValue(string $path, mixed $value): void
-    {
-        $this->properties[$path]->setValue($this->originalObject, $value);
     }
 
     /**
