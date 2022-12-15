@@ -38,6 +38,18 @@ class ArrayAnalyzer implements AnalyzerInterface
         return array_keys($this->data);
     }
 
+    /** @return string[] */
+    public function getGettablePathMap(): array
+    {
+        return array_combine($this->getGettableNames(), $this->getGettableNames());
+    }
+
+    /** @return string[] */
+    public function getSettablePathMap(): array
+    {
+        return array_combine($this->getSettableNames(), $this->getSettableNames());
+    }
+
     public function getSettableMethod(string $path): \ReflectionMethod|null
     {
         if (!array_key_exists($path, $this->data)) {

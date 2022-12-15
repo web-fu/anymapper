@@ -9,6 +9,40 @@ use WebFu\Analyzer\ArrayAnalyzer;
 
 class ArrayAnalyzerTest extends TestCase
 {
+    public function testGetGettablePathMap(): void
+    {
+        $array = [
+            'foo' => 'foo value',
+            'bar' => 'bar value',
+            'baz' => 'baz value',
+        ];
+
+        $arrayAnalyzer = new ArrayAnalyzer($array);
+
+        $this->assertEqualsCanonicalizing([
+            'foo' => 'foo',
+            'bar' => 'bar',
+            'baz' => 'baz',
+        ], $arrayAnalyzer->getGettablePathMap());
+    }
+
+    public function testGetSettablePathMap(): void
+    {
+        $array = [
+            'foo' => 'foo value',
+            'bar' => 'bar value',
+            'baz' => 'baz value',
+        ];
+
+        $arrayAnalyzer = new ArrayAnalyzer($array);
+
+        $this->assertEqualsCanonicalizing([
+            'foo' => 'foo',
+            'bar' => 'bar',
+            'baz' => 'baz',
+        ], $arrayAnalyzer->getSettablePathMap());
+    }
+
     public function testGettablePaths(): void
     {
         $array = [
