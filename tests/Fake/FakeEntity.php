@@ -60,7 +60,7 @@ class FakeEntity extends FakeParentEntity
     }
 
     /*
-     * If a public property and a corresponding overriding setter exist, override function MUST be called ONLY, if not otherwise specified
+     * If a public property and a corresponding overriding setter exist, only this function MUST be called, if not otherwise specified
      */
     public function setOverrodePublic(string $overrodePublic): void
     {
