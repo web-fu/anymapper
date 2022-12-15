@@ -10,6 +10,7 @@ function camelcase_to_underscore(string $string): string
         return $string;
     }
     $str = lcfirst($string);
-    $str = preg_replace("/[A-Z]/", '_' . "$0", $str);
+    $str = preg_replace('/[A-Z]/', '_$0', $str);
+
     return strtolower($str);
 }

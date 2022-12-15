@@ -9,5 +9,5 @@ foreach (FUNCTIONS as $function => $file) {
         continue;
     }
 
-    require_once __DIR__ . '/' . $file;
+    require_once __DIR__.'/'.$file;
 }
