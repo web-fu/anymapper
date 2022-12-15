@@ -7,6 +7,8 @@ namespace WebFu\Proxy;
 use WebFu\Analyzer\AnalyzerFactory;
 use WebFu\Analyzer\AnalyzerInterface;
 
+use function WebFu\Mapper\camelcase_to_underscore;
+
 class Proxy
 {
     private array|object $element;
@@ -62,5 +64,34 @@ class Proxy
         }
 
         call_user_func([$endpointAnalyzer, $settable->getName()], $track, $value);
+    }
+
+    public function getPathMap(): array
+    {
+        $gettableNames = $this->getAnalyzer()->getGettableNames();
+        $settableNames = $this->getAnalyzer()->getSettableNames();
+
+        $pathMap['get'] = $this->aliasList($gettableNames);
+        $pathMap['set'] = $this->aliasList($settableNames);
+
+        return $pathMap;
+    }
+
+    private function aliasList(array $names): array
+    {
+        $aliasList = [];
+        foreach ($names as $name) {
+            $underscoreName = camelcase_to_underscore($name);
+            $aliasList[$underscoreName] = $name;
+
+            preg_match('#^(get|is|set)(?P<name>[A-Z][\w]+)#', $name, $matches);
+
+            if (isset($matches['name'])) {
+                $underscoreName = camelcase_to_underscore($matches['name']);
+                $aliasList[$underscoreName] = $name;
+            }
+        }
+
+        return $aliasList;
     }
 }
