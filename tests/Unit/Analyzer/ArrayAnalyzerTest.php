@@ -6,41 +6,56 @@ namespace WebFu\Tests\Unit\Analyzer;
 
 use PHPUnit\Framework\TestCase;
 use WebFu\Analyzer\ArrayAnalyzer;
+use WebFu\Analyzer\ElementAnalyzer;
+use WebFu\Analyzer\ElementType;
 
 class ArrayAnalyzerTest extends TestCase
 {
-    public function testGetOutputTrackList(): void
+    /** @dataProvider arrayDataProvider */
+    public function testGetOutputTrackList(array $array, array $expected): void
     {
-        $array = [
-            'foo' => 'foo value',
-            'bar' => 'bar value',
-            'baz' => 'baz value',
-        ];
-
         $arrayAnalyzer = new ArrayAnalyzer($array);
 
-        $this->assertEqualsCanonicalizing([
-            'foo' => 'foo',
-            'bar' => 'bar',
-            'baz' => 'baz',
-        ], $arrayAnalyzer->getOutputTrackList());
+        $this->assertEquals($expected, $arrayAnalyzer->getOutputTrackList());
     }
 
-    public function testGetInputTrackList(): void
+    /** @dataProvider arrayDataProvider */
+    public function testGetInputTrackList(array $array, array $expected): void
     {
-        $array = [
-            'foo' => 'foo value',
-            'bar' => 'bar value',
-            'baz' => 'baz value',
-        ];
-
         $arrayAnalyzer = new ArrayAnalyzer($array);
 
-        $this->assertEqualsCanonicalizing([
-            'foo' => 'foo',
-            'bar' => 'bar',
-            'baz' => 'baz',
-        ], $arrayAnalyzer->getInputTrackList());
+        $this->assertEquals($expected, $arrayAnalyzer->getInputTrackList());
+    }
+
+
+    public function arrayDataProvider(): iterable
+    {
+        yield 'string index' => [
+            'array' => [
+                'fooIndex' => 'foo'
+            ],
+            'expected' =>  [
+                'foo_index' => new ElementAnalyzer('fooIndex', ElementType::STRING_INDEX),
+            ]
+        ];
+        yield 'numeric index' => [
+            'array' => [
+                'foo'
+            ],
+            'expected' =>  [
+                '0' => new ElementAnalyzer(0, ElementType::NUMERIC_INDEX),
+            ]
+        ];
+        yield 'mixed indexes' => [
+            'array' => [
+                'bar',
+                'fooIndex' => 'foo'
+            ],
+            'expected' =>  [
+                '0' => new ElementAnalyzer(0, ElementType::NUMERIC_INDEX),
+                'foo_index' => new ElementAnalyzer('fooIndex', ElementType::STRING_INDEX),
+            ]
+        ];
     }
 
     public function testGettablePaths(): void

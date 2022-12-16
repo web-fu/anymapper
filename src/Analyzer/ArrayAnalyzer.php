@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace WebFu\Analyzer;
 
+use function WebFu\Mapper\camelcase_to_underscore;
+
 class ArrayAnalyzer implements AnalyzerInterface
 {
     /**
@@ -29,15 +31,27 @@ class ArrayAnalyzer implements AnalyzerInterface
         return array_keys($this->data);
     }
 
-    /** @return string[] */
+    /** @return ElementAnalyzer[] */
     public function getOutputTrackList(): array
     {
-        return array_combine($this->getGettableNames(), $this->getGettableNames());
+        return $this->getTrackList();
     }
 
-    /** @return string[] */
+    /** @return ElementAnalyzer[] */
     public function getInputTrackList(): array
     {
-        return array_combine($this->getSettableNames(), $this->getSettableNames());
+        return $this->getTrackList();
+    }
+
+    /** @return ElementAnalyzer[] */
+    private function getTrackList(): array
+    {
+        $trackList = [];
+        foreach (array_keys($this->data) as $key) {
+            $underscoreName = camelcase_to_underscore((string) $key);
+            $keyType = is_int($key) ? ElementType::NUMERIC_INDEX : ElementType::STRING_INDEX;
+            $trackList[$underscoreName] = new ElementAnalyzer($key, $keyType);
+        }
+        return $trackList;
     }
 }

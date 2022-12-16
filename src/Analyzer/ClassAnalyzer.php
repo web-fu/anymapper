@@ -110,39 +110,36 @@ class ClassAnalyzer implements AnalyzerInterface
         return $this->setters;
     }
 
-    /** @return string[] */
+    /** @return ElementAnalyzer[] */
     public function getOutputTrackList(): array
     {
-        $gettableNames = $this->getGettableNames();
-
-        return $this->aliasList($gettableNames);
-    }
-
-    /** @return string[] */
-    public function getInputTrackList(): array
-    {
-        $settableNames = $this->getSettableNames();
-
-        return $this->aliasList($settableNames);
-    }
-
-    /** @return string[] */
-    private function aliasList(array $names): array
-    {
-        $aliasList = [];
-        foreach ($names as $name) {
-            $underscoreName = camelcase_to_underscore($name);
-            $aliasList[$underscoreName] = $name;
-
-            preg_match('#^(get|is|set)(?P<name>[A-Z][\w]+)#', $name, $matches);
-
-            if (isset($matches['name'])) {
-                $underscoreName = camelcase_to_underscore($matches['name']);
-                $aliasList[$underscoreName] = $name;
-            }
+        $trackList = [];
+        foreach (array_keys($this->getProperties()) as $propertyName) {
+            $underscoreName = camelcase_to_underscore($propertyName);
+            $trackList[$underscoreName] = new ElementAnalyzer($propertyName, ElementType::PROPERTY);
+        }
+        foreach (array_keys($this->getGetters()) as $getterName) {
+            $underscoreName = camelcase_to_underscore($getterName);
+            $trackList[$underscoreName] = new ElementAnalyzer($getterName, ElementType::METHOD);
         }
 
-        return $aliasList;
+        return $trackList;
+    }
+
+    /** @return ElementAnalyzer[] */
+    public function getInputTrackList(): array
+    {
+        $trackList = [];
+        foreach (array_keys($this->getProperties()) as $propertyName) {
+            $underscoreName = camelcase_to_underscore($propertyName);
+            $trackList[$underscoreName] = new ElementAnalyzer($propertyName, ElementType::PROPERTY);
+        }
+        foreach (array_keys($this->getSetters()) as $setterName) {
+            $underscoreName = camelcase_to_underscore($setterName);
+            $trackList[$underscoreName] = new ElementAnalyzer($setterName, ElementType::METHOD);
+        }
+
+        return $trackList;
     }
 
     /**
