@@ -6,6 +6,7 @@ namespace WebFu\Analyzer;
 
 class AnalyzerFactory
 {
+    /** @param mixed[]|object $subject */
     public static function create(array|object $subject): AnalyzerInterface
     {
         if (is_object($subject)) {
