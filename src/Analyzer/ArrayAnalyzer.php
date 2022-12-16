@@ -40,13 +40,4 @@ class ArrayAnalyzer implements AnalyzerInterface
     {
         return array_combine($this->getSettableNames(), $this->getSettableNames());
     }
-
-    public function getSettableMethod(string $path): \ReflectionMethod|null
-    {
-        if (!array_key_exists($path, $this->data)) {
-            return null;
-        }
-
-        return new \ReflectionMethod($this, 'setIndex');
-    }
 }
