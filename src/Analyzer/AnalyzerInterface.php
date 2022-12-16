@@ -7,18 +7,14 @@ namespace WebFu\Analyzer;
 interface AnalyzerInterface
 {
     /** @return string[] */
-    public function getGettablePathMap(): array;
+    public function getOutputTrackList(): array;
 
     /** @return string[] */
-    public function getSettablePathMap(): array;
+    public function getInputTrackList(): array;
 
     /** @return string[] */
     public function getGettableNames(): array;
 
-    public function getGettableMethod(string $path): \ReflectionMethod|null;
-
     /** @return string[] */
     public function getSettableNames(): array;
-
-    public function getSettableMethod(string $path): \ReflectionMethod|null;
 }

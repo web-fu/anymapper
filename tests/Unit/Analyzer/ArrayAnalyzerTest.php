@@ -9,7 +9,7 @@ use WebFu\Analyzer\ArrayAnalyzer;
 
 class ArrayAnalyzerTest extends TestCase
 {
-    public function testGetGettablePathMap(): void
+    public function testGetOutputTrackList(): void
     {
         $array = [
             'foo' => 'foo value',
@@ -23,10 +23,10 @@ class ArrayAnalyzerTest extends TestCase
             'foo' => 'foo',
             'bar' => 'bar',
             'baz' => 'baz',
-        ], $arrayAnalyzer->getGettablePathMap());
+        ], $arrayAnalyzer->getOutputTrackList());
     }
 
-    public function testGetSettablePathMap(): void
+    public function testGetInputTrackList(): void
     {
         $array = [
             'foo' => 'foo value',
@@ -40,7 +40,7 @@ class ArrayAnalyzerTest extends TestCase
             'foo' => 'foo',
             'bar' => 'bar',
             'baz' => 'baz',
-        ], $arrayAnalyzer->getSettablePathMap());
+        ], $arrayAnalyzer->getInputTrackList());
     }
 
     public function testGettablePaths(): void
@@ -75,51 +75,5 @@ class ArrayAnalyzerTest extends TestCase
             'bar',
             'baz',
         ], $arrayAnalyzer->getSettableNames());
-    }
-
-    /**
-     * @dataProvider gettablePathProvider
-     */
-    public function testGettablePath(string $path): void
-    {
-        $array = [
-            'foo' => 'foo value',
-            'bar' => 'bar value',
-            'baz' => 'baz value',
-        ];
-
-        $arrayAnalyzer = new ArrayAnalyzer($array);
-
-        $this->assertInstanceOf(\Reflector::class, $arrayAnalyzer->getGettableMethod($path));
-    }
-
-    public function gettablePathProvider(): \Iterator
-    {
-        yield ['foo'];
-        yield ['bar'];
-        yield ['baz'];
-    }
-
-    /**
-     * @dataProvider gettablePathProvider
-     */
-    public function testSettablePath(string $path): void
-    {
-        $array = [
-            'foo' => 'foo value',
-            'bar' => 'bar value',
-            'baz' => 'baz value',
-        ];
-
-        $arrayAnalyzer = new ArrayAnalyzer($array);
-
-        $this->assertInstanceOf(\Reflector::class, $arrayAnalyzer->getSettableMethod($path));
-    }
-
-    public function settablePathProvider(): \Iterator
-    {
-        yield ['foo'];
-        yield ['bar'];
-        yield ['baz'];
     }
 }

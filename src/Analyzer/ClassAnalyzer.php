@@ -111,7 +111,7 @@ class ClassAnalyzer implements AnalyzerInterface
     }
 
     /** @return string[] */
-    public function getGettablePathMap(): array
+    public function getOutputTrackList(): array
     {
         $gettableNames = $this->getGettableNames();
 
@@ -119,7 +119,7 @@ class ClassAnalyzer implements AnalyzerInterface
     }
 
     /** @return string[] */
-    public function getSettablePathMap(): array
+    public function getInputTrackList(): array
     {
         $settableNames = $this->getSettableNames();
 

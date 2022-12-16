@@ -24,28 +24,19 @@ class ArrayAnalyzer implements AnalyzerInterface
         return array_keys($this->data);
     }
 
-    public function getGettableMethod(string $path): \ReflectionMethod|null
-    {
-        if (!array_key_exists($path, $this->data)) {
-            return null;
-        }
-
-        return new \ReflectionMethod($this, 'getIndex');
-    }
-
     public function getSettableNames(): array
     {
         return array_keys($this->data);
     }
 
     /** @return string[] */
-    public function getGettablePathMap(): array
+    public function getOutputTrackList(): array
     {
         return array_combine($this->getGettableNames(), $this->getGettableNames());
     }
 
     /** @return string[] */
-    public function getSettablePathMap(): array
+    public function getInputTrackList(): array
     {
         return array_combine($this->getSettableNames(), $this->getSettableNames());
     }
