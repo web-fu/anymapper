@@ -57,38 +57,4 @@ class ArrayAnalyzerTest extends TestCase
             ]
         ];
     }
-
-    public function testGettablePaths(): void
-    {
-        $array = [
-            'foo' => 'foo value',
-            'bar' => 'bar value',
-            'baz' => 'baz value',
-        ];
-
-        $arrayAnalyzer = new ArrayAnalyzer($array);
-
-        $this->assertEqualsCanonicalizing([
-            'foo',
-            'bar',
-            'baz',
-        ], $arrayAnalyzer->getGettableNames());
-    }
-
-    public function testSettablePaths(): void
-    {
-        $array = [
-            'foo' => 'foo value',
-            'bar' => 'bar value',
-            'baz' => 'baz value',
-        ];
-
-        $arrayAnalyzer = new ArrayAnalyzer($array);
-
-        $this->assertEqualsCanonicalizing([
-            'foo',
-            'bar',
-            'baz',
-        ], $arrayAnalyzer->getSettableNames());
-    }
 }

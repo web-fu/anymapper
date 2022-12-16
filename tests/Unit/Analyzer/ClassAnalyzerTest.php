@@ -118,40 +118,4 @@ class ClassAnalyzerTest extends TestCase
             'set_trait_property' => new ElementAnalyzer('setTraitProperty', ElementType::METHOD),
         ], $gettablePathMap);
     }
-
-    public function testGettablePaths(): void
-    {
-        $class = new FakeEntity();
-        $classAnalyzer = new ClassAnalyzer($class);
-
-        $this->assertEqualsCanonicalizing([
-            'public',
-            'parent',
-            'trait',
-            'getByConstructor',
-            'getBySetter',
-            'isStandard',
-            'getParentProperty',
-            'isParentProperty',
-            'getTraitProperty',
-            'isTraitProperty',
-            '__get',
-        ], $classAnalyzer->getGettableNames());
-    }
-
-    public function testSettablePaths(): void
-    {
-        $class = new FakeEntity();
-        $classAnalyzer = new ClassAnalyzer($class);
-
-        $this->assertEqualsCanonicalizing([
-            'public',
-            'parent',
-            'trait',
-            'setBySetter',
-            'setParentProperty',
-            'setTraitProperty',
-            '__set',
-        ], $classAnalyzer->getSettableNames());
-    }
 }

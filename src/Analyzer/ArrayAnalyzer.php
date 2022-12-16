@@ -21,16 +21,6 @@ class ArrayAnalyzer implements AnalyzerInterface
         $this->data = $data;
     }
 
-    public function getGettableNames(): array
-    {
-        return array_keys($this->data);
-    }
-
-    public function getSettableNames(): array
-    {
-        return array_keys($this->data);
-    }
-
     /** @return ElementAnalyzer[] */
     public function getOutputTrackList(): array
     {

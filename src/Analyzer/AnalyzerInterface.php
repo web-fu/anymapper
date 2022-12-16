@@ -11,10 +11,4 @@ interface AnalyzerInterface
 
     /** @return ElementAnalyzer[] */
     public function getInputTrackList(): array;
-
-    /** @return string[] */
-    public function getGettableNames(): array;
-
-    /** @return string[] */
-    public function getSettableNames(): array;
 }

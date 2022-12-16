@@ -141,48 +141,4 @@ class ClassAnalyzer implements AnalyzerInterface
 
         return $trackList;
     }
-
-    /**
-     * @return string[]
-     */
-    public function getGettableNames(): array
-    {
-        $propertyNames = array_keys($this->getProperties());
-        $functionNames = array_keys($this->getGetters());
-
-        return array_merge($propertyNames, $functionNames);
-    }
-
-    public function getGettableMethod(string $path): ReflectionMethod|null
-    {
-        foreach ($this->getGetters() as $name => $method) {
-            if ($name === $path) {
-                return $method;
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getSettableNames(): array
-    {
-        $propertyNames = array_keys($this->getProperties());
-        $functionNames = array_keys($this->getSetters());
-
-        return array_merge($propertyNames, $functionNames);
-    }
-
-    public function getSettableMethod(string $path): ReflectionMethod|null
-    {
-        foreach ($this->getSetters() as $name => $method) {
-            if ($name === $path) {
-                return $method;
-            }
-        }
-
-        return null;
-    }
 }
