@@ -58,14 +58,4 @@ class ArrayAnalyzer implements AnalyzerInterface
 
         return new \ReflectionMethod($this, 'setIndex');
     }
-
-    public function getIndex(string $key): mixed
-    {
-        return $this->data[$key];
-    }
-
-    public function setIndex(string $key, mixed $value): void
-    {
-        $this->data[$key] = $value;
-    }
 }
