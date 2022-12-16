@@ -27,34 +27,33 @@ class ArrayAnalyzerTest extends TestCase
         $this->assertEquals($expected, $arrayAnalyzer->getInputTrackList());
     }
 
-
     public function arrayDataProvider(): iterable
     {
         yield 'string index' => [
             'array' => [
-                'fooIndex' => 'foo'
+                'fooIndex' => 'foo',
             ],
-            'expected' =>  [
+            'expected' => [
                 'foo_index' => new ElementAnalyzer('fooIndex', ElementType::STRING_INDEX),
-            ]
+            ],
         ];
         yield 'numeric index' => [
             'array' => [
-                'foo'
+                'foo',
             ],
-            'expected' =>  [
+            'expected' => [
                 '0' => new ElementAnalyzer(0, ElementType::NUMERIC_INDEX),
-            ]
+            ],
         ];
         yield 'mixed indexes' => [
             'array' => [
                 'bar',
-                'fooIndex' => 'foo'
+                'fooIndex' => 'foo',
             ],
-            'expected' =>  [
+            'expected' => [
                 '0' => new ElementAnalyzer(0, ElementType::NUMERIC_INDEX),
                 'foo_index' => new ElementAnalyzer('fooIndex', ElementType::STRING_INDEX),
-            ]
+            ],
         ];
     }
 }

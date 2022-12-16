@@ -10,7 +10,7 @@ use WebFu\Analyzer\ElementType;
 
 class Proxy
 {
-    /** @var mixed[]|object $element */
+    /** @var mixed[]|object */
     private array|object $element;
     private AnalyzerInterface $analyzer;
 

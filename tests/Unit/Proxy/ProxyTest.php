@@ -6,7 +6,8 @@ namespace WebFu\Tests\Unit\Proxy;
 
 use PHPUnit\Framework\TestCase;
 use WebFu\Proxy\Proxy;
-use WebFu\Tests\Fake\FakeEntity;
+use stdClass;
+use DateTime;
 
 class ProxyTest extends TestCase
 {
@@ -42,7 +43,7 @@ class ProxyTest extends TestCase
 
                 public function __construct()
                 {
-                    $this->object = new \stdClass();
+                    $this->object = new stdClass();
                     $this->object->test = 'test';
                 }
             },
@@ -84,7 +85,7 @@ class ProxyTest extends TestCase
             'element' => ['objectList' => [
                 new class() {
                     public string $string = 'test';
-                }
+                },
             ]],
             'path' => 'object_list.0.string',
             'expected' => 'test',
@@ -125,8 +126,8 @@ class ProxyTest extends TestCase
                 public object $object;
             },
             'path' => 'object',
-            'value' => new \DateTime('2022-01-01'),
-            'expected' => new \DateTime('2022-01-01'),
+            'value' => new DateTime('2022-01-01'),
+            'expected' => new DateTime('2022-01-01'),
         ];
         yield 'complex' => [
             'element' => new class() {

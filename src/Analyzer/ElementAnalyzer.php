@@ -7,7 +7,7 @@ namespace WebFu\Analyzer;
 class ElementAnalyzer
 {
     public function __construct(
-        private readonly string|int  $name,
+        private readonly string|int $name,
         private readonly ElementType $type,
     ) {
     }
