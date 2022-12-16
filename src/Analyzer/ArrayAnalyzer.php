@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace WebFu\Analyzer;
 
-use function WebFu\Mapper\camelcase_to_underscore;
+use function WebFu\Internal\camelcase_to_underscore;
 
 class ArrayAnalyzer implements AnalyzerInterface
 {
@@ -42,6 +42,7 @@ class ArrayAnalyzer implements AnalyzerInterface
             $keyType = is_int($key) ? ElementType::NUMERIC_INDEX : ElementType::STRING_INDEX;
             $trackList[$underscoreName] = new ElementAnalyzer($key, $keyType);
         }
+
         return $trackList;
     }
 }

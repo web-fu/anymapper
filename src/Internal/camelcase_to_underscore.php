@@ -2,8 +2,11 @@
 
 declare(strict_types=1);
 
-namespace WebFu\Mapper;
+namespace WebFu\Internal;
 
+/**
+ * @internal
+ */
 function camelcase_to_underscore(string $string): string
 {
     if (empty($string)) {

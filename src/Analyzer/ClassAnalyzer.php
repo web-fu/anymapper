@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace WebFu\Analyzer;
 
+use function WebFu\Internal\camelcase_to_underscore;
+use function WebFu\Internal\reflection_type_names;
+use ReflectionUnionType;
+use ReflectionNamedType;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
-use function WebFu\Mapper\camelcase_to_underscore;
 
 class ClassAnalyzer implements AnalyzerInterface
 {
@@ -52,7 +55,7 @@ class ClassAnalyzer implements AnalyzerInterface
             ) {
                 $this->setters[$method->getName()] = $method;
             }
-            /** @var \ReflectionNamedType|\ReflectionUnionType|null $returnType */
+            /** @var ReflectionNamedType|ReflectionUnionType|null $returnType */
             $returnType = $method->getReturnType();
             $returnTypeNames = reflection_type_names($returnType);
 
