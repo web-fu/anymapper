@@ -79,7 +79,7 @@ class ClassAnalyzerTest extends TestCase
         ], array_keys($generators));
     }
 
-    public function testGetGettablePathMap(): void
+    public function testGetOutputTrackList(): void
     {
         $class = new FakeEntity();
         $classAnalyzer = new ClassAnalyzer($class);
@@ -107,7 +107,7 @@ class ClassAnalyzerTest extends TestCase
         ], $gettablePathMap);
     }
 
-    public function testGetSettablePathMap(): void
+    public function testGetInputTrackList(): void
     {
         $class = new FakeEntity();
         $classAnalyzer = new ClassAnalyzer($class);
