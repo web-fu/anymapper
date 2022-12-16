@@ -6,11 +6,11 @@ namespace WebFu\Proxy;
 
 use WebFu\Analyzer\AnalyzerFactory;
 use WebFu\Analyzer\AnalyzerInterface;
-
-use function WebFu\Mapper\camelcase_to_underscore;
+use WebFu\Analyzer\ElementType;
 
 class Proxy
 {
+    /** @var mixed[]|object $element */
     private array|object $element;
     private AnalyzerInterface $analyzer;
 
@@ -32,11 +32,18 @@ class Proxy
     {
         $pathTracks = explode('.', $path);
         $track = array_shift($pathTracks);
-        $gettable = $this->analyzer->getGettableMethod($track);
-        if (!$gettable) {
+        $trackList = $this->analyzer->getOutputTrackList();
+        if (!array_key_exists($track, $trackList)) {
             throw new ProxyException($track.' gettable not found');
         }
-        $value = call_user_func([$this->analyzer, $gettable->getName()], $track);
+
+        $index = $trackList[$track];
+
+        $value = match ($index->getType()) {
+            ElementType::PROPERTY => $this->element->{$index->getName()},
+            ElementType::METHOD => call_user_func([$this->element, $index->getName()]),
+            ElementType::NUMERIC_INDEX, ElementType::STRING_INDEX => $this->element[$index->getName()],
+        };
 
         if (!count($pathTracks)) {
             return $value;
@@ -52,46 +59,25 @@ class Proxy
         $pathTracks = explode('.', $path);
         $track = array_pop($pathTracks);
 
-        $endpointAnalyzer = $this->analyzer;
-        if ($pathTracks) {
+        $endpoint = $this->element;
+        if (count($pathTracks)) {
+            /** @var mixed[]|object $endpoint */
             $endpoint = $this->get(implode('.', $pathTracks));
-            $endpointAnalyzer = AnalyzerFactory::create($endpoint);
         }
+        $endpointAnalyzer = AnalyzerFactory::create($endpoint);
 
-        $settable = $endpointAnalyzer->getSettableMethod($track);
-        if (!$settable) {
+        $trackList = $endpointAnalyzer->getInputTrackList();
+
+        if (!array_key_exists($track, $trackList)) {
             throw new ProxyException($track.' settable not found');
         }
 
-        call_user_func([$endpointAnalyzer, $settable->getName()], $track, $value);
-    }
+        $index = $trackList[$track];
 
-    public function getPathMap(): array
-    {
-        $gettableNames = $this->getAnalyzer()->getGettableNames();
-        $settableNames = $this->getAnalyzer()->getSettableNames();
-
-        $pathMap['get'] = $this->aliasList($gettableNames);
-        $pathMap['set'] = $this->aliasList($settableNames);
-
-        return $pathMap;
-    }
-
-    private function aliasList(array $names): array
-    {
-        $aliasList = [];
-        foreach ($names as $name) {
-            $underscoreName = camelcase_to_underscore($name);
-            $aliasList[$underscoreName] = $name;
-
-            preg_match('#^(get|is|set)(?P<name>[A-Z][\w]+)#', $name, $matches);
-
-            if (isset($matches['name'])) {
-                $underscoreName = camelcase_to_underscore($matches['name']);
-                $aliasList[$underscoreName] = $name;
-            }
-        }
-
-        return $aliasList;
+        match ($index->getType()) {
+            ElementType::PROPERTY => $endpoint->{$index->getName()} = $value,
+            ElementType::METHOD => call_user_func([$endpoint, $index->getName()], $value),
+            ElementType::NUMERIC_INDEX, ElementType::STRING_INDEX => $endpoint[$index->getName()] = $value,
+        };
     }
 }

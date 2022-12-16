@@ -13,43 +13,44 @@ class ProxyTest extends TestCase
     /**
      * @dataProvider getDataProvider
      */
-    public function testGet(object $class, string $path, mixed $expected): void
+    public function testGet(object|array $element, string $path, mixed $expected): void
     {
-        $proxy = new Proxy($class);
+        $proxy = new Proxy($element);
 
         $this->assertEquals($expected, $proxy->get($path));
     }
 
     public function getDataProvider(): iterable
     {
-        yield 'scalar' => [
-            'class' => new class() {
+        yield 'class.scalar' => [
+            'element' => new class() {
                 public string $scalar = 'scalar';
             },
             'path' => 'scalar',
             'expected' => 'scalar',
         ];
-        yield 'array' => [
-            'class' => new class() {
+        yield 'class.array' => [
+            'element' => new class() {
                 public array $list = [0, 1, 2];
             },
             'path' => 'list',
             'expected' => [0, 1, 2],
         ];
-        yield 'class' => [
-            'class' => new class() {
+        yield 'class.class' => [
+            'element' => new class() {
                 public object $object;
 
                 public function __construct()
                 {
-                    $this->object = new \DateTime('2022-01-01');
+                    $this->object = new \stdClass();
+                    $this->object->test = 'test';
                 }
             },
             'path' => 'object',
-            'expected' => new \DateTime('2022-01-01'),
+            'expected' => (object) ['test' => 'test'],
         ];
-        yield 'complex' => [
-            'class' => new class() {
+        yield 'class.complex' => [
+            'element' => new class() {
                 public array $objectList;
 
                 public function __construct()
@@ -61,7 +62,31 @@ class ProxyTest extends TestCase
                     ];
                 }
             },
-            'path' => 'objectList.0.string',
+            'path' => 'object_list.0.string',
+            'expected' => 'test',
+        ];
+        yield 'array.scalar' => [
+            'element' => ['scalar' => 'scalar'],
+            'path' => 'scalar',
+            'expected' => 'scalar',
+        ];
+        yield 'array.array' => [
+            'element' => ['list' => [0, 1, 2]],
+            'path' => 'list',
+            'expected' => [0, 1, 2],
+        ];
+        yield 'array.class' => [
+            'element' => ['object' => (object) ['test' => 'test']],
+            'path' => 'object',
+            'expected' => (object) ['test' => 'test'],
+        ];
+        yield 'array.complex' => [
+            'element' => ['objectList' => [
+                new class() {
+                    public string $string = 'test';
+                }
+            ]],
+            'path' => 'object_list.0.string',
             'expected' => 'test',
         ];
     }
@@ -80,7 +105,7 @@ class ProxyTest extends TestCase
     public function setDataProvider(): iterable
     {
         yield 'scalar' => [
-            'class' => new class() {
+            'element' => new class() {
                 public string $scalar;
             },
             'path' => 'scalar',
@@ -88,15 +113,15 @@ class ProxyTest extends TestCase
             'expected' => 'scalar',
         ];
         yield 'array' => [
-            'class' => new class() {
+            'element' => new class() {
                 public array $list;
             },
             'path' => 'list',
             'value' => [0, 1, 2],
             'expected' => [0, 1, 2],
         ];
-        yield 'class' => [
-            'class' => new class() {
+        yield 'element' => [
+            'element' => new class() {
                 public object $object;
             },
             'path' => 'object',
@@ -104,7 +129,7 @@ class ProxyTest extends TestCase
             'expected' => new \DateTime('2022-01-01'),
         ];
         yield 'complex' => [
-            'class' => new class() {
+            'element' => new class() {
                 public array $objectList;
 
                 public function __construct()
@@ -116,54 +141,9 @@ class ProxyTest extends TestCase
                     ];
                 }
             },
-            'path' => 'objectList.0.string',
+            'path' => 'object_list.0.string',
             'value' => 'test',
             'expected' => 'test',
         ];
-    }
-
-    public function testGetPathMap()
-    {
-        $class = new FakeEntity();
-
-        $proxy = new Proxy($class);
-
-        $pathMap = $proxy->getPathMap();
-
-        $this->assertEquals([
-            'get' => [
-                'parent' => 'parent',
-                'public' => 'public',
-                'overrode_public' => 'overrodePublic',
-                'trait' => 'trait',
-                'get_parent_property' => 'getParentProperty',
-                'parent_property' => 'isParentProperty',
-                'is_parent_property' => 'isParentProperty',
-                'get_by_constructor' => 'getByConstructor',
-                'by_constructor' => 'getByConstructor',
-                'get_by_setter' => 'getBySetter',
-                'by_setter' => 'getBySetter',
-                'is_standard' => 'isStandard',
-                'standard' => 'isStandard',
-                '__get' => '__get',
-                'get_trait_property' => 'getTraitProperty',
-                'trait_property' => 'isTraitProperty',
-                'is_trait_property' => 'isTraitProperty',
-            ],
-            'set' => [
-                'parent' => 'parent',
-                'public' => 'public',
-                'overrode_public' => 'setOverrodePublic',
-                'trait' => 'trait',
-                'set_parent_property' => 'setParentProperty',
-                'parent_property' => 'setParentProperty',
-                'set_by_setter' => 'setBySetter',
-                'by_setter' => 'setBySetter',
-                'set_overrode_public' => 'setOverrodePublic',
-                '__set' => '__set',
-                'set_trait_property' => 'setTraitProperty',
-                'trait_property' => 'setTraitProperty',
-            ],
-        ], $pathMap);
     }
 }
