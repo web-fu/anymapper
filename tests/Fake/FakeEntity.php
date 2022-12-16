@@ -16,7 +16,6 @@ class FakeEntity extends FakeParentEntity
      * Public properties CAN be mapped
      */
     public string $public;
-    public string $overrodePublic;
     /*
      * Protected and private properties MUST NOT be mapped
      */
@@ -57,14 +56,6 @@ class FakeEntity extends FakeParentEntity
     public function isStandard(): bool
     {
         return true;
-    }
-
-    /*
-     * If a public property and a corresponding overriding setter exist, only this function MUST be called, if not otherwise specified
-     */
-    public function setOverrodePublic(string $overrodePublic): void
-    {
-        $this->overrodePublic = $overrodePublic.' is overrode by setter function';
     }
 
     /*
