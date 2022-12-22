@@ -12,10 +12,6 @@ class FakeParentEntity
     {
     }
 
-    public function isParentProperty(): void
-    {
-    }
-
     public function setParentProperty(): void
     {
     }

@@ -53,7 +53,7 @@ class FakeEntity extends FakeParentEntity
         return $this->bySetter;
     }
 
-    public function isStandard(): bool
+    public function isPropertyTrue(): bool
     {
         return true;
     }

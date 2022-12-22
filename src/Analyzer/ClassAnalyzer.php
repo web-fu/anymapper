@@ -23,6 +23,10 @@ class ClassAnalyzer implements AnalyzerInterface
     private array $getters = [];
     /** @var ReflectionMethod[] */
     private array $setters = [];
+    /** @var ElementAnalyzer[]  */
+    private array $inputTrackList = [];
+    /** @var ElementAnalyzer[]  */
+    private array $outputTrackList = [];
 
     public function __construct(object $class)
     {
@@ -40,6 +44,17 @@ class ClassAnalyzer implements AnalyzerInterface
             $this->init($parent);
         }
 
+        foreach ($reflection->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
+            $this->properties[$property->getName()] = $property;
+            $underscoreName = camelcase_to_underscore($property->getName());
+
+            if (!$property->isReadOnly()) {
+                $this->inputTrackList[$underscoreName]  = new ElementAnalyzer($property->getName(), ElementType::PROPERTY);
+            }
+
+            $this->outputTrackList[$underscoreName]  = new ElementAnalyzer($property->getName(), ElementType::PROPERTY);
+        }
+
         if ($reflection->getConstructor()?->isPublic()) {
             $this->constructor = $reflection->getConstructor();
         }
@@ -49,11 +64,18 @@ class ClassAnalyzer implements AnalyzerInterface
                 or preg_match('#^get[A-Z]+|is[A-Z]+#', $method->getName())
             ) {
                 $this->getters[$method->getName()] = $method;
+
+                $underscoreName = camelcase_to_underscore($method->getName());
+                $underscoreName = preg_replace('#^get_|is_#', '', $underscoreName);
+                $this->outputTrackList[$underscoreName] = new ElementAnalyzer($method->getName(), ElementType::METHOD);
             }
             if ('__set' === $method->getName()
                 or preg_match('#^set[A-Z]+#', $method->getName())
             ) {
                 $this->setters[$method->getName()] = $method;
+                $underscoreName = camelcase_to_underscore($method->getName());
+                $underscoreName = preg_replace('#^set_#', '', $underscoreName);
+                $this->inputTrackList[$underscoreName] = new ElementAnalyzer($method->getName(), ElementType::METHOD);
             }
             /** @var ReflectionNamedType|ReflectionUnionType|null $returnType */
             $returnType = $method->getReturnType();
@@ -69,10 +91,6 @@ class ClassAnalyzer implements AnalyzerInterface
             ) {
                 $this->generators[$method->getName()] = $method;
             }
-        }
-
-        foreach ($reflection->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
-            $this->properties[$property->getName()] = $property;
         }
     }
 
@@ -116,32 +134,12 @@ class ClassAnalyzer implements AnalyzerInterface
     /** @return ElementAnalyzer[] */
     public function getOutputTrackList(): array
     {
-        $trackList = [];
-        foreach (array_keys($this->getProperties()) as $propertyName) {
-            $underscoreName = camelcase_to_underscore($propertyName);
-            $trackList[$underscoreName] = new ElementAnalyzer($propertyName, ElementType::PROPERTY);
-        }
-        foreach (array_keys($this->getGetters()) as $getterName) {
-            $underscoreName = camelcase_to_underscore($getterName);
-            $trackList[$underscoreName] = new ElementAnalyzer($getterName, ElementType::METHOD);
-        }
-
-        return $trackList;
+        return $this->outputTrackList;
     }
 
     /** @return ElementAnalyzer[] */
     public function getInputTrackList(): array
     {
-        $trackList = [];
-        foreach (array_keys($this->getProperties()) as $propertyName) {
-            $underscoreName = camelcase_to_underscore($propertyName);
-            $trackList[$underscoreName] = new ElementAnalyzer($propertyName, ElementType::PROPERTY);
-        }
-        foreach (array_keys($this->getSetters()) as $setterName) {
-            $underscoreName = camelcase_to_underscore($setterName);
-            $trackList[$underscoreName] = new ElementAnalyzer($setterName, ElementType::METHOD);
-        }
-
-        return $trackList;
+        return $this->inputTrackList;
     }
 }

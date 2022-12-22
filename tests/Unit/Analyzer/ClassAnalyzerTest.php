@@ -30,11 +30,9 @@ class ClassAnalyzerTest extends TestCase
         $this->assertEqualsCanonicalizing([
             'getByConstructor',
             'getBySetter',
-            'isStandard',
+            'isPropertyTrue',
             'getParentProperty',
-            'isParentProperty',
             'getTraitProperty',
-            'isTraitProperty',
             '__get',
         ], array_keys($getters));
     }
@@ -90,14 +88,12 @@ class ClassAnalyzerTest extends TestCase
             'parent' => new ElementAnalyzer('parent', ElementType::PROPERTY),
             'public' => new ElementAnalyzer('public', ElementType::PROPERTY),
             'trait' => new ElementAnalyzer('trait', ElementType::PROPERTY),
-            'get_parent_property' => new ElementAnalyzer('getParentProperty', ElementType::METHOD),
-            'is_parent_property' => new ElementAnalyzer('isParentProperty', ElementType::METHOD),
-            'is_standard' => new ElementAnalyzer('isStandard', ElementType::METHOD),
+            'parent_property' => new ElementAnalyzer('getParentProperty', ElementType::METHOD),
+            'property_true' => new ElementAnalyzer('isPropertyTrue', ElementType::METHOD),
             '__get' => new ElementAnalyzer('__get', ElementType::METHOD),
-            'get_trait_property' => new ElementAnalyzer('getTraitProperty', ElementType::METHOD),
-            'is_trait_property' => new ElementAnalyzer('isTraitProperty', ElementType::METHOD),
-            'get_by_constructor' => new ElementAnalyzer('getByConstructor', ElementType::METHOD),
-            'get_by_setter' => new ElementAnalyzer('getBySetter', ElementType::METHOD),
+            'trait_property' => new ElementAnalyzer('getTraitProperty', ElementType::METHOD),
+            'by_constructor' => new ElementAnalyzer('getByConstructor', ElementType::METHOD),
+            'by_setter' => new ElementAnalyzer('getBySetter', ElementType::METHOD),
         ], $gettablePathMap);
     }
 
@@ -112,10 +108,10 @@ class ClassAnalyzerTest extends TestCase
             'parent' => new ElementAnalyzer('parent', ElementType::PROPERTY),
             'public' => new ElementAnalyzer('public', ElementType::PROPERTY),
             'trait' => new ElementAnalyzer('trait', ElementType::PROPERTY),
-            'set_parent_property' => new ElementAnalyzer('setParentProperty', ElementType::METHOD),
-            'set_by_setter' => new ElementAnalyzer('setBySetter', ElementType::METHOD),
+            'parent_property' => new ElementAnalyzer('setParentProperty', ElementType::METHOD),
+            'by_setter' => new ElementAnalyzer('setBySetter', ElementType::METHOD),
             '__set' => new ElementAnalyzer('__set', ElementType::METHOD),
-            'set_trait_property' => new ElementAnalyzer('setTraitProperty', ElementType::METHOD),
+            'trait_property' => new ElementAnalyzer('setTraitProperty', ElementType::METHOD),
         ], $gettablePathMap);
     }
 }

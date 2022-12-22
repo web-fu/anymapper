@@ -12,10 +12,6 @@ trait FakeTrait
     {
     }
 
-    public function isTraitProperty(): void
-    {
-    }
-
     public function setTraitProperty(): void
     {
     }
