@@ -1,8 +1,15 @@
 {
-  "name": "web-fu/mapper",
+  "name": "web-fu/anymapper",
   "type": "library",
-  "description": "Map anything into anything",
+  "description": "Library that allows to map objects and arrays into objects and arrays with strong type support and pattern detection.",
   "license": "MIT",
+  "authors": [
+    {
+      "name": "Gabriele Manganello",
+      "email": "info@web-fu.it",
+      "homepage": "https://web-fu.it"
+    }
+  ],
   "require": {
     "php": "8.0.* || 8.1.* || 8.2.*"
   },
