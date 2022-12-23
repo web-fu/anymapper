@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebFu\Mapper;
+namespace WebFu\AnyMapper;
 
 use WebFu\Proxy\Proxy;
 use stdClass;

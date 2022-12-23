@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace WebFu\Tests\Unit\Mapper;
 
 use PHPUnit\Framework\TestCase;
-use WebFu\Mapper\AnyMapper;
+use WebFu\AnyMapper\AnyMapper;
 use WebFu\Tests\Fake\FakeEntity;
 
 class AnyMapperTest extends TestCase
