@@ -27,7 +27,7 @@ class Element
     /**
      * @return string[]
      */
-    public function getDataType(): array
+    public function getDataTypes(): array
     {
         return $this->dataTypes;
     }

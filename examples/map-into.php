@@ -38,15 +38,23 @@ final class MyClass
 }
 
 $source = [
-    'foo' => 'I am foo and I was setted in a setter',
+    'foo' => 'I am foo',
     'bar' => 'I am bar',
     'startingDate' => '2022-12-01 00:00:00',
 ];
 
 $destination = new MyClass();
 
-(new \WebFu\AnyMapper\AnyMapper())->map($source)->into($destination);
+(new \WebFu\AnyMapper\AnyMapper())
+    ->map($source)
+    ->allowDataCasting([
+        'string' => DateTime::class,
+    ])
+    ->into($destination);
 
 echo $destination->getFoo(); // I am foo and I was set in a setter
+echo PHP_EOL;
 echo $destination->bar; // I am bar;
+echo PHP_EOL;
 echo $destination->getStartingDate()->format('Y-m-d'); // 2022-12-01
+echo PHP_EOL;

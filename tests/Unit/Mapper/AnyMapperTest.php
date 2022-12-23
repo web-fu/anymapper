@@ -6,7 +6,6 @@ namespace WebFu\Tests\Unit\Mapper;
 
 use PHPUnit\Framework\TestCase;
 use WebFu\AnyMapper\AnyMapper;
-use WebFu\AnyMapper\DataCasting;
 use WebFu\Tests\Fake\FakeEntity;
 use DateTime;
 
@@ -58,7 +57,6 @@ class AnyMapperTest extends TestCase
 
             /**
              * @param DateTime $private
-             * @return
              */
             public function setPrivate(DateTime $private): void
             {
@@ -74,7 +72,7 @@ class AnyMapperTest extends TestCase
         (new \WebFu\AnyMapper\AnyMapper())
             ->map($source)
             ->allowDataCasting([
-                DataCasting::STRING_TO_DATETIME
+                'string' => DateTime::class,
             ])
             ->into($class);
 

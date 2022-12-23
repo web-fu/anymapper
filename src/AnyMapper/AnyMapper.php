@@ -11,8 +11,8 @@ class AnyMapper
 {
     private Proxy $sourceProxy;
     private Proxy $destinationProxy;
-    /** @var DataCasting[] */
-    private array $dataCastingOptions = [];
+    /** @var string[] */
+    private array $allowedDataCasting = [];
 
     /**
      * @param mixed[]|object $source
@@ -52,11 +52,11 @@ class AnyMapper
     }
 
     /**
-     * @param DataCasting[] $dataCastingOptions
+     * @param string[] $allowedDataCasting
      */
-    public function allowDataCasting(array $dataCastingOptions): self
+    public function allowDataCasting(array $allowedDataCasting): self
     {
-        $this->dataCastingOptions = $dataCastingOptions;
+        $this->allowedDataCasting = $allowedDataCasting;
 
         return $this;
     }
@@ -66,11 +66,34 @@ class AnyMapper
         $sourceTracks = $this->sourceProxy->getAnalyzer()->getOutputTrackList();
         $destinationTracks = $this->destinationProxy->getAnalyzer()->getInputTrackList();
 
-        $mappedTracks = array_intersect(array_keys($sourceTracks), array_keys($destinationTracks));
-
-        foreach ($mappedTracks as $track) {
+        foreach ($destinationTracks as $track => $destinationTrack) {
+            if (! array_key_exists($track, $sourceTracks)) {
+                continue;
+            }
             $value = $this->sourceProxy->get($track);
+            $sourceType = gettype($value);
+            $allowedDestinationDataTypes = $destinationTrack->getDataTypes();
+
+            if (!in_array($sourceType, $allowedDestinationDataTypes)) {
+                $value = $this->castOrFail($sourceType, $allowedDestinationDataTypes, $value);
+            }
+
             $this->destinationProxy->set($track, $value);
         }
+    }
+
+    private function castOrFail(string $sourceType, array $allowedDestinationDataTypes, mixed $value): mixed
+    {
+        foreach ($this->allowedDataCasting as $source => $destination) {
+            if ($sourceType !== $source) {
+                continue;
+            }
+            if (! in_array($destination, $allowedDestinationDataTypes)) {
+                continue;
+            }
+            return (new Caster($source))->cast($value)->as($destination);
+        }
+
+        throw new MapperException('Cannot convert type ' . $sourceType . ' into any of the following types: '. implode(",", $allowedDestinationDataTypes));
     }
 }
