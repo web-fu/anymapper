@@ -21,26 +21,26 @@ class ArrayAnalyzer implements AnalyzerInterface
         $this->data = $data;
     }
 
-    /** @return ElementAnalyzer[] */
+    /** @return Element[] */
     public function getOutputTrackList(): array
     {
         return $this->getTrackList();
     }
 
-    /** @return ElementAnalyzer[] */
+    /** @return Element[] */
     public function getInputTrackList(): array
     {
         return $this->getTrackList();
     }
 
-    /** @return ElementAnalyzer[] */
+    /** @return Element[] */
     private function getTrackList(): array
     {
         $trackList = [];
         foreach (array_keys($this->data) as $key) {
             $underscoreName = camelcase_to_underscore((string) $key);
-            $keyType = is_int($key) ? ElementType::NUMERIC_INDEX : ElementType::STRING_INDEX;
-            $trackList[$underscoreName] = new ElementAnalyzer($key, $keyType);
+            $keyType = is_int($key) ? ElementSource::NUMERIC_INDEX : ElementSource::STRING_INDEX;
+            $trackList[$underscoreName] = new Element($key, $keyType);
         }
 
         return $trackList;

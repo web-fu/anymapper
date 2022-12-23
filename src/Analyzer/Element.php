@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace WebFu\Analyzer;
 
-class ElementAnalyzer
+class Element
 {
     public function __construct(
-        private readonly string|int $name,
-        private readonly ElementType $type,
+        private readonly string|int    $name,
+        private readonly ElementSource $type,
     ) {
     }
 
@@ -17,7 +17,7 @@ class ElementAnalyzer
         return $this->name;
     }
 
-    public function getType(): ElementType
+    public function getType(): ElementSource
     {
         return $this->type;
     }

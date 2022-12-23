@@ -11,6 +11,8 @@ class AnyMapper
 {
     private Proxy $sourceProxy;
     private Proxy $destinationProxy;
+    /** @var DataCasting[] */
+    private array $dataCastingOptions = [];
 
     /**
      * @param mixed[]|object $source
@@ -47,6 +49,16 @@ class AnyMapper
         $this->doMapping();
 
         return $destination;
+    }
+
+    /**
+     * @param DataCasting[] $dataCastingOptions
+     */
+    public function allowDataCasting(array $dataCastingOptions): self
+    {
+        $this->dataCastingOptions = $dataCastingOptions;
+
+        return $this;
     }
 
     private function doMapping(): void

@@ -6,8 +6,8 @@ namespace WebFu\Tests\Unit\Analyzer;
 
 use PHPUnit\Framework\TestCase;
 use WebFu\Analyzer\ArrayAnalyzer;
-use WebFu\Analyzer\ElementAnalyzer;
-use WebFu\Analyzer\ElementType;
+use WebFu\Analyzer\Element;
+use WebFu\Analyzer\ElementSource;
 
 class ArrayAnalyzerTest extends TestCase
 {
@@ -45,7 +45,7 @@ class ArrayAnalyzerTest extends TestCase
                 'fooIndex' => 'foo',
             ],
             'expected' => [
-                'foo_index' => new ElementAnalyzer('fooIndex', ElementType::STRING_INDEX),
+                'foo_index' => new Element('fooIndex', ElementSource::STRING_INDEX),
             ],
         ];
         yield 'numeric index' => [
@@ -53,7 +53,7 @@ class ArrayAnalyzerTest extends TestCase
                 'foo',
             ],
             'expected' => [
-                '0' => new ElementAnalyzer(0, ElementType::NUMERIC_INDEX),
+                '0' => new Element(0, ElementSource::NUMERIC_INDEX),
             ],
         ];
         yield 'mixed indexes' => [
@@ -62,8 +62,8 @@ class ArrayAnalyzerTest extends TestCase
                 'fooIndex' => 'foo',
             ],
             'expected' => [
-                '0' => new ElementAnalyzer(0, ElementType::NUMERIC_INDEX),
-                'foo_index' => new ElementAnalyzer('fooIndex', ElementType::STRING_INDEX),
+                '0' => new Element(0, ElementSource::NUMERIC_INDEX),
+                'foo_index' => new Element('fooIndex', ElementSource::STRING_INDEX),
             ],
         ];
     }

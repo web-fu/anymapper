@@ -23,9 +23,9 @@ class ClassAnalyzer implements AnalyzerInterface
     private array $getters = [];
     /** @var ReflectionMethod[] */
     private array $setters = [];
-    /** @var ElementAnalyzer[]  */
+    /** @var Element[]  */
     private array $inputTrackList = [];
-    /** @var ElementAnalyzer[]  */
+    /** @var Element[]  */
     private array $outputTrackList = [];
 
     public function __construct(object $class)
@@ -49,10 +49,10 @@ class ClassAnalyzer implements AnalyzerInterface
             $underscoreName = camelcase_to_underscore($property->getName());
 
             if (!$property->isReadOnly()) {
-                $this->inputTrackList[$underscoreName]  = new ElementAnalyzer($property->getName(), ElementType::PROPERTY);
+                $this->inputTrackList[$underscoreName]  = new Element($property->getName(), ElementSource::PROPERTY);
             }
 
-            $this->outputTrackList[$underscoreName]  = new ElementAnalyzer($property->getName(), ElementType::PROPERTY);
+            $this->outputTrackList[$underscoreName]  = new Element($property->getName(), ElementSource::PROPERTY);
         }
 
         if ($reflection->getConstructor()?->isPublic()) {
@@ -67,7 +67,7 @@ class ClassAnalyzer implements AnalyzerInterface
 
                 $underscoreName = camelcase_to_underscore($method->getName());
                 $underscoreName = preg_replace('#^get_|is_#', '', $underscoreName);
-                $this->outputTrackList[$underscoreName] = new ElementAnalyzer($method->getName(), ElementType::METHOD);
+                $this->outputTrackList[$underscoreName] = new Element($method->getName(), ElementSource::METHOD);
             }
             if ('__set' === $method->getName()
                 or preg_match('#^set[A-Z]+#', $method->getName())
@@ -75,7 +75,7 @@ class ClassAnalyzer implements AnalyzerInterface
                 $this->setters[$method->getName()] = $method;
                 $underscoreName = camelcase_to_underscore($method->getName());
                 $underscoreName = preg_replace('#^set_#', '', $underscoreName);
-                $this->inputTrackList[$underscoreName] = new ElementAnalyzer($method->getName(), ElementType::METHOD);
+                $this->inputTrackList[$underscoreName] = new Element($method->getName(), ElementSource::METHOD);
             }
             /** @var ReflectionNamedType|ReflectionUnionType|null $returnType */
             $returnType = $method->getReturnType();
@@ -131,13 +131,13 @@ class ClassAnalyzer implements AnalyzerInterface
         return $this->setters;
     }
 
-    /** @return ElementAnalyzer[] */
+    /** @return Element[] */
     public function getOutputTrackList(): array
     {
         return $this->outputTrackList;
     }
 
-    /** @return ElementAnalyzer[] */
+    /** @return Element[] */
     public function getInputTrackList(): array
     {
         return $this->inputTrackList;

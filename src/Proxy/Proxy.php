@@ -6,7 +6,7 @@ namespace WebFu\Proxy;
 
 use WebFu\Analyzer\AnalyzerFactory;
 use WebFu\Analyzer\AnalyzerInterface;
-use WebFu\Analyzer\ElementType;
+use WebFu\Analyzer\ElementSource;
 
 class Proxy
 {
@@ -40,9 +40,9 @@ class Proxy
         $index = $trackList[$track];
 
         $value = match ($index->getType()) {
-            ElementType::PROPERTY => $this->element->{$index->getName()},
-            ElementType::METHOD => call_user_func([$this->element, $index->getName()]),
-            ElementType::NUMERIC_INDEX, ElementType::STRING_INDEX => $this->element[$index->getName()],
+            ElementSource::PROPERTY => $this->element->{$index->getName()},
+            ElementSource::METHOD => call_user_func([$this->element, $index->getName()]),
+            ElementSource::NUMERIC_INDEX, ElementSource::STRING_INDEX => $this->element[$index->getName()],
         };
 
         if (!count($pathTracks)) {
@@ -75,9 +75,9 @@ class Proxy
         $index = $trackList[$track];
 
         match ($index->getType()) {
-            ElementType::PROPERTY => $endpoint->{$index->getName()} = $value,
-            ElementType::METHOD => call_user_func([$endpoint, $index->getName()], $value),
-            ElementType::NUMERIC_INDEX, ElementType::STRING_INDEX => $endpoint[$index->getName()] = $value,
+            ElementSource::PROPERTY => $endpoint->{$index->getName()} = $value,
+            ElementSource::METHOD => call_user_func([$endpoint, $index->getName()], $value),
+            ElementSource::NUMERIC_INDEX, ElementSource::STRING_INDEX => $endpoint[$index->getName()] = $value,
         };
     }
 }

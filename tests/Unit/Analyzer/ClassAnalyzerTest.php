@@ -6,8 +6,8 @@ namespace WebFu\Tests\Unit\Analyzer;
 
 use PHPUnit\Framework\TestCase;
 use WebFu\Analyzer\ClassAnalyzer;
-use WebFu\Analyzer\ElementAnalyzer;
-use WebFu\Analyzer\ElementType;
+use WebFu\Analyzer\Element;
+use WebFu\Analyzer\ElementSource;
 use WebFu\Tests\Fake\FakeEntity;
 
 class ClassAnalyzerTest extends TestCase
@@ -85,15 +85,15 @@ class ClassAnalyzerTest extends TestCase
         $gettablePathMap = $classAnalyzer->getOutputTrackList();
 
         $this->assertEquals([
-            'parent' => new ElementAnalyzer('parent', ElementType::PROPERTY),
-            'public' => new ElementAnalyzer('public', ElementType::PROPERTY),
-            'trait' => new ElementAnalyzer('trait', ElementType::PROPERTY),
-            'parent_property' => new ElementAnalyzer('getParentProperty', ElementType::METHOD),
-            'property_true' => new ElementAnalyzer('isPropertyTrue', ElementType::METHOD),
-            '__get' => new ElementAnalyzer('__get', ElementType::METHOD),
-            'trait_property' => new ElementAnalyzer('getTraitProperty', ElementType::METHOD),
-            'by_constructor' => new ElementAnalyzer('getByConstructor', ElementType::METHOD),
-            'by_setter' => new ElementAnalyzer('getBySetter', ElementType::METHOD),
+            'parent' => new Element('parent', ElementSource::PROPERTY),
+            'public' => new Element('public', ElementSource::PROPERTY),
+            'trait' => new Element('trait', ElementSource::PROPERTY),
+            'parent_property' => new Element('getParentProperty', ElementSource::METHOD),
+            'property_true' => new Element('isPropertyTrue', ElementSource::METHOD),
+            '__get' => new Element('__get', ElementSource::METHOD),
+            'trait_property' => new Element('getTraitProperty', ElementSource::METHOD),
+            'by_constructor' => new Element('getByConstructor', ElementSource::METHOD),
+            'by_setter' => new Element('getBySetter', ElementSource::METHOD),
         ], $gettablePathMap);
     }
 
@@ -105,13 +105,13 @@ class ClassAnalyzerTest extends TestCase
         $gettablePathMap = $classAnalyzer->getInputTrackList();
 
         $this->assertEquals([
-            'parent' => new ElementAnalyzer('parent', ElementType::PROPERTY),
-            'public' => new ElementAnalyzer('public', ElementType::PROPERTY),
-            'trait' => new ElementAnalyzer('trait', ElementType::PROPERTY),
-            'parent_property' => new ElementAnalyzer('setParentProperty', ElementType::METHOD),
-            'by_setter' => new ElementAnalyzer('setBySetter', ElementType::METHOD),
-            '__set' => new ElementAnalyzer('__set', ElementType::METHOD),
-            'trait_property' => new ElementAnalyzer('setTraitProperty', ElementType::METHOD),
+            'parent' => new Element('parent', ElementSource::PROPERTY),
+            'public' => new Element('public', ElementSource::PROPERTY),
+            'trait' => new Element('trait', ElementSource::PROPERTY),
+            'parent_property' => new Element('setParentProperty', ElementSource::METHOD),
+            'by_setter' => new Element('setBySetter', ElementSource::METHOD),
+            '__set' => new Element('__set', ElementSource::METHOD),
+            'trait_property' => new Element('setTraitProperty', ElementSource::METHOD),
         ], $gettablePathMap);
     }
 }

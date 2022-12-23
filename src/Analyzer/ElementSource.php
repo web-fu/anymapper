@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace WebFu\Analyzer;
 
-enum ElementType
+enum ElementSource
 {
     case PROPERTY;
     case METHOD;
