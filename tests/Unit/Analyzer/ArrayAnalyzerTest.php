@@ -11,7 +11,11 @@ use WebFu\Analyzer\ElementType;
 
 class ArrayAnalyzerTest extends TestCase
 {
-    /** @dataProvider arrayDataProvider */
+    /**
+     * @dataProvider arrayDataProvider
+     * @param mixed[] $array
+     * @param mixed[] $expected
+     */
     public function testGetOutputTrackList(array $array, array $expected): void
     {
         $arrayAnalyzer = new ArrayAnalyzer($array);
@@ -19,7 +23,11 @@ class ArrayAnalyzerTest extends TestCase
         $this->assertEquals($expected, $arrayAnalyzer->getOutputTrackList());
     }
 
-    /** @dataProvider arrayDataProvider */
+    /**
+     * @dataProvider arrayDataProvider
+     * @param mixed[] $array
+     * @param mixed[] $expected
+     */
     public function testGetInputTrackList(array $array, array $expected): void
     {
         $arrayAnalyzer = new ArrayAnalyzer($array);
@@ -27,6 +35,9 @@ class ArrayAnalyzerTest extends TestCase
         $this->assertEquals($expected, $arrayAnalyzer->getInputTrackList());
     }
 
+    /**
+     * @return iterable<mixed>
+     */
     public function arrayDataProvider(): iterable
     {
         yield 'string index' => [

@@ -13,6 +13,7 @@ class ProxyTest extends TestCase
 {
     /**
      * @dataProvider getDataProvider
+     * @param mixed[]|object $element
      */
     public function testGet(object|array $element, string $path, mixed $expected): void
     {
@@ -21,6 +22,9 @@ class ProxyTest extends TestCase
         $this->assertEquals($expected, $proxy->get($path));
     }
 
+    /**
+     * @return iterable<mixed>
+     */
     public function getDataProvider(): iterable
     {
         yield 'class.scalar' => [
@@ -32,6 +36,7 @@ class ProxyTest extends TestCase
         ];
         yield 'class.array' => [
             'element' => new class() {
+                /** @var int[] $list */
                 public array $list = [0, 1, 2];
             },
             'path' => 'list',
@@ -52,6 +57,7 @@ class ProxyTest extends TestCase
         ];
         yield 'class.complex' => [
             'element' => new class() {
+               /** @var object[] $objectList */
                 public array $objectList;
 
                 public function __construct()
@@ -103,6 +109,9 @@ class ProxyTest extends TestCase
         $this->assertEquals($expected, $proxy->get($path));
     }
 
+    /**
+     * @return iterable<mixed>
+     */
     public function setDataProvider(): iterable
     {
         yield 'scalar' => [
@@ -115,6 +124,7 @@ class ProxyTest extends TestCase
         ];
         yield 'array' => [
             'element' => new class() {
+                /** @var int[] */
                 public array $list;
             },
             'path' => 'list',
@@ -131,6 +141,7 @@ class ProxyTest extends TestCase
         ];
         yield 'complex' => [
             'element' => new class() {
+                /** @var object[] $objectList */
                 public array $objectList;
 
                 public function __construct()

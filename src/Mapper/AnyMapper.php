@@ -22,18 +22,25 @@ class AnyMapper
         return $this;
     }
 
+    /**
+     * @param mixed[]|object $destination
+     */
     public function into(array|object $destination): void
     {
         $this->destinationProxy = new Proxy($destination);
         $this->doMapping();
     }
 
-    public function as(string $name): array|object
+    /**
+     * @param class-string|string $className
+     * @return mixed[]|object
+     */
+    public function as(string $className): array|object
     {
-        $destination = match ($name) {
+        $destination = match ($className) {
             'array' => [],
             'stdClass', 'object' => new stdClass(),
-            default => new $name()
+            default => new $className()
         };
 
         $this->destinationProxy = new Proxy($destination);
