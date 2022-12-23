@@ -47,12 +47,13 @@ class ClassAnalyzer implements AnalyzerInterface
         foreach ($reflection->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
             $this->properties[$property->getName()] = $property;
             $underscoreName = camelcase_to_underscore($property->getName());
+            $types = reflection_type_names($property->getType());
 
             if (!$property->isReadOnly()) {
-                $this->inputTrackList[$underscoreName]  = new Element($property->getName(), ElementSource::PROPERTY);
+                $this->inputTrackList[$underscoreName]  = new Element($property->getName(), ElementSource::PROPERTY, $types);
             }
 
-            $this->outputTrackList[$underscoreName]  = new Element($property->getName(), ElementSource::PROPERTY);
+            $this->outputTrackList[$underscoreName]  = new Element($property->getName(), ElementSource::PROPERTY, $types);
         }
 
         if ($reflection->getConstructor()?->isPublic()) {
@@ -67,7 +68,8 @@ class ClassAnalyzer implements AnalyzerInterface
 
                 $underscoreName = camelcase_to_underscore($method->getName());
                 $underscoreName = preg_replace('#^get_|is_#', '', $underscoreName);
-                $this->outputTrackList[$underscoreName] = new Element($method->getName(), ElementSource::METHOD);
+                $types = reflection_type_names($method->getReturnType());
+                $this->outputTrackList[$underscoreName] = new Element($method->getName(), ElementSource::METHOD, $types);
             }
             if ('__set' === $method->getName()
                 or preg_match('#^set[A-Z]+#', $method->getName())
@@ -75,7 +77,13 @@ class ClassAnalyzer implements AnalyzerInterface
                 $this->setters[$method->getName()] = $method;
                 $underscoreName = camelcase_to_underscore($method->getName());
                 $underscoreName = preg_replace('#^set_#', '', $underscoreName);
-                $this->inputTrackList[$underscoreName] = new Element($method->getName(), ElementSource::METHOD);
+                $parameters = $method->getParameters();
+                if (!count($parameters)) {
+                    continue;
+                }
+                $lastParameter = array_pop($parameters);
+                $types = reflection_type_names($lastParameter->getType());
+                $this->inputTrackList[$underscoreName] = new Element($method->getName(), ElementSource::METHOD, $types);
             }
             /** @var ReflectionNamedType|ReflectionUnionType|null $returnType */
             $returnType = $method->getReturnType();

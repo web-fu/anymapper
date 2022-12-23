@@ -26,6 +26,7 @@ class FakeEntity extends FakeParentEntity
      */
     private string $bySetter;
     private string $byConstructor;
+    private array $data;
 
     /*
      * Constructor function MUST be called as first function ONLY if not otherwise specified
@@ -61,12 +62,14 @@ class FakeEntity extends FakeParentEntity
     /*
      * Magic setter and getter CAN be used for mapping even though their use is no longer recommended
      */
-    public function __get(string $key): void
+    public function __get(string $key): mixed
     {
+        return $this->data[$key] ?? null;
     }
 
     public function __set(string $key, mixed $value): void
     {
+        $this->data[$key] = $value;
     }
 
     /*

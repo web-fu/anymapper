@@ -7,12 +7,15 @@ namespace WebFu\Tests\Fake;
 trait FakeTrait
 {
     public mixed $trait;
+    private mixed $traitProperty;
 
-    public function getTraitProperty(): void
+    public function getTraitProperty(): mixed
     {
+        return $this->traitProperty;
     }
 
-    public function setTraitProperty(): void
+    public function setTraitProperty(mixed $traitProperty): void
     {
+        $this->traitProperty = $traitProperty;
     }
 }

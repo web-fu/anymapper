@@ -37,10 +37,10 @@ class ArrayAnalyzer implements AnalyzerInterface
     private function getTrackList(): array
     {
         $trackList = [];
-        foreach (array_keys($this->data) as $key) {
+        foreach ($this->data as $key => $value) {
             $underscoreName = camelcase_to_underscore((string) $key);
-            $keyType = is_int($key) ? ElementSource::NUMERIC_INDEX : ElementSource::STRING_INDEX;
-            $trackList[$underscoreName] = new Element($key, $keyType);
+            $source = is_int($key) ? ElementSource::NUMERIC_INDEX : ElementSource::STRING_INDEX;
+            $trackList[$underscoreName] = new Element($key, $source, [gettype($value)]);
         }
 
         return $trackList;

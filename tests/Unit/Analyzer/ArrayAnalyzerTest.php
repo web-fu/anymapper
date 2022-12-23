@@ -45,7 +45,7 @@ class ArrayAnalyzerTest extends TestCase
                 'fooIndex' => 'foo',
             ],
             'expected' => [
-                'foo_index' => new Element('fooIndex', ElementSource::STRING_INDEX),
+                'foo_index' => new Element('fooIndex', ElementSource::STRING_INDEX, ['string']),
             ],
         ];
         yield 'numeric index' => [
@@ -53,7 +53,7 @@ class ArrayAnalyzerTest extends TestCase
                 'foo',
             ],
             'expected' => [
-                '0' => new Element(0, ElementSource::NUMERIC_INDEX),
+                '0' => new Element(0, ElementSource::NUMERIC_INDEX, ['string']),
             ],
         ];
         yield 'mixed indexes' => [
@@ -62,8 +62,8 @@ class ArrayAnalyzerTest extends TestCase
                 'fooIndex' => 'foo',
             ],
             'expected' => [
-                '0' => new Element(0, ElementSource::NUMERIC_INDEX),
-                'foo_index' => new Element('fooIndex', ElementSource::STRING_INDEX),
+                '0' => new Element(0, ElementSource::NUMERIC_INDEX, ['string']),
+                'foo_index' => new Element('fooIndex', ElementSource::STRING_INDEX, ['string']),
             ],
         ];
     }

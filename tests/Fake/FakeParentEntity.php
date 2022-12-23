@@ -7,12 +7,15 @@ namespace WebFu\Tests\Fake;
 class FakeParentEntity
 {
     public mixed $parent;
+    private mixed $parentProperty;
 
-    public function getParentProperty(): void
+    public function getParentProperty(): mixed
     {
+        return $this->parentProperty;
     }
 
-    public function setParentProperty(): void
+    public function setParentProperty(mixed $parentProperty): void
     {
+        $this->parentProperty = $parentProperty;
     }
 }

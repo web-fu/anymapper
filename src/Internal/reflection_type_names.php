@@ -11,7 +11,7 @@ use ReflectionNamedType;
  *
  * @return string[]
  */
-function reflection_type_names(ReflectionNamedType|ReflectionUnionType|null $type): array
+function reflection_type_names(\ReflectionType|ReflectionNamedType|ReflectionUnionType|null $type): array
 {
     if (null === $type) {
         return ['void'];
@@ -19,6 +19,10 @@ function reflection_type_names(ReflectionNamedType|ReflectionUnionType|null $typ
 
     if ($type instanceof ReflectionNamedType) {
         return [$type->getName()];
+    }
+
+    if (!$type instanceof ReflectionUnionType) {
+        throw new \Exception('This exception cannot be thrown');
     }
 
     return array_map(function (ReflectionNamedType $type): string {

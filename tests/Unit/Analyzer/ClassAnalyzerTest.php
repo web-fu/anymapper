@@ -85,15 +85,15 @@ class ClassAnalyzerTest extends TestCase
         $gettablePathMap = $classAnalyzer->getOutputTrackList();
 
         $this->assertEquals([
-            'parent' => new Element('parent', ElementSource::PROPERTY),
-            'public' => new Element('public', ElementSource::PROPERTY),
-            'trait' => new Element('trait', ElementSource::PROPERTY),
-            'parent_property' => new Element('getParentProperty', ElementSource::METHOD),
-            'property_true' => new Element('isPropertyTrue', ElementSource::METHOD),
-            '__get' => new Element('__get', ElementSource::METHOD),
-            'trait_property' => new Element('getTraitProperty', ElementSource::METHOD),
-            'by_constructor' => new Element('getByConstructor', ElementSource::METHOD),
-            'by_setter' => new Element('getBySetter', ElementSource::METHOD),
+            'parent' => new Element('parent', ElementSource::PROPERTY, ['mixed']),
+            'public' => new Element('public', ElementSource::PROPERTY, ['string']),
+            'trait' => new Element('trait', ElementSource::PROPERTY, ['mixed']),
+            'parent_property' => new Element('getParentProperty', ElementSource::METHOD, ['mixed']),
+            'property_true' => new Element('isPropertyTrue', ElementSource::METHOD, ['bool']),
+            '__get' => new Element('__get', ElementSource::METHOD, ['mixed']),
+            'trait_property' => new Element('getTraitProperty', ElementSource::METHOD, ['mixed']),
+            'by_constructor' => new Element('getByConstructor', ElementSource::METHOD, ['string']),
+            'by_setter' => new Element('getBySetter', ElementSource::METHOD, ['string']),
         ], $gettablePathMap);
     }
 
@@ -105,13 +105,13 @@ class ClassAnalyzerTest extends TestCase
         $gettablePathMap = $classAnalyzer->getInputTrackList();
 
         $this->assertEquals([
-            'parent' => new Element('parent', ElementSource::PROPERTY),
-            'public' => new Element('public', ElementSource::PROPERTY),
-            'trait' => new Element('trait', ElementSource::PROPERTY),
-            'parent_property' => new Element('setParentProperty', ElementSource::METHOD),
-            'by_setter' => new Element('setBySetter', ElementSource::METHOD),
-            '__set' => new Element('__set', ElementSource::METHOD),
-            'trait_property' => new Element('setTraitProperty', ElementSource::METHOD),
+            'parent' => new Element('parent', ElementSource::PROPERTY, ['mixed']),
+            'public' => new Element('public', ElementSource::PROPERTY, ['string']),
+            'trait' => new Element('trait', ElementSource::PROPERTY, ['mixed']),
+            'parent_property' => new Element('setParentProperty', ElementSource::METHOD, ['mixed']),
+            'by_setter' => new Element('setBySetter', ElementSource::METHOD, ['string']),
+            '__set' => new Element('__set', ElementSource::METHOD, ['mixed']),
+            'trait_property' => new Element('setTraitProperty', ElementSource::METHOD, ['mixed']),
         ], $gettablePathMap);
     }
 }
