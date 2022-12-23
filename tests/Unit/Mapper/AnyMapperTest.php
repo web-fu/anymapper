@@ -6,7 +6,9 @@ namespace WebFu\Tests\Unit\Mapper;
 
 use PHPUnit\Framework\TestCase;
 use WebFu\AnyMapper\AnyMapper;
+use WebFu\AnyMapper\DataCasting;
 use WebFu\Tests\Fake\FakeEntity;
+use DateTime;
 
 class AnyMapperTest extends TestCase
 {
@@ -38,5 +40,45 @@ class AnyMapperTest extends TestCase
         $this->assertSame('byConstructor is set by constructor', $class->getByConstructor());
         $this->assertSame('public', $class->public);
         $this->assertSame('bySetter is set by setter', $class->getBySetter());
+    }
+
+    public function testAllowDataCasting(): void
+    {
+        $class = new class() {
+            public DateTime $public;
+            private DateTime $private;
+
+            /**
+             * @return DateTime
+             */
+            public function getPrivate(): DateTime
+            {
+                return $this->private;
+            }
+
+            /**
+             * @param DateTime $private
+             * @return
+             */
+            public function setPrivate(DateTime $private): void
+            {
+                $this->private = $private;
+            }
+        };
+
+        $source = [
+            'public' => '2022-12-01',
+            'private' => '2022-12-31',
+        ];
+
+        (new \WebFu\AnyMapper\AnyMapper())
+            ->map($source)
+            ->allowDataCasting([
+                DataCasting::STRING_TO_DATETIME
+            ])
+            ->into($class);
+
+        $this->assertEquals(new DateTime('2022-12-01 00:00:00'), $class->public);
+        $this->assertEquals(new DateTime('2022-12-31 00:00:00'), $class->getPrivate());
     }
 }
