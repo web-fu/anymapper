@@ -8,7 +8,7 @@ class Element
 {
     public function __construct(
         private readonly string|int    $name,
-        private readonly ElementSource $type,
+        private readonly ElementSource $source,
     ) {
     }
 
@@ -17,8 +17,8 @@ class Element
         return $this->name;
     }
 
-    public function getType(): ElementSource
+    public function getSource(): ElementSource
     {
-        return $this->type;
+        return $this->source;
     }
 }

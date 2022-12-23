@@ -39,7 +39,7 @@ class Proxy
 
         $index = $trackList[$track];
 
-        $value = match ($index->getType()) {
+        $value = match ($index->getSource()) {
             ElementSource::PROPERTY => $this->element->{$index->getName()},
             ElementSource::METHOD => call_user_func([$this->element, $index->getName()]),
             ElementSource::NUMERIC_INDEX, ElementSource::STRING_INDEX => $this->element[$index->getName()],
@@ -74,7 +74,7 @@ class Proxy
 
         $index = $trackList[$track];
 
-        match ($index->getType()) {
+        match ($index->getSource()) {
             ElementSource::PROPERTY => $endpoint->{$index->getName()} = $value,
             ElementSource::METHOD => call_user_func([$endpoint, $index->getName()], $value),
             ElementSource::NUMERIC_INDEX, ElementSource::STRING_INDEX => $endpoint[$index->getName()] = $value,
