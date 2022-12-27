@@ -126,6 +126,9 @@ class ClassAnalyzerTest extends TestCase
         $this->assertEquals($expected, $classAnalyzer->getOutputTrack($track));
     }
 
+    /**
+     * @return iterable<mixed>
+     */
     public function outputTrackProvider(): iterable
     {
         yield 'parent' => [
@@ -181,6 +184,9 @@ class ClassAnalyzerTest extends TestCase
         $this->assertEquals($expected, $classAnalyzer->getInputTrack($track));
     }
 
+    /**
+     * @return iterable<mixed>
+     */
     public function inputTrackProvider(): iterable
     {
         yield 'parent' => [
