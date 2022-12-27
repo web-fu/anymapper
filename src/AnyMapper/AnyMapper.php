@@ -82,6 +82,9 @@ class AnyMapper
         }
     }
 
+    /**
+     * @param string[] $allowedDestinationDataTypes
+     */
     private function castOrFail(string $sourceType, array $allowedDestinationDataTypes, mixed $value): mixed
     {
         foreach ($this->allowedDataCasting as $source => $destination) {

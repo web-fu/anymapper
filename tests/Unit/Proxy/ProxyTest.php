@@ -57,7 +57,7 @@ class ProxyTest extends TestCase
         ];
         yield 'class.complex' => [
             'element' => new class() {
-               /** @var object[] $objectList */
+                /** @var object[] $objectList */
                 public array $objectList;
 
                 public function __construct()

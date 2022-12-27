@@ -150,4 +150,14 @@ class ClassAnalyzer implements AnalyzerInterface
     {
         return $this->inputTrackList;
     }
+
+    public function getOutputTrack(string $track): Element|null
+    {
+        return $this->outputTrackList[$track] ?? null;
+    }
+
+    public function getInputTrack(string $track): Element|null
+    {
+        return $this->inputTrackList[$track] ?? null;
+    }
 }

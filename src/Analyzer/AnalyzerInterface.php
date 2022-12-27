@@ -11,4 +11,7 @@ interface AnalyzerInterface
 
     /** @return Element[] */
     public function getInputTrackList(): array;
+
+    public function getOutputTrack(string $track): Element|null;
+    public function getInputTrack(string $track): Element|null;
 }

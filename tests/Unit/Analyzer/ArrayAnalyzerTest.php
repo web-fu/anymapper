@@ -67,4 +67,51 @@ class ArrayAnalyzerTest extends TestCase
             ],
         ];
     }
+
+    /**
+     * @dataProvider trackDataProvider
+     */
+    public function testInputTrack(Element|null $expected, string $track): void
+    {
+        $array = [
+            'foo',
+            'bar' => 'baz',
+        ];
+        $arrayAnalyzer = new ArrayAnalyzer($array);
+
+        $this->assertEquals($expected, $arrayAnalyzer->getInputTrack($track));
+    }
+
+    /**
+     * @dataProvider trackDataProvider
+     */
+    public function testOutputTrack(Element|null $expected, string $track): void
+    {
+        $array = [
+            'foo',
+            'bar' => 'baz',
+        ];
+        $arrayAnalyzer = new ArrayAnalyzer($array);
+
+        $this->assertEquals($expected, $arrayAnalyzer->getOutputTrack($track));
+    }
+
+    /**
+     * @return iterable<mixed>
+     */
+    public function trackDataProvider(): iterable
+    {
+        yield 'numeric' => [
+            'expected' => new Element(0, ElementSource::NUMERIC_INDEX, ['string']),
+            'track' => '0',
+        ];
+        yield 'string' => [
+            'expected' => new Element('bar', ElementSource::STRING_INDEX, ['string']),
+            'track' => 'bar',
+        ];
+        yield 'null' => [
+            'expected' => null,
+            'track' => 'does_not_exist',
+        ];
+    }
 }

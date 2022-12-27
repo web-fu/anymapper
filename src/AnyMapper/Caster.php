@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace WebFu\AnyMapper;
+use DateTime;
 
 class Caster
 {
@@ -32,7 +33,7 @@ class Caster
             'int' => (int) $stringValue,
             'float' => (float) $stringValue,
             'bool' => (bool) $stringValue,
-            'DateTime' => new \DateTime($stringValue),
+            'DateTime' => new DateTime($stringValue),
             'string' => $stringValue,
         };
     }

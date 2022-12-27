@@ -9,40 +9,41 @@ use function WebFu\Internal\camelcase_to_underscore;
 class ArrayAnalyzer implements AnalyzerInterface
 {
     /**
-     * @var mixed[]
+     * @var Element[]
      */
-    private array $data;
+    private array $trackList = [];
 
     /**
      * @param mixed[] $data
      */
     public function __construct(array $data)
     {
-        $this->data = $data;
+        foreach ($data as $key => $value) {
+            $underscoreName = camelcase_to_underscore((string) $key);
+            $source = is_int($key) ? ElementSource::NUMERIC_INDEX : ElementSource::STRING_INDEX;
+            $this->trackList[$underscoreName] = new Element($key, $source, [gettype($value)]);
+        }
     }
 
     /** @return Element[] */
     public function getOutputTrackList(): array
     {
-        return $this->getTrackList();
+        return $this->trackList;
     }
 
     /** @return Element[] */
     public function getInputTrackList(): array
     {
-        return $this->getTrackList();
+        return $this->trackList;
     }
 
-    /** @return Element[] */
-    private function getTrackList(): array
+    public function getOutputTrack(string $track): Element|null
     {
-        $trackList = [];
-        foreach ($this->data as $key => $value) {
-            $underscoreName = camelcase_to_underscore((string) $key);
-            $source = is_int($key) ? ElementSource::NUMERIC_INDEX : ElementSource::STRING_INDEX;
-            $trackList[$underscoreName] = new Element($key, $source, [gettype($value)]);
-        }
+        return $this->trackList[$track] ?? null;
+    }
 
-        return $trackList;
+    public function getInputTrack(string $track): Element|null
+    {
+        return $this->trackList[$track] ?? null;
     }
 }
