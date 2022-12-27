@@ -2,6 +2,9 @@
   "name": "web-fu/anymapper",
   "type": "library",
   "description": "Library that allows to map objects and arrays into objects and arrays with strong type support and pattern detection.",
+  "keywords": [
+    "object", "mapper", "mapping", "hydrator", "array", "conversion"
+  ],
   "license": "MIT",
   "authors": [
     {
