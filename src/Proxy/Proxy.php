@@ -32,16 +32,14 @@ class Proxy
     {
         $pathTracks = explode('.', $path);
         $track = array_shift($pathTracks);
-        $trackList = $this->analyzer->getOutputTrackList();
-        if (!array_key_exists($track, $trackList)) {
+
+        if (!$index = $this->analyzer->getOutputTrack($track)) {
             throw new ProxyException($track.' gettable not found');
         }
 
-        $index = $trackList[$track];
-
         $value = match ($index->getSource()) {
             ElementSource::PROPERTY => $this->element->{$index->getName()},
-            ElementSource::METHOD => call_user_func([$this->element, $index->getName()]),
+            ElementSource::METHOD => $this->element->{$index->getName()}(),
             ElementSource::NUMERIC_INDEX, ElementSource::STRING_INDEX => $this->element[$index->getName()],
         };
 
@@ -64,19 +62,16 @@ class Proxy
             /** @var mixed[]|object $endpoint */
             $endpoint = $this->get(implode('.', $pathTracks));
         }
+
         $endpointAnalyzer = AnalyzerFactory::create($endpoint);
 
-        $trackList = $endpointAnalyzer->getInputTrackList();
-
-        if (!array_key_exists($track, $trackList)) {
+        if (!$index = $endpointAnalyzer->getInputTrack($track)) {
             throw new ProxyException($track.' settable not found');
         }
 
-        $index = $trackList[$track];
-
         match ($index->getSource()) {
             ElementSource::PROPERTY => $endpoint->{$index->getName()} = $value,
-            ElementSource::METHOD => call_user_func([$endpoint, $index->getName()], $value),
+            ElementSource::METHOD => $endpoint->{$index->getName()}($value),
             ElementSource::NUMERIC_INDEX, ElementSource::STRING_INDEX => $endpoint[$index->getName()] = $value,
         };
     }
