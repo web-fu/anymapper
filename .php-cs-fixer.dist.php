@@ -11,5 +11,6 @@ return (new PhpCsFixer\Config())
             'import_functions' => true,
         ],
         'single_quote' => true,
+        'trailing_comma_in_multiline' => true,
     ])
     ->setFinder($finder);
