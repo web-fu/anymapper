@@ -13,13 +13,18 @@ class CasterTest extends TestCase
 
     /**
      * @dataProvider castProvider
+     * @param int|float|bool|string|object|mixed[]|null $value
+     * @param int|float|bool|string|object|mixed[]|null $expected
      */
-    public function testAs(int|float|bool|string|object|array $value, string $type, int|float|bool|string|object|array $expected): void
+    public function testAs(int|float|bool|string|object|array|null $value, string $type, int|float|bool|string|object|array|null $expected): void
     {
         $actual = (new Caster($value))->as($type);
         $this->assertEquals($expected, $actual);
     }
 
+    /**
+     * @return iterable<mixed>
+     */
     public function castProvider(): iterable
     {
         $class = new \stdClass();

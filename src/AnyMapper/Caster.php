@@ -54,12 +54,18 @@ class Caster
 
     private string $destType;
 
+    /**
+     * @param int|float|bool|string|object|mixed[]|null $value
+     */
     public function __construct(
-        private readonly int|float|bool|string|object|array $value
+        private readonly int|float|bool|string|object|array|null $value
     ) {
     }
 
-    public function as(string $destType): int|float|bool|string|object|array
+    /**
+     * @return int|float|bool|string|object|mixed[] $value
+     */
+    public function as(string $destType): int|float|bool|string|object|array|null
     {
         $sourceType = gettype($this->value);
 
@@ -73,32 +79,44 @@ class Caster
 
         $this->destType = $destType;
 
-        return match ($sourceType) {
-            'integer', 'double', 'boolean', 'string', 'NULL' => $this->scalarConversion(),
-            'object', 'array' => $this->complexConversion(),
-            default => throw new CasterException('Data casting from '.$sourceType.' not allowed'),
-        };
+        if (is_null($this->value)) {
+            return null;
+        }
+
+        if (is_scalar($this->value)) {
+            return $this->scalarConversion();
+        }
+
+        if (is_array($this->value) or is_object($this->value)) {
+            return $this->complexConversion();
+        }
+
+        throw new CasterException('Data casting from '.$sourceType.' not allowed');
     }
 
     private function scalarConversion(): int|float|bool|string|DateTime
     {
+        assert(is_scalar($this->value));
         return match ($this->destType) {
             'int', 'integer' => (int) $this->value,
             'double', 'float' => (float) $this->value,
             'bool', 'boolean' => (bool) $this->value,
             'string' => (string) $this->value,
-            'DateTime' => new DateTime($this->value),
+            'DateTime' => new DateTime((string) $this->value),
             default => throw new CasterException('Unknown error'),
         };
     }
 
+    /**
+     * @return object|mixed[]|string
+     */
     private function complexConversion(): object|array|string
     {
+        assert(is_array($this->value) or is_object($this->value));
         return match ($this->destType) {
             'string' => var_export($this->value, true),
             'object' => (object) $this->value,
             'array' => (array) $this->value,
-            'DateTime' => new DateTime($this->value),
             default => throw new CasterException('Unknown error'),
         };
     }
