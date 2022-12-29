@@ -10,5 +10,6 @@ return (new PhpCsFixer\Config())
             'import_constants' => true,
             'import_functions' => true,
         ],
+        'single_quote' => true,
     ])
     ->setFinder($finder);
