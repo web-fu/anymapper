@@ -6,8 +6,8 @@ namespace WebFu\Tests\Unit\Analyzer;
 
 use PHPUnit\Framework\TestCase;
 use WebFu\Analyzer\ClassAnalyzer;
-use WebFu\Analyzer\Element;
-use WebFu\Analyzer\ElementSource;
+use WebFu\Analyzer\Track;
+use WebFu\Analyzer\TrackType;
 use WebFu\Tests\Fake\FakeEntity;
 
 class ClassAnalyzerTest extends TestCase
@@ -85,15 +85,15 @@ class ClassAnalyzerTest extends TestCase
         $gettablePathMap = $classAnalyzer->getOutputTrackList();
 
         $this->assertEquals([
-            'parent' => new Element('parent', ElementSource::PROPERTY, ['mixed']),
-            'public' => new Element('public', ElementSource::PROPERTY, ['string']),
-            'trait' => new Element('trait', ElementSource::PROPERTY, ['mixed']),
-            'parent_property' => new Element('getParentProperty', ElementSource::METHOD, ['mixed']),
-            'property_true' => new Element('isPropertyTrue', ElementSource::METHOD, ['bool']),
-            '__get' => new Element('__get', ElementSource::METHOD, ['mixed']),
-            'trait_property' => new Element('getTraitProperty', ElementSource::METHOD, ['mixed']),
-            'by_constructor' => new Element('getByConstructor', ElementSource::METHOD, ['string']),
-            'by_setter' => new Element('getBySetter', ElementSource::METHOD, ['string']),
+            'parent' => new Track('parent', TrackType::PROPERTY, ['mixed']),
+            'public' => new Track('public', TrackType::PROPERTY, ['string']),
+            'trait' => new Track('trait', TrackType::PROPERTY, ['mixed']),
+            'parent_property' => new Track('getParentProperty', TrackType::METHOD, ['mixed']),
+            'property_true' => new Track('isPropertyTrue', TrackType::METHOD, ['bool']),
+            '__get' => new Track('__get', TrackType::METHOD, ['mixed']),
+            'trait_property' => new Track('getTraitProperty', TrackType::METHOD, ['mixed']),
+            'by_constructor' => new Track('getByConstructor', TrackType::METHOD, ['string']),
+            'by_setter' => new Track('getBySetter', TrackType::METHOD, ['string']),
         ], $gettablePathMap);
     }
 
@@ -105,20 +105,20 @@ class ClassAnalyzerTest extends TestCase
         $gettablePathMap = $classAnalyzer->getInputTrackList();
 
         $this->assertEquals([
-            'parent' => new Element('parent', ElementSource::PROPERTY, ['mixed']),
-            'public' => new Element('public', ElementSource::PROPERTY, ['string']),
-            'trait' => new Element('trait', ElementSource::PROPERTY, ['mixed']),
-            'parent_property' => new Element('setParentProperty', ElementSource::METHOD, ['mixed']),
-            'by_setter' => new Element('setBySetter', ElementSource::METHOD, ['string']),
-            '__set' => new Element('__set', ElementSource::METHOD, ['mixed']),
-            'trait_property' => new Element('setTraitProperty', ElementSource::METHOD, ['mixed']),
+            'parent' => new Track('parent', TrackType::PROPERTY, ['mixed']),
+            'public' => new Track('public', TrackType::PROPERTY, ['string']),
+            'trait' => new Track('trait', TrackType::PROPERTY, ['mixed']),
+            'parent_property' => new Track('setParentProperty', TrackType::METHOD, ['mixed']),
+            'by_setter' => new Track('setBySetter', TrackType::METHOD, ['string']),
+            '__set' => new Track('__set', TrackType::METHOD, ['mixed']),
+            'trait_property' => new Track('setTraitProperty', TrackType::METHOD, ['mixed']),
         ], $gettablePathMap);
     }
 
     /**
      * @dataProvider outputTrackProvider
      */
-    public function testGetOutputTrack(Element|null $expected, string $track): void
+    public function testGetOutputTrack(Track|null $expected, string $track): void
     {
         $class = new FakeEntity();
         $classAnalyzer = new ClassAnalyzer($class);
@@ -132,39 +132,39 @@ class ClassAnalyzerTest extends TestCase
     public function outputTrackProvider(): iterable
     {
         yield 'parent' => [
-            'expected' => new Element('parent', ElementSource::PROPERTY, ['mixed']),
+            'expected' => new Track('parent', TrackType::PROPERTY, ['mixed']),
             'track' => 'parent',
         ];
         yield 'public' => [
-            'expected' => new Element('public', ElementSource::PROPERTY, ['string']),
+            'expected' => new Track('public', TrackType::PROPERTY, ['string']),
             'track' => 'public',
         ];
         yield 'trait' => [
-            'expected' => new Element('trait', ElementSource::PROPERTY, ['mixed']),
+            'expected' => new Track('trait', TrackType::PROPERTY, ['mixed']),
             'track' => 'trait',
         ];
         yield 'parent_property' => [
-            'expected' => new Element('getParentProperty', ElementSource::METHOD, ['mixed']),
+            'expected' => new Track('getParentProperty', TrackType::METHOD, ['mixed']),
             'track' => 'parent_property',
         ];
         yield 'property_true' => [
-            'expected' => new Element('isPropertyTrue', ElementSource::METHOD, ['bool']),
+            'expected' => new Track('isPropertyTrue', TrackType::METHOD, ['bool']),
             'track' => 'property_true',
         ];
         yield '__get' => [
-            'expected' => new Element('__get', ElementSource::METHOD, ['mixed']),
+            'expected' => new Track('__get', TrackType::METHOD, ['mixed']),
             'track' => '__get',
         ];
         yield 'trait_property' => [
-            'expected' => new Element('getTraitProperty', ElementSource::METHOD, ['mixed']),
+            'expected' => new Track('getTraitProperty', TrackType::METHOD, ['mixed']),
             'track' => 'trait_property',
         ];
         yield 'by_constructor' => [
-            'expected' => new Element('getByConstructor', ElementSource::METHOD, ['string']),
+            'expected' => new Track('getByConstructor', TrackType::METHOD, ['string']),
             'track' => 'by_constructor',
         ];
         yield 'by_setter' => [
-            'expected' => new Element('getBySetter', ElementSource::METHOD, ['string']),
+            'expected' => new Track('getBySetter', TrackType::METHOD, ['string']),
             'track' => 'by_setter',
         ];
         yield 'null' => [
@@ -176,7 +176,7 @@ class ClassAnalyzerTest extends TestCase
     /**
      * @dataProvider inputTrackProvider
      */
-    public function testGetInputTrack(Element|null $expected, string $track): void
+    public function testGetInputTrack(Track|null $expected, string $track): void
     {
         $class = new FakeEntity();
         $classAnalyzer = new ClassAnalyzer($class);
@@ -190,31 +190,31 @@ class ClassAnalyzerTest extends TestCase
     public function inputTrackProvider(): iterable
     {
         yield 'parent' => [
-            'element' => new Element('parent', ElementSource::PROPERTY, ['mixed']),
+            'element' => new Track('parent', TrackType::PROPERTY, ['mixed']),
             'path' => 'parent',
         ];
         yield 'public' => [
-            'element' => new Element('public', ElementSource::PROPERTY, ['string']),
+            'element' => new Track('public', TrackType::PROPERTY, ['string']),
             'path' => 'public',
         ];
         yield 'trait' => [
-            'element' => new Element('trait', ElementSource::PROPERTY, ['mixed']),
+            'element' => new Track('trait', TrackType::PROPERTY, ['mixed']),
             'path' => 'trait',
         ];
         yield 'parent_property' => [
-            'element' => new Element('setParentProperty', ElementSource::METHOD, ['mixed']),
+            'element' => new Track('setParentProperty', TrackType::METHOD, ['mixed']),
             'path' => 'parent_property',
         ];
         yield 'by_setter' => [
-            'element' => new Element('setBySetter', ElementSource::METHOD, ['string']),
+            'element' => new Track('setBySetter', TrackType::METHOD, ['string']),
             'path' => 'by_setter',
         ];
         yield '__set' => [
-            'element' => new Element('__set', ElementSource::METHOD, ['mixed']),
+            'element' => new Track('__set', TrackType::METHOD, ['mixed']),
             'path' => '__set',
         ];
         yield 'trait_property' => [
-            'element' => new Element('setTraitProperty', ElementSource::METHOD, ['mixed']),
+            'element' => new Track('setTraitProperty', TrackType::METHOD, ['mixed']),
             'path' => 'trait_property',
         ];
         yield 'null' => [

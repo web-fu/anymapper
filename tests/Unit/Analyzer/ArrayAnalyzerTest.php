@@ -6,8 +6,8 @@ namespace WebFu\Tests\Unit\Analyzer;
 
 use PHPUnit\Framework\TestCase;
 use WebFu\Analyzer\ArrayAnalyzer;
-use WebFu\Analyzer\Element;
-use WebFu\Analyzer\ElementSource;
+use WebFu\Analyzer\Track;
+use WebFu\Analyzer\TrackType;
 
 class ArrayAnalyzerTest extends TestCase
 {
@@ -45,7 +45,7 @@ class ArrayAnalyzerTest extends TestCase
                 'fooIndex' => 'foo',
             ],
             'expected' => [
-                'foo_index' => new Element('fooIndex', ElementSource::STRING_INDEX, ['string']),
+                'foo_index' => new Track('fooIndex', TrackType::STRING_INDEX, ['string']),
             ],
         ];
         yield 'numeric index' => [
@@ -53,7 +53,7 @@ class ArrayAnalyzerTest extends TestCase
                 'foo',
             ],
             'expected' => [
-                '0' => new Element(0, ElementSource::NUMERIC_INDEX, ['string']),
+                '0' => new Track(0, TrackType::NUMERIC_INDEX, ['string']),
             ],
         ];
         yield 'mixed indexes' => [
@@ -62,8 +62,8 @@ class ArrayAnalyzerTest extends TestCase
                 'fooIndex' => 'foo',
             ],
             'expected' => [
-                '0' => new Element(0, ElementSource::NUMERIC_INDEX, ['string']),
-                'foo_index' => new Element('fooIndex', ElementSource::STRING_INDEX, ['string']),
+                '0' => new Track(0, TrackType::NUMERIC_INDEX, ['string']),
+                'foo_index' => new Track('fooIndex', TrackType::STRING_INDEX, ['string']),
             ],
         ];
     }
@@ -71,7 +71,7 @@ class ArrayAnalyzerTest extends TestCase
     /**
      * @dataProvider trackDataProvider
      */
-    public function testInputTrack(Element|null $expected, string $track): void
+    public function testInputTrack(Track|null $expected, string $track): void
     {
         $array = [
             'foo',
@@ -85,7 +85,7 @@ class ArrayAnalyzerTest extends TestCase
     /**
      * @dataProvider trackDataProvider
      */
-    public function testOutputTrack(Element|null $expected, string $track): void
+    public function testOutputTrack(Track|null $expected, string $track): void
     {
         $array = [
             'foo',
@@ -102,11 +102,11 @@ class ArrayAnalyzerTest extends TestCase
     public function trackDataProvider(): iterable
     {
         yield 'numeric' => [
-            'expected' => new Element(0, ElementSource::NUMERIC_INDEX, ['string']),
+            'expected' => new Track(0, TrackType::NUMERIC_INDEX, ['string']),
             'track' => '0',
         ];
         yield 'string' => [
-            'expected' => new Element('bar', ElementSource::STRING_INDEX, ['string']),
+            'expected' => new Track('bar', TrackType::STRING_INDEX, ['string']),
             'track' => 'bar',
         ];
         yield 'null' => [

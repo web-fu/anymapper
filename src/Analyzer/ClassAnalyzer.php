@@ -23,9 +23,9 @@ class ClassAnalyzer implements AnalyzerInterface
     private array $getters = [];
     /** @var ReflectionMethod[] */
     private array $setters = [];
-    /** @var Element[]  */
+    /** @var Track[]  */
     private array $inputTrackList = [];
-    /** @var Element[]  */
+    /** @var Track[]  */
     private array $outputTrackList = [];
 
     public function __construct(object $class)
@@ -50,10 +50,10 @@ class ClassAnalyzer implements AnalyzerInterface
             $types = reflection_type_names($property->getType());
 
             if (!$property->isReadOnly()) {
-                $this->inputTrackList[$underscoreName]  = new Element($property->getName(), ElementSource::PROPERTY, $types);
+                $this->inputTrackList[$underscoreName]  = new Track($property->getName(), TrackType::PROPERTY, $types);
             }
 
-            $this->outputTrackList[$underscoreName]  = new Element($property->getName(), ElementSource::PROPERTY, $types);
+            $this->outputTrackList[$underscoreName]  = new Track($property->getName(), TrackType::PROPERTY, $types);
         }
 
         if ($reflection->getConstructor()?->isPublic()) {
@@ -69,7 +69,7 @@ class ClassAnalyzer implements AnalyzerInterface
                 $underscoreName = camelcase_to_underscore($method->getName());
                 $underscoreName = preg_replace('#^get_|is_#', '', $underscoreName);
                 $types = reflection_type_names($method->getReturnType());
-                $this->outputTrackList[$underscoreName] = new Element($method->getName(), ElementSource::METHOD, $types);
+                $this->outputTrackList[$underscoreName] = new Track($method->getName(), TrackType::METHOD, $types);
             }
             if ('__set' === $method->getName()
                 or preg_match('#^set[A-Z]+#', $method->getName())
@@ -83,7 +83,7 @@ class ClassAnalyzer implements AnalyzerInterface
                 }
                 $lastParameter = array_pop($parameters);
                 $types = reflection_type_names($lastParameter->getType());
-                $this->inputTrackList[$underscoreName] = new Element($method->getName(), ElementSource::METHOD, $types);
+                $this->inputTrackList[$underscoreName] = new Track($method->getName(), TrackType::METHOD, $types);
             }
             /** @var ReflectionNamedType|ReflectionUnionType|null $returnType */
             $returnType = $method->getReturnType();
@@ -139,24 +139,24 @@ class ClassAnalyzer implements AnalyzerInterface
         return $this->setters;
     }
 
-    /** @return Element[] */
+    /** @return Track[] */
     public function getOutputTrackList(): array
     {
         return $this->outputTrackList;
     }
 
-    /** @return Element[] */
+    /** @return Track[] */
     public function getInputTrackList(): array
     {
         return $this->inputTrackList;
     }
 
-    public function getOutputTrack(string $track): Element|null
+    public function getOutputTrack(string $track): Track|null
     {
         return $this->outputTrackList[$track] ?? null;
     }
 
-    public function getInputTrack(string $track): Element|null
+    public function getInputTrack(string $track): Track|null
     {
         return $this->inputTrackList[$track] ?? null;
     }

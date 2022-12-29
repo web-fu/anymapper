@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace WebFu\Analyzer;
 
-class Element
+class Track
 {
     /** @param string[] $dataTypes */
     public function __construct(
-        private readonly string|int    $name,
-        private readonly ElementSource $source,
-        private readonly array $dataTypes,
+        private readonly string|int $name,
+        private readonly TrackType  $source,
+        private readonly array      $dataTypes,
     ) {
     }
 
@@ -19,7 +19,7 @@ class Element
         return $this->name;
     }
 
-    public function getSource(): ElementSource
+    public function getSource(): TrackType
     {
         return $this->source;
     }

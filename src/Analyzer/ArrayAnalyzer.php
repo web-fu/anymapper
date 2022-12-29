@@ -9,7 +9,7 @@ use function WebFu\Internal\camelcase_to_underscore;
 class ArrayAnalyzer implements AnalyzerInterface
 {
     /**
-     * @var Element[]
+     * @var Track[]
      */
     private array $trackList = [];
 
@@ -20,29 +20,29 @@ class ArrayAnalyzer implements AnalyzerInterface
     {
         foreach ($data as $key => $value) {
             $underscoreName = camelcase_to_underscore((string) $key);
-            $source = is_int($key) ? ElementSource::NUMERIC_INDEX : ElementSource::STRING_INDEX;
-            $this->trackList[$underscoreName] = new Element($key, $source, [gettype($value)]);
+            $source = is_int($key) ? TrackType::NUMERIC_INDEX : TrackType::STRING_INDEX;
+            $this->trackList[$underscoreName] = new Track($key, $source, [gettype($value)]);
         }
     }
 
-    /** @return Element[] */
+    /** @return Track[] */
     public function getOutputTrackList(): array
     {
         return $this->trackList;
     }
 
-    /** @return Element[] */
+    /** @return Track[] */
     public function getInputTrackList(): array
     {
         return $this->trackList;
     }
 
-    public function getOutputTrack(string $track): Element|null
+    public function getOutputTrack(string $track): Track|null
     {
         return $this->trackList[$track] ?? null;
     }
 
-    public function getInputTrack(string $track): Element|null
+    public function getInputTrack(string $track): Track|null
     {
         return $this->trackList[$track] ?? null;
     }

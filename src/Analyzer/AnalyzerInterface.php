@@ -6,12 +6,12 @@ namespace WebFu\Analyzer;
 
 interface AnalyzerInterface
 {
-    /** @return Element[] */
+    /** @return Track[] */
     public function getOutputTrackList(): array;
 
-    /** @return Element[] */
+    /** @return Track[] */
     public function getInputTrackList(): array;
 
-    public function getOutputTrack(string $track): Element|null;
-    public function getInputTrack(string $track): Element|null;
+    public function getOutputTrack(string $track): Track|null;
+    public function getInputTrack(string $track): Track|null;
 }

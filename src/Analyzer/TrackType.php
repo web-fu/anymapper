@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace WebFu\Analyzer;
 
-enum ElementSource
+enum TrackType
 {
     case PROPERTY;
     case METHOD;

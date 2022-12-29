@@ -6,7 +6,7 @@ namespace WebFu\Proxy;
 
 use WebFu\Analyzer\AnalyzerFactory;
 use WebFu\Analyzer\AnalyzerInterface;
-use WebFu\Analyzer\ElementSource;
+use WebFu\Analyzer\TrackType;
 
 class Proxy
 {
@@ -38,9 +38,9 @@ class Proxy
         }
 
         $value = match ($index->getSource()) {
-            ElementSource::PROPERTY => $this->element->{$index->getName()},
-            ElementSource::METHOD => $this->element->{$index->getName()}(),
-            ElementSource::NUMERIC_INDEX, ElementSource::STRING_INDEX => $this->element[$index->getName()],
+            TrackType::PROPERTY => $this->element->{$index->getName()},
+            TrackType::METHOD => $this->element->{$index->getName()}(),
+            TrackType::NUMERIC_INDEX, TrackType::STRING_INDEX => $this->element[$index->getName()],
         };
 
         if (!count($pathTracks)) {
@@ -70,9 +70,9 @@ class Proxy
         }
 
         match ($index->getSource()) {
-            ElementSource::PROPERTY => $endpoint->{$index->getName()} = $value,
-            ElementSource::METHOD => $endpoint->{$index->getName()}($value),
-            ElementSource::NUMERIC_INDEX, ElementSource::STRING_INDEX => $endpoint[$index->getName()] = $value,
+            TrackType::PROPERTY => $endpoint->{$index->getName()} = $value,
+            TrackType::METHOD => $endpoint->{$index->getName()}($value),
+            TrackType::NUMERIC_INDEX, TrackType::STRING_INDEX => $endpoint[$index->getName()] = $value,
         };
     }
 }
