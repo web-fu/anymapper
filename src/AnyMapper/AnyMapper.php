@@ -94,9 +94,9 @@ class AnyMapper
             if (! in_array($destination, $allowedDestinationDataTypes)) {
                 continue;
             }
-            return (new Caster($source))->cast($value)->as($destination);
+            return (new Caster($value))->as($destination);
         }
 
-        throw new MapperException('Cannot convert type ' . $sourceType . ' into any of the following types: '. implode(",", $allowedDestinationDataTypes));
+        throw new MapperException('Cannot convert type ' . $sourceType . ' into any of the following types: '. implode(',', $allowedDestinationDataTypes));
     }
 }
