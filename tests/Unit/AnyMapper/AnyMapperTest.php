@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use WebFu\AnyMapper\AnyMapper;
 use WebFu\Tests\Fake\FakeEntity;
 use DateTime;
+use stdClass;
 
 class AnyMapperTest extends TestCase
 {
@@ -124,7 +125,7 @@ class AnyMapperTest extends TestCase
             'array' => [
                 'foo',
                 'bar',
-            ]
+            ],
         ], $serialized);
     }
 
@@ -134,9 +135,10 @@ class AnyMapperTest extends TestCase
             'foo' => 1,
             'bar' => 'bar',
             'array' => [
-                'element' => new DateTime('2022-12-01'),
+                'foo',
+                'bar',
             ],
-        ])->as(\stdClass::class);
+        ])->as(stdClass::class);
 
         assert(property_exists($class, 'foo'));
         assert(property_exists($class, 'bar'));
@@ -144,6 +146,6 @@ class AnyMapperTest extends TestCase
 
         $this->assertSame(1, $class->foo);
         $this->assertSame('bar', $class->bar);
-        $this->assertEquals(new DateTime('2022-12-01'), $class->array['element']);
+        $this->assertEquals(['foo', 'bar'], $class->array);
     }
 }
