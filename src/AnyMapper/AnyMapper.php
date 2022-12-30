@@ -44,13 +44,32 @@ class AnyMapper
         $destination = new $className();
 
         if ($className === 'stdClass') {
-            $this->allowDynamicProperties();
+            return (object) $this->serialize();
         }
 
         $this->destinationProxy = new Proxy($destination);
         $this->doMapping();
 
         return $destination;
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public function serialize(): array
+    {
+        $sourceTracks = $this->sourceProxy->getAnalyzer()->getOutputTrackList();
+
+        $output = [];
+        foreach ($sourceTracks as $trackName => $sourceTrack) {
+            $value = $this->sourceProxy->get((string) $trackName);
+            if (is_array($value) || is_object($value)) {
+                $value = (new self())->map($value)->serialize();
+            }
+            $output[$trackName] = $value;
+        }
+
+        return $output;
     }
 
     public function allowDataCasting(string $from, string $to): self
