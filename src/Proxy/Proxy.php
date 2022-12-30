@@ -28,7 +28,10 @@ class Proxy
         return $this->analyzer;
     }
 
-    public function get(string $path): mixed
+    /**
+     * @return int|float|bool|string|object|mixed[]|null
+     */
+    public function get(string $path): int|float|bool|string|object|array|null
     {
         $pathTracks = explode('.', $path);
         $track = array_shift($pathTracks);
@@ -40,6 +43,7 @@ class Proxy
         $value = match ($index->getSource()) {
             TrackType::PROPERTY => $this->element->{$index->getName()},
             TrackType::METHOD => $this->element->{$index->getName()}(),
+            /** @phpstan-ignore-next-line */
             TrackType::NUMERIC_INDEX, TrackType::STRING_INDEX => $this->element[$index->getName()],
         };
 
@@ -72,6 +76,7 @@ class Proxy
         match ($index->getSource()) {
             TrackType::PROPERTY => $endpoint->{$index->getName()} = $value,
             TrackType::METHOD => $endpoint->{$index->getName()}($value),
+            /** @phpstan-ignore-next-line */
             TrackType::NUMERIC_INDEX, TrackType::STRING_INDEX => $endpoint[$index->getName()] = $value,
         };
     }
