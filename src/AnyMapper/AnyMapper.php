@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WebFu\AnyMapper;
 
+use WebFu\Analyzer\Track;
 use WebFu\Proxy\Proxy;
 use stdClass;
 
@@ -11,8 +12,9 @@ class AnyMapper
 {
     private Proxy $sourceProxy;
     private Proxy $destinationProxy;
-    /** @var string[] */
+    /** @var array<string[]> */
     private array $allowedDataCasting = [];
+    private bool $allowedDynamicProperties = false;
 
     /**
      * @param mixed[]|object $source
@@ -34,16 +36,16 @@ class AnyMapper
     }
 
     /**
-     * @param class-string|string $className
-     * @return mixed[]|object
+     * @param class-string $className
+     * @return object
      */
-    public function as(string $className): array|object
+    public function as(string $className): object
     {
-        $destination = match ($className) {
-            'array' => [],
-            'stdClass', 'object' => new stdClass(),
-            default => new $className()
-        };
+        $destination = new $className();
+
+        if ($className === 'stdClass') {
+            return (object) $this->serialize();
+        }
 
         $this->destinationProxy = new Proxy($destination);
         $this->doMapping();
@@ -52,11 +54,34 @@ class AnyMapper
     }
 
     /**
-     * @param string[] $allowedDataCasting
+     * @return mixed[]
      */
-    public function allowDataCasting(array $allowedDataCasting): self
+    public function serialize(): array
     {
-        $this->allowedDataCasting = $allowedDataCasting;
+        $sourceTracks = $this->sourceProxy->getAnalyzer()->getOutputTrackList();
+
+        $output = [];
+        foreach ($sourceTracks as $trackName => $sourceTrack) {
+            $value = $this->sourceProxy->get((string) $trackName);
+            if (is_array($value) || is_object($value)) {
+                $value = (new self())->map($value)->serialize();
+            }
+            $output[$trackName] = $value;
+        }
+
+        return $output;
+    }
+
+    public function allowDataCasting(string $from, string $to): self
+    {
+        $this->allowedDataCasting[$from][] = $to;
+
+        return $this;
+    }
+
+    public function allowDynamicProperties(bool $allow = true): self
+    {
+        $this->allowedDynamicProperties = $allow;
 
         return $this;
     }
@@ -64,38 +89,46 @@ class AnyMapper
     private function doMapping(): void
     {
         $sourceTracks = $this->sourceProxy->getAnalyzer()->getOutputTrackList();
-        $destinationTracks = $this->destinationProxy->getAnalyzer()->getInputTrackList();
 
-        foreach ($destinationTracks as $track => $destinationTrack) {
-            if (! array_key_exists($track, $sourceTracks)) {
+        foreach ($sourceTracks as $trackName => $sourceTrack) {
+            $destinationTrack = $this->destinationProxy->getAnalyzer()->getInputTrack($trackName);
+
+            if (! $destinationTrack && ! $this->allowedDynamicProperties) {
                 continue;
             }
-            $value = $this->sourceProxy->get($track);
-            $sourceType = gettype($value);
-            $allowedDestinationDataTypes = $destinationTrack->getDataTypes();
 
-            if (!in_array($sourceType, $allowedDestinationDataTypes)) {
-                $value = $this->castOrFail($sourceType, $allowedDestinationDataTypes, $value);
-            }
+            $sourceValue = $this->sourceProxy->get($trackName);
 
-            $this->destinationProxy->set($track, $value);
+            $destinationValue = $this->castOrFail($sourceValue, $destinationTrack);
+
+            $this->destinationProxy->set($trackName, $destinationValue);
         }
     }
 
-    /**
-     * @param string[] $allowedDestinationDataTypes
-     * @param int|float|bool|string|object|mixed[]|null $value
-     */
-    private function castOrFail(string $sourceType, array $allowedDestinationDataTypes, int|float|bool|string|object|array|null $value): mixed
+    private function castOrFail(mixed $value, Track|null $destinationTrack): mixed
     {
-        foreach ($this->allowedDataCasting as $source => $destination) {
-            if ($sourceType !== $source) {
+        $allowedDestinationDataTypes = $destinationTrack?->getDataTypes();
+
+        if (is_null($allowedDestinationDataTypes)) {
+            // Dynamic Properties are allowed, no casting needed
+            assert($this->allowedDynamicProperties);
+            return $value;
+        }
+
+        $sourceType = gettype($value);
+
+        if (in_array($sourceType, $allowedDestinationDataTypes)) {
+            // Source type is already accepted by destination, no casting needed
+            return $value;
+        }
+
+        $allowedDataCasting = $this->allowedDataCasting[$sourceType] ?? [];
+
+        foreach ($allowedDataCasting as $to) {
+            if (! in_array($to, $allowedDestinationDataTypes)) {
                 continue;
             }
-            if (! in_array($destination, $allowedDestinationDataTypes)) {
-                continue;
-            }
-            return (new Caster($value))->as($destination);
+            return (new Caster($value))->as($to);
         }
 
         throw new MapperException('Cannot convert type ' . $sourceType . ' into any of the following types: '. implode(',', $allowedDestinationDataTypes));

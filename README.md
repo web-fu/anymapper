@@ -55,13 +55,12 @@ $source = [
     'startingDate' => '2022-12-01 00:00:00',
 ];
 
+// Fill an existing class
 $destination = new MyClass();
 
 (new \WebFu\AnyMapper\AnyMapper())
     ->map($source)
-    ->allowDataCasting([
-        'string' => DateTime::class,
-    ])
+    ->allowDataCasting('string', DateTime::class)
     ->into($destination);
 
 echo $destination->getFoo(); // I am foo and I was set in a setter
@@ -70,6 +69,37 @@ echo $destination->bar; // I am bar;
 echo PHP_EOL;
 echo $destination->getStartingDate()->format('Y-m-d'); // 2022-12-01
 echo PHP_EOL;
+
+// Create a new object of a class
+$destination = (new \WebFu\AnyMapper\AnyMapper())
+    ->map($source)
+    ->allowDataCasting('string', DateTime::class)
+    ->as(MyClass::class);
+
+echo $destination->getFoo(); // I am foo and I was set in a setter
+echo PHP_EOL;
+echo $destination->bar; // I am bar;
+echo PHP_EOL;
+echo $destination->getStartingDate()->format('Y-m-d'); // 2022-12-01
+echo PHP_EOL;
+
+// Perform a standard serialization
+$destination =  (new \WebFu\AnyMapper\AnyMapper())
+    ->map($foo)
+    ->serialize();
+
+var_export($destination);
+/*
+array (
+  'bars' =>
+  array (
+    0 =>
+    array (
+      'element' => 'string',
+    ),
+  ),
+)
+*/
 ```
 
-See `/examples` folder for some examples
+See `/examples` folder for full examples

@@ -7,6 +7,7 @@ namespace WebFu\Tests\Unit\AnyMapper;
 use PHPUnit\Framework\TestCase;
 use WebFu\AnyMapper\Caster;
 use DateTime;
+use stdClass;
 
 class CasterTest extends TestCase
 {
@@ -27,7 +28,7 @@ class CasterTest extends TestCase
      */
     public function castProvider(): iterable
     {
-        $class = new \stdClass();
+        $class = new stdClass();
         $class->foo = 1;
         $class->bar = 'bar';
 
