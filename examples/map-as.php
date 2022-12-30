@@ -45,9 +45,7 @@ $source = [
 
 $destination = (new \WebFu\AnyMapper\AnyMapper())
     ->map($source)
-    ->allowDataCasting([
-        'string' => DateTime::class,
-    ])
+    ->allowDataCasting('string', DateTime::class)
     ->as(MyClass::class);
 
 echo $destination->getFoo(); // I am foo and I was set in a setter

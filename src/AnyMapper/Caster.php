@@ -54,18 +54,12 @@ class Caster
 
     private string $destType;
 
-    /**
-     * @param int|float|bool|string|object|mixed[]|null $value
-     */
     public function __construct(
-        private readonly int|float|bool|string|object|array|null $value
+        private readonly mixed $value
     ) {
     }
 
-    /**
-     * @return int|float|bool|string|object|mixed[] $value
-     */
-    public function as(string $destType): int|float|bool|string|object|array|null
+    public function as(string $destType): mixed
     {
         $sourceType = gettype($this->value);
 

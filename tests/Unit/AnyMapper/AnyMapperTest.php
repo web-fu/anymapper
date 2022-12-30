@@ -71,9 +71,7 @@ class AnyMapperTest extends TestCase
 
         (new \WebFu\AnyMapper\AnyMapper())
             ->map($source)
-            ->allowDataCasting([
-                'string' => DateTime::class,
-            ])
+            ->allowDataCasting('string', DateTime::class)
             ->into($class);
 
         $this->assertEquals(new DateTime('2022-12-01 00:00:00'), $class->public);
