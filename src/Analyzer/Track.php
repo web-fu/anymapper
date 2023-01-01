@@ -8,9 +8,9 @@ class Track
 {
     /** @param string[] $dataTypes */
     public function __construct(
-        private readonly string|int $name,
-        private readonly TrackType  $source,
-        private readonly array      $dataTypes,
+        private string|int $name,
+        private TrackType  $source,
+        private array      $dataTypes,
     ) {
     }
 
