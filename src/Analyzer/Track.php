@@ -6,11 +6,14 @@ namespace WebFu\Analyzer;
 
 class Track
 {
-    /** @param string[] $dataTypes */
+    /**
+     * @param TrackType::* $source
+     * @param string[] $dataTypes
+     */
     public function __construct(
         private string|int $name,
-        private TrackType  $source,
-        private array      $dataTypes,
+        private string $source,
+        private array $dataTypes,
     ) {
     }
 
@@ -19,7 +22,10 @@ class Track
         return $this->name;
     }
 
-    public function getSource(): TrackType
+    /**
+     * @return TrackType::*
+     */
+    public function getSource(): string
     {
         return $this->source;
     }
