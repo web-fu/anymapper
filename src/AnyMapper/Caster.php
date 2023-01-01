@@ -55,7 +55,7 @@ class Caster
     private string $destType;
 
     public function __construct(
-        private readonly mixed $value
+        private mixed $value
     ) {
     }
 
