@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace WebFu\Analyzer;
 
-enum TrackType
+class TrackType
 {
-    case PROPERTY;
-    case METHOD;
-    case NUMERIC_INDEX;
-    case STRING_INDEX;
+    public const PROPERTY = 'property';
+    public const METHOD = 'method';
+    public const NUMERIC_INDEX = 'numeric index';
+    public const STRING_INDEX = 'string index';
 }
