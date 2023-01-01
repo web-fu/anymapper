@@ -28,7 +28,10 @@ class ClassAnalyzer implements AnalyzerInterface
     /** @var Track[]  */
     private array $outputTrackList = [];
 
-    public function __construct(object $class)
+    /**
+     * @param object|class-string $class
+     */
+    public function __construct(object|string $class)
     {
         $reflection = new ReflectionClass($class);
 
