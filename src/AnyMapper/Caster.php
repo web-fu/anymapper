@@ -67,6 +67,15 @@ class Caster
             return $this->value;
         }
 
+        if (str_ends_with($destType, '[]') && is_iterable($this->value)) {
+            $destType = str_replace('[]', '', $destType);
+            $result = [];
+            foreach ($this->value as $value) {
+                $result[] = (new self($value))->as($destType);
+            }
+            return $result;
+        }
+
         if (!in_array($destType, self::ALLOWED[$sourceType])) {
             throw new CasterException('Data casting from '.$sourceType.' to '.$destType.' not allowed');
         }
@@ -81,7 +90,7 @@ class Caster
             return $this->scalarConversion();
         }
 
-        if (is_array($this->value) or is_object($this->value)) {
+        if (is_iterable($this->value) or is_object($this->value)) {
             return $this->complexConversion();
         }
 
@@ -102,13 +111,17 @@ class Caster
     }
 
     /**
-     * @return object|mixed[]|string
+     * @return object|iterable<mixed>|string
      */
-    private function complexConversion(): object|array|string
+    private function complexConversion(): object|iterable|string
     {
-        assert(is_array($this->value) or is_object($this->value));
+        assert(is_iterable($this->value) or is_object($this->value));
+
+        if ($this->destType === 'string') {
+            return var_export($this->value, true);
+        }
+
         return match ($this->destType) {
-            'string' => var_export($this->value, true),
             'object' => (object) $this->value,
             'array' => (array) $this->value,
             default => throw new CasterException('Unknown error'),
