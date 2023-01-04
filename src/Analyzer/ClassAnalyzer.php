@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace WebFu\Analyzer;
 
+use WebFu\Reflection\Reflection;
 use function WebFu\Internal\camelcase_to_underscore;
-use function WebFu\Internal\reflection_type_names;
-use ReflectionUnionType;
-use ReflectionNamedType;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
@@ -50,7 +48,7 @@ class ClassAnalyzer implements AnalyzerInterface
         foreach ($reflection->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
             $this->properties[$property->getName()] = $property;
             $underscoreName = camelcase_to_underscore($property->getName());
-            $types = reflection_type_names($property->getType());
+            $types = Reflection::types($property);
 
             /** @phpstan-ignore-next-line-until 8.1 */
             if (PHP_VERSION_ID < 80100 or !$property->isReadOnly()) {
@@ -72,7 +70,7 @@ class ClassAnalyzer implements AnalyzerInterface
 
                 $underscoreName = camelcase_to_underscore($method->getName());
                 $underscoreName = preg_replace('#^get_|is_#', '', $underscoreName);
-                $types = reflection_type_names($method->getReturnType());
+                $types = Reflection::types($method);
                 $this->outputTrackList[$underscoreName] = new Track($method->getName(), TrackType::METHOD, $types);
             }
             if ('__set' === $method->getName()
@@ -86,12 +84,10 @@ class ClassAnalyzer implements AnalyzerInterface
                     continue;
                 }
                 $lastParameter = array_pop($parameters);
-                $types = reflection_type_names($lastParameter->getType());
+                $types = Reflection::types($lastParameter);
                 $this->inputTrackList[$underscoreName] = new Track($method->getName(), TrackType::METHOD, $types);
             }
-            /** @var ReflectionNamedType|ReflectionUnionType|null $returnType */
-            $returnType = $method->getReturnType();
-            $returnTypeNames = reflection_type_names($returnType);
+            $returnTypeNames = Reflection::types($method);
 
             if (
                 !empty(array_intersect($returnTypeNames, [
