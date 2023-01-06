@@ -4,7 +4,7 @@ namespace WebFu\Tests\Fake;
 
 /**
  * @internal
- * @template
+ * @template F of FakeEntity
  */
 class EntityWithAnnotation
 {
@@ -33,5 +33,13 @@ class EntityWithAnnotation
      */
     public function parameter(array $parameter): void
     {
+    }
+
+    /**
+     * @return array<F>
+     */
+    public function getFakeEntities(): array
+    {
+        return [new FakeEntity()];
     }
 }

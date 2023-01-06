@@ -9,11 +9,14 @@ use WebFu\Tests\Fake\EntityWithAnnotation;
 use ReflectionProperty;
 use ReflectionParameter;
 use ReflectionMethod;
+use ReflectionClass;
+use WebFu\Tests\Fake\FakeEntity;
 
 class ReflectionTest extends TestCase
 {
     /**
-     * @dataProvider reflectionProvider
+     * @dataProvider typeProvider
+     * @param string[] $expected
      */
     public function testTypes(ReflectionProperty|ReflectionMethod|ReflectionParameter $reflection, array $expected): void
     {
@@ -22,7 +25,10 @@ class ReflectionTest extends TestCase
         $this->assertEquals($expected, $types);
     }
 
-    public function reflectionProvider(): iterable
+    /**
+     * @return iterable<mixed>
+     */
+    public function typeProvider(): iterable
     {
         yield 'property' => [
             'reflection' => new ReflectionProperty(EntityWithAnnotation::class, 'array'),
@@ -48,6 +54,29 @@ class ReflectionTest extends TestCase
             'reflection' => new ReflectionParameter([EntityWithAnnotation::class, 'parameter'], 'parameter'),
             'expected' => [
                 'string[]',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider templateProvider
+     * @param string[] $expected
+     */
+    public function testTemplates(ReflectionClass|ReflectionProperty|ReflectionMethod $reflection, array $expected): void
+    {
+        $templates = Reflection::templates($reflection);
+        $this->assertEquals($expected, $templates);
+    }
+
+    /**
+     * @return iterable<mixed>
+     */
+    public function templateProvider(): iterable
+    {
+        yield 'class' => [
+            'reflection' => new ReflectionClass(EntityWithAnnotation::class),
+            'expected' => [
+                'F' => FakeEntity::class,
             ],
         ];
     }
