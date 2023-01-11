@@ -50,7 +50,6 @@ class ClassAnalyzer implements AnalyzerInterface
             $underscoreName = camelcase_to_underscore($property->getName());
             $types = Reflection::types($property);
 
-            /** @phpstan-ignore-next-line-until 8.1 */
             if (PHP_VERSION_ID < 80100 or !$property->isReadOnly()) {
                 $this->inputTrackList[$underscoreName]  = new Track($property->getName(), TrackType::PROPERTY, $types);
             }
