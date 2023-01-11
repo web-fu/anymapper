@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace WebFu\AnyMapper;
 
 use DateTime;
-use WebFu\Tests\Unit\AnyMapper\CasterException;
 
 class Caster
 {
