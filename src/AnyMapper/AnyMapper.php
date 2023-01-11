@@ -99,13 +99,13 @@ class AnyMapper
 
             $sourceValue = $this->sourceProxy->get($trackName);
 
-            $destinationValue = $this->castOrFail($sourceValue, $destinationTrack);
+            $destinationValue = $this->assign($sourceValue, $destinationTrack);
 
             $this->destinationProxy->set($trackName, $destinationValue);
         }
     }
 
-    private function castOrFail(mixed $value, Track|null $destinationTrack): mixed
+    private function assign(mixed $value, Track|null $destinationTrack): mixed
     {
         $allowedDestinationDataTypes = $destinationTrack?->getDataTypes();
 
