@@ -29,14 +29,16 @@ class Reflection
 
         if ($reflector instanceof ReflectionMethod) {
             $docBlock = self::sanitizeDocBlock($reflector);
-            $annotation = preg_replace('/@return\s/', '$1', $docBlock);
+            preg_match('/@return\s(?<return>.+)/', $docBlock, $matches);
+            $annotation = $matches['return'] ?? null;
             $type = $reflector->getReturnType();
         }
 
         if ($reflector instanceof ReflectionParameter) {
             $name = $reflector->getName();
             $docBlock = self::sanitizeDocBlock($reflector->getDeclaringFunction());
-            $annotation = preg_replace('/@param\s(\w+(\[\])*)\s\$'.$name.'/', '$1', $docBlock);
+            preg_match('/@param\s(?<param>.+)\s\$'.$name.'/', $docBlock, $matches);
+            $annotation = $matches['param'] ?? null;
             $type = $reflector->getType();
         }
 

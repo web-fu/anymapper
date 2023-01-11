@@ -44,8 +44,14 @@ class ReflectionTest extends TestCase
                 'null',
             ],
         ];
-        yield 'method' => [
+        yield 'method_get' => [
             'reflection' => new ReflectionMethod(EntityWithAnnotation::class, 'getArray'),
+            'expected' => [
+                'string[]',
+            ],
+        ];
+        yield 'method_set' => [
+            'reflection' => (new ReflectionMethod(EntityWithAnnotation::class, 'setArray'))->getParameters()[0],
             'expected' => [
                 'string[]',
             ],
