@@ -87,6 +87,6 @@ class Reflection
         $docComment = preg_replace('#^\s*/\*\*([^/]+)\*/\s*$#', '$1', $reflector->getDocComment() ?: '');
 
         /** @phpstan-ignore-next-line */
-        return preg_replace('/^\s*\*\s*(.+)/m', '$1', $docComment);
+        return trim(preg_replace('/^\s*\*\s*(.+)/m', '$1', $docComment));
     }
 }
