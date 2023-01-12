@@ -110,12 +110,11 @@ class CasterTest extends TestCase
         yield 'array_to_string' => [
             'value' => ['foo' => 1, 'bar' => 'bar'],
             'type' => 'string',
-            'expected' => <<<TXT
-                array (
-                  'foo' => 1,
-                  'bar' => 'bar',
-                )
-                TXT,
+            'expected' =>
+                'array (' . PHP_EOL .
+                '  \'foo\' => 1,' . PHP_EOL .
+                '  \'bar\' => \'bar\',' . PHP_EOL .
+                ')',
         ];
         yield 'array_of_string_to_array_of_DateTime' => [
             'value' => [
@@ -136,12 +135,10 @@ class CasterTest extends TestCase
         yield 'object_to_string' => [
             'value' => $class,
             'type' => 'string',
-            'expected' => <<<TXT
-                (object) array(
-                   'foo' => 1,
-                   'bar' => 'bar',
-                )
-                TXT,
+            'expected' =>  '(object) array(' . PHP_EOL .
+                '   \'foo\' => 1,' . PHP_EOL .
+                '   \'bar\' => \'bar\',' . PHP_EOL .
+                ')',
         ];
     }
 }
