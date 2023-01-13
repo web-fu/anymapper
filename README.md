@@ -1,18 +1,14 @@
 # AnyMapper
 ### A library that allows to map objects and arrays into objects and arrays with strong type support and pattern detection.
 
-AnyMapper can get a variety of data inputs (object, arrays and composite of both) and hydrate a destination object or array ensuring safe type handling for the data during the process.
-
-AnyMapper can detect and extract data from public properties, standard getter / setter, use constructors and class factories and optionally perform smart data casting (ie: from a string to a date time).
-
+AnyMapper can get a variety of data inputs (object, arrays and composite of both) and hydrate a destination object or array ensuring safe type handling for the data during the process.  
+AnyMapper can detect and extract data from public properties, standard getter / setter, use constructors and class factories and optionally perform smart data casting (ie: from a string to a date time).  
 AnyMapper will not interfere with private or protected properties or methods and cannot grant the resulting object is in a "valid state"
 
 ## Note
-
 This library is an Alpha version and should not be used in a production environment.
 
 ## Example
-
 ```php
 final class MyClass
 {
