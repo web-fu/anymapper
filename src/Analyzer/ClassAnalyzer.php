@@ -21,9 +21,9 @@ class ClassAnalyzer implements AnalyzerInterface
     private array $getters = [];
     /** @var ReflectionMethod[] */
     private array $setters = [];
-    /** @var Track[]  */
+    /** @var Track[] */
     private array $inputTrackList = [];
-    /** @var Track[]  */
+    /** @var Track[] */
     private array $outputTrackList = [];
 
     /**
@@ -51,10 +51,10 @@ class ClassAnalyzer implements AnalyzerInterface
             $types = Reflection::types($property);
 
             if (PHP_VERSION_ID < 80100 or !$property->isReadOnly()) {
-                $this->inputTrackList[$underscoreName]  = new Track($property->getName(), TrackType::PROPERTY, $types);
+                $this->inputTrackList[$underscoreName] = new Track($property->getName(), TrackType::PROPERTY, $types);
             }
 
-            $this->outputTrackList[$underscoreName]  = new Track($property->getName(), TrackType::PROPERTY, $types);
+            $this->outputTrackList[$underscoreName] = new Track($property->getName(), TrackType::PROPERTY, $types);
         }
 
         if ($reflection->getConstructor()?->isPublic()) {
