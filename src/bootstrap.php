@@ -2,6 +2,7 @@
 
 const FUNCTIONS = [
     'WebFu\\Internal\\camelcase_to_underscore' => 'Internal/camelcase_to_underscore.php',
+    'WebFu\\Internal\\get_type' => 'Internal/get_type.php',
 ];
 
 foreach (FUNCTIONS as $function => $file) {

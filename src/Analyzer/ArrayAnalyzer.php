@@ -7,6 +7,7 @@ namespace WebFu\Analyzer;
 use WebFu\Resolver\TypeResolver;
 
 use function WebFu\Internal\camelcase_to_underscore;
+use function WebFu\Internal\get_type;
 
 class ArrayAnalyzer implements AnalyzerInterface
 {
@@ -23,8 +24,7 @@ class ArrayAnalyzer implements AnalyzerInterface
         foreach ($data as $key => $value) {
             $underscoreName = camelcase_to_underscore((string) $key);
             $source = is_int($key) ? TrackType::NUMERIC_INDEX : TrackType::STRING_INDEX;
-            $typeResolver = new TypeResolver($value);
-            $this->trackList[$underscoreName] = new Track($key, $source, $typeResolver->resolve());
+            $this->trackList[$underscoreName] = new Track($key, $source, [get_type($value)]);
         }
     }
 
