@@ -11,7 +11,6 @@ use stdClass;
 
 class CasterTest extends TestCase
 {
-
     /**
      * @dataProvider castProvider
      * @param int|float|bool|string|object|mixed[]|null $value

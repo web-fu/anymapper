@@ -37,7 +37,6 @@ class AnyMapper
 
     /**
      * @param class-string $className
-     * @return object
      */
     public function as(string $className): object
     {

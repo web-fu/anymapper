@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace WebFu\Analyzer;
 
 use WebFu\Reflection\Reflection;
-use function WebFu\Internal\camelcase_to_underscore;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
+
+use function WebFu\Internal\camelcase_to_underscore;
 
 class ClassAnalyzer implements AnalyzerInterface
 {

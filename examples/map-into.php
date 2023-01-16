@@ -8,7 +8,8 @@ final class MyClass
     public string $bar;
     private \DateTime $startingDate;
 
-    public function setFoo(string $foo): MyClass {
+    public function setFoo(string $foo): MyClass
+    {
         $this->foo = $foo . ' and I was set in a setter';
         return $this;
     }
@@ -18,18 +19,11 @@ final class MyClass
         return $this->foo;
     }
 
-    /**
-     * @return DateTime
-     */
     public function getStartingDate(): DateTime
     {
         return $this->startingDate;
     }
 
-    /**
-     * @param DateTime $startingDate
-     * @return MyClass
-     */
     public function setStartingDate(DateTime $startingDate): MyClass
     {
         $this->startingDate = $startingDate;

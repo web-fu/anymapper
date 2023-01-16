@@ -19,10 +19,10 @@ class EntityWithAnnotation
     public int|string|null $unionType;
 
     /**
-     * @param int $param
      * @return string[]
      */
-    public function getArray(int $param): array {
+    public function getArray(int $param): array
+    {
         return [
             'foo',
             'bar',

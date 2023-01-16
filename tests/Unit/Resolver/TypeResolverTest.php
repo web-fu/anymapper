@@ -20,43 +20,45 @@ class TypeResolverTest extends TestCase
         $this->assertEquals($expected, $resolver->resolve());
     }
 
+    /**
+     * @return iterable<array{value:mixed, expected:string[]}>
+     */
     public function elementProvider(): iterable
     {
-
         yield 'null' => [
             'value' => null,
-            'expected' => ['null']
+            'expected' => ['null'],
         ];
         yield 'bool' => [
             'value' => true,
-            'expected' => ['bool']
+            'expected' => ['bool'],
         ];
         yield 'int' => [
             'value' => 1,
-            'expected' => ['int']
+            'expected' => ['int'],
         ];
         yield 'float' => [
             'value' => 1.0,
-            'expected' => ['float']
+            'expected' => ['float'],
         ];
         yield 'string' => [
             'value' => 'foo',
-            'expected' => ['string']
+            'expected' => ['string'],
         ];
         yield 'array' => [
             'value' => [],
-            'expected' => ['array']
+            'expected' => ['array'],
         ];
         yield 'resource' => [
             'value' => fopen(__FILE__, 'r'),
-            'expected' => ['resource']
+            'expected' => ['resource'],
         ];
         yield 'named_object' => [
             'value' => new Foo(),
             'expected' => [Foo::class],
         ];
         yield 'anonymous_object' => [
-            'value' => new class() {},
+            'value' => new class () {},
             'expected' => ['class@anonymous'],
         ];
     }
