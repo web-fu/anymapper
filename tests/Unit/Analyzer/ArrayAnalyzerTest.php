@@ -97,7 +97,7 @@ class ArrayAnalyzerTest extends TestCase
     }
 
     /**
-     * @return iterable<mixed>
+     * @return iterable<array{expected:Track|null, track:string}>
      */
     public function trackDataProvider(): iterable
     {
