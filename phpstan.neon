@@ -6,3 +6,5 @@ parameters:
     excludePaths:
         - tests/Fake
     checkGenericClassInNonGenericObjectType: false
+    ignoreErrors:
+        - '#Call to an undefined method ReflectionProperty::isReadOnly\(\)#'
