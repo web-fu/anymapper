@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace WebFu\Analyzer;
 
-use WebFu\Resolver\TypeResolver;
-
 use function WebFu\Internal\camelcase_to_underscore;
 use function WebFu\Internal\get_type;
 
