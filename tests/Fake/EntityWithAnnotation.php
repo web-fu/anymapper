@@ -2,6 +2,8 @@
 
 namespace WebFu\Tests\Fake;
 
+use DateTime as DT;
+
 /**
  * @internal
  * @template F of FakeEntity
