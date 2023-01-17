@@ -23,7 +23,10 @@ class ExtendedReflectionClassTest extends TestCase
     {
         $reflectionClass = new ExtendedReflectionClass(EntityWithAnnotation::class);
         $this->assertEquals([
-            'DateTime',
+            [
+                'class' => 'DateTime',
+                'as'=> 'DT',
+            ],
         ], $reflectionClass->getUseStatements());
     }
 }
