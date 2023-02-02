@@ -132,22 +132,20 @@ class ExtendedReflectionClass extends ReflectionClass
                 $matchedNamespace = true;
             }
 
-            if ($matchedNamespace) {
-                if ($token[0] === T_USE) {
-                    $record = 'class';
-                }
+            if ($token[0] === T_USE) {
+                $record = 'class';
+            }
 
-                if ($token[0] === T_AS) {
-                    $record = 'as';
-                }
+            if ($token[0] === T_AS) {
+                $record = 'as';
+            }
 
-                if ($record) {
-                    switch ($token[0]) {
-                        case T_STRING:
-                        case T_NS_SEPARATOR:
-                            $currentUse[$record] .= $token[1];
-                            break;
-                    }
+            if ($record) {
+                switch ($token[0]) {
+                    case T_STRING:
+                    case T_NS_SEPARATOR:
+                        $currentUse[$record] .= $token[1];
+                        break;
                 }
             }
 
