@@ -8,9 +8,13 @@ use ReflectionClass;
 use ReflectionProperty;
 use RuntimeException;
 
+/**
+ * @template T of object
+ * @template-extends ReflectionClass<T>
+ */
 class ExtendedReflectionClass extends ReflectionClass
 {
-    /** @var array<array{class:string, as:string}> */
+    /** @var array<int, array{class:string, as:string}> */
     protected array $useStatements = [];
     protected bool $useStatementsParsed = false;
 
