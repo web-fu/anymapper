@@ -20,7 +20,7 @@ class GetTypeFunctionTest extends TestCase
     }
 
     /**
-     * @return iterable<array{value:mixed, expected:string[]}>
+     * @return iterable<array{value:mixed, expected:string}>
      */
     public function elementProvider(): iterable
     {

@@ -10,14 +10,14 @@ use RuntimeException;
 
 class ExtendedReflectionClass extends ReflectionClass
 {
-    /** @var string[] */
+    /** @var array<array{class:string, as:string}> */
     protected array $useStatements = [];
     protected bool $useStatementsParsed = false;
 
     /**
-     * @return iterable<ExtendedReflectionProperty>
+     * @return ExtendedReflectionProperty[]
      */
-    public function getProperties(int|null $filter = null): array
+    public function getExtendedProperties(int|null $filter = null): array
     {
         return array_map(function (ReflectionProperty $property) {
             return new ExtendedReflectionProperty($this->getName(), $property->getName());
@@ -35,7 +35,7 @@ class ExtendedReflectionClass extends ReflectionClass
     }
 
     /**
-     * @return string[]|class-string[]
+     * @return array<int, array{class:string, as:string}>
      */
     public function getTemplates(): array
     {
@@ -45,15 +45,20 @@ class ExtendedReflectionClass extends ReflectionClass
         $namespace = $this->getNamespaceName();
 
         $templates = [];
-        foreach ($matches['type'] as  $k => $type) {
-            $templates[$matches['template'][$k]] = (new ReflectionClass($namespace.'\\'.$type))->getName();
+        foreach ($matches['type'] as  $k => $className) {
+            /** @var class-string $classString */
+            $classString = $namespace.'\\'.$className;
+            $templates[] = [
+                'class' => (new ReflectionClass($classString))->getName(),
+                'as' => $matches['template'][$k],
+            ];
         }
 
-        return array_filter($templates);
+        return $templates;
     }
 
     /**
-     * @return string[]
+     * @return array<int, array{class:string, as:string}>
      */
     public function getUseStatements(): array
     {
@@ -70,11 +75,15 @@ class ExtendedReflectionClass extends ReflectionClass
     }
 
     /**
-     * @return string[]
+     * @return array<int, array{class:string, as:string}>
      */
     private function tokenizeSource(): array
     {
+        assert($this->getFileName() !== false);
         $source = file_get_contents($this->getFileName());
+        if (!$source) {
+            throw new RuntimeException('Could not open file ' . $this->getFileName());
+        }
         $tokens = token_get_all($source);
 
         $builtNamespace = '';

@@ -24,7 +24,10 @@ class ExtendedReflectionClassTest extends TestCase
     {
         $reflectionClass = new ExtendedReflectionClass(EntityWithAnnotation::class);
         $this->assertEquals([
-            'F' => FakeEntity::class
+            [
+                'class' => FakeEntity::class,
+                'as' => 'F',
+            ]
         ], $reflectionClass->getTemplates());
     }
 
@@ -33,7 +36,7 @@ class ExtendedReflectionClassTest extends TestCase
         $reflectionClass = new ExtendedReflectionClass(EntityWithAnnotation::class);
         $this->assertEquals([
             [
-                'class' => 'DateTime',
+                'class' => \DateTime::class,
                 'as' => 'DT',
             ],
         ], $reflectionClass->getUseStatements());
