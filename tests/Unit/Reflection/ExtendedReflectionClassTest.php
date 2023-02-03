@@ -7,6 +7,7 @@ namespace WebFu\Tests\Unit\Reflection;
 use WebFu\Reflection\ExtendedReflectionClass;
 use PHPUnit\Framework\TestCase;
 use WebFu\Tests\Fake\EntityWithAnnotation;
+use WebFu\Tests\Fake\FakeEntity;
 
 class ExtendedReflectionClassTest extends TestCase
 {
@@ -17,6 +18,14 @@ class ExtendedReflectionClassTest extends TestCase
             '@internal',
             '@template F of FakeEntity',
         ], $reflectionClass->getDocTags());
+    }
+
+    public function testGetTenplates(): void
+    {
+        $reflectionClass = new ExtendedReflectionClass(EntityWithAnnotation::class);
+        $this->assertEquals([
+            'F' => FakeEntity::class
+        ], $reflectionClass->getTemplates());
     }
 
     public function testGetUseStatements(): void

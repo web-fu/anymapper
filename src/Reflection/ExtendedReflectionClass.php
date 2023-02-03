@@ -42,9 +42,11 @@ class ExtendedReflectionClass extends ReflectionClass
         $docBlock = Reflection::sanitizeDocBlock($this);
         preg_match_all('/@template\s(?<template>\w+)\sof\s(?<type>\w+)/', $docBlock, $matches);
 
+        $namespace = $this->getNamespaceName();
+
         $templates = [];
         foreach ($matches['type'] as  $k => $type) {
-            $templates[$matches['template'][$k]] = (new ReflectionClass($type))->getName();
+            $templates[$matches['template'][$k]] = (new ReflectionClass($namespace.'\\'.$type))->getName();
         }
 
         return array_filter($templates);
