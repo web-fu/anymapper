@@ -2,12 +2,20 @@
 
 namespace WebFu\Tests\Fake;
 
+use DateTime as DT;
+
 /**
  * @internal
- * @template F of FakeEntity
+ * @template F of Foo
  */
 class EntityWithAnnotation
 {
+    /** @var DT */
+    private $DT;
+
+    /** @var F */
+    private $foo;
+
     /**
      * @var string[]
      */
@@ -21,7 +29,7 @@ class EntityWithAnnotation
     /**
      * @return string[]
      */
-    public function getArray(int $param): array
+    public function getStringArray(int $param): array
     {
         return [
             'foo',
@@ -33,7 +41,7 @@ class EntityWithAnnotation
      * @param string[] $array
      * @return $this
      */
-    public function setArray(array $array): self
+    public function setStringArray(array $array): self
     {
         return $this;
     }
@@ -46,10 +54,31 @@ class EntityWithAnnotation
     }
 
     /**
-     * @return array<F>
+     * @return DT
      */
-    public function getFakeEntities(): array
+    public function getDTValue()
     {
-        return [new FakeEntity()];
+        return $this->DT;
+    }
+
+    public function setDTValue($DT): void
+    {
+        $this->DT = $DT;
+    }
+
+    /**
+     * @return F
+     */
+    public function getFoo()
+    {
+        return $this->foo;
+    }
+
+    /**
+     * @param F $foo
+     */
+    public function setFoo($foo): void
+    {
+        $this->foo = $foo;
     }
 }

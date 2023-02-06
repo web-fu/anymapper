@@ -7,7 +7,8 @@ namespace WebFu\Tests\Unit\Reflection;
 use WebFu\Reflection\ExtendedReflectionClass;
 use PHPUnit\Framework\TestCase;
 use WebFu\Tests\Fake\EntityWithAnnotation;
-use WebFu\Tests\Fake\FakeEntity;
+use WebFu\Tests\Fake\Foo;
+use DateTime;
 
 class ExtendedReflectionClassTest extends TestCase
 {
@@ -16,18 +17,18 @@ class ExtendedReflectionClassTest extends TestCase
         $reflectionClass = new ExtendedReflectionClass(EntityWithAnnotation::class);
         $this->assertEquals([
             '@internal',
-            '@template F of FakeEntity',
+            '@template F of Foo',
         ], $reflectionClass->getDocTags());
     }
 
-    public function testGetTenplates(): void
+    public function testGetTemplates(): void
     {
         $reflectionClass = new ExtendedReflectionClass(EntityWithAnnotation::class);
         $this->assertEquals([
             [
-                'class' => FakeEntity::class,
+                'class' => Foo::class,
                 'as' => 'F',
-            ]
+            ],
         ], $reflectionClass->getTemplates());
     }
 
@@ -36,7 +37,7 @@ class ExtendedReflectionClassTest extends TestCase
         $reflectionClass = new ExtendedReflectionClass(EntityWithAnnotation::class);
         $this->assertEquals([
             [
-                'class' => \DateTime::class,
+                'class' => DateTime::class,
                 'as' => 'DT',
             ],
         ], $reflectionClass->getUseStatements());

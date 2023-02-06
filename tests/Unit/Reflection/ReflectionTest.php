@@ -11,7 +11,7 @@ use ReflectionProperty;
 use ReflectionParameter;
 use ReflectionMethod;
 use ReflectionClass;
-use WebFu\Tests\Fake\FakeEntity;
+use WebFu\Tests\Fake\Foo;
 
 class ReflectionTest extends TestCase
 {
@@ -46,13 +46,13 @@ class ReflectionTest extends TestCase
             ],
         ];
         yield 'method_get' => [
-            'reflection' => new ReflectionMethod(EntityWithAnnotation::class, 'getArray'),
+            'reflection' => new ReflectionMethod(EntityWithAnnotation::class, 'getStringArray'),
             'expected' => [
                 'string[]',
             ],
         ];
         yield 'method_set' => [
-            'reflection' => (new ReflectionMethod(EntityWithAnnotation::class, 'setArray'))->getParameters()[0],
+            'reflection' => (new ReflectionMethod(EntityWithAnnotation::class, 'setStringArray'))->getParameters()[0],
             'expected' => [
                 'string[]',
             ],
@@ -83,7 +83,7 @@ class ReflectionTest extends TestCase
         yield 'class' => [
             'reflection' => new ReflectionClass(EntityWithAnnotation::class),
             'expected' => [
-                'F' => FakeEntity::class,
+                'F' => Foo::class,
             ],
         ];
     }

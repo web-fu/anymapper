@@ -6,6 +6,7 @@ namespace WebFu\Tests\Unit\AnyMapper;
 
 use PHPUnit\Framework\TestCase;
 use WebFu\AnyMapper\AnyMapper;
+use WebFu\Tests\Fake\EntityWithAnnotation;
 use WebFu\Tests\Fake\FakeEntity;
 use DateTime;
 use stdClass;
@@ -141,5 +142,14 @@ class AnyMapperTest extends TestCase
         $this->assertSame(1, $class->foo);
         $this->assertSame('bar', $class->bar);
         $this->assertEquals(['foo', 'bar'], $class->array);
+    }
+
+    public function testUseDocBlocks(): void
+    {
+        $class = (new AnyMapper())->map([
+            'foo' => 1,
+        ])->as(EntityWithAnnotation::class);
+
+        $this->assertSame(1, $class->getFoo()->getValue());
     }
 }
