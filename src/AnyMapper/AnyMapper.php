@@ -36,11 +36,15 @@ class AnyMapper
     }
 
     /**
-     * @param class-string $className
-     * @return object
+     * @template T of object
+     * @param class-string<T> $className
+     * @return T
      */
     public function as(string $className): object
     {
+        if (!class_exists($className)) {
+            throw new MapperException('Class ' . $className . ' does not exist');
+        }
         $destination = new $className();
 
         if ($className === 'stdClass') {
