@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 const FUNCTIONS = [
     'WebFu\\Internal\\reflection_type_names' => 'Internal/reflection_type_names.php',

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace WebFu\AnyMapper\Strategy;
 
 use WebFu\Analyzer\Track;
