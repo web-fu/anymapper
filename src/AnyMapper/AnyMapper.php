@@ -47,7 +47,7 @@ class AnyMapper
         }
         $destination = new $className();
 
-        if ($className === 'stdClass') {
+        if ($className === stdClass::class) {
             return (object) $this->serialize();
         }
 

@@ -28,7 +28,10 @@ class ClassAnalyzer implements AnalyzerInterface
     /** @var Track[]  */
     private array $outputTrackList = [];
 
-    public function __construct(object $class)
+    /**
+     * @param object|class-string $class
+     */
+    public function __construct(object|string $class)
     {
         $reflection = new ReflectionClass($class);
 
@@ -49,7 +52,8 @@ class ClassAnalyzer implements AnalyzerInterface
             $underscoreName = camelcase_to_underscore($property->getName());
             $types = reflection_type_names($property->getType());
 
-            if (!$property->isReadOnly()) {
+            /** @phpstan-ignore-next-line-until 8.1 */
+            if (PHP_VERSION_ID < 80100 or !$property->isReadOnly()) {
                 $this->inputTrackList[$underscoreName]  = new Track($property->getName(), TrackType::PROPERTY, $types);
             }
 
