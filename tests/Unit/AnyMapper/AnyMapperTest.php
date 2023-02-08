@@ -6,7 +6,7 @@ namespace WebFu\Tests\Unit\AnyMapper;
 
 use PHPUnit\Framework\TestCase;
 use WebFu\AnyMapper\AnyMapper;
-use WebFu\AnyMapper\Strategy\StrictStrategy;
+use WebFu\AnyMapper\Strategy\DataCastingStrategy;
 use WebFu\Tests\Fake\FakeEntity;
 use DateTime;
 use stdClass;
@@ -41,43 +41,6 @@ class AnyMapperTest extends TestCase
         $this->assertSame('byConstructor is set by constructor', $class->getByConstructor());
         $this->assertSame('public', $class->public);
         $this->assertSame('bySetter is set by setter', $class->getBySetter());
-    }
-
-    public function testAllowDataCasting(): void
-    {
-        $class = new class() {
-            public DateTime $public;
-            private DateTime $private;
-
-            /**
-             * @return DateTime
-             */
-            public function getPrivate(): DateTime
-            {
-                return $this->private;
-            }
-
-            /**
-             * @param DateTime $private
-             */
-            public function setPrivate(DateTime $private): void
-            {
-                $this->private = $private;
-            }
-        };
-
-        $source = [
-            'public' => '2022-12-01',
-            'private' => '2022-12-31',
-        ];
-
-        (new AnyMapper())
-            ->map($source)
-            ->allowDataCasting('string', DateTime::class)
-            ->into($class);
-
-        $this->assertEquals(new DateTime('2022-12-01 00:00:00'), $class->public);
-        $this->assertEquals(new DateTime('2022-12-31 00:00:00'), $class->getPrivate());
     }
 
     public function testSerialize(): void
@@ -152,27 +115,21 @@ class AnyMapperTest extends TestCase
 
     public function testUsing(): void
     {
-        $class = new class() {
-            private int $int;
-
-            public function setInt(int $int): void {
-                $this->int = $int;
-            }
-
-            public function getInt(): int {
-                return $this->int;
-            }
+        $class = new class {
+            public DateTime $value;
         };
 
         $source = [
-            'int' => 1,
+            'value' => '2022-12-01',
         ];
 
         (new AnyMapper())
             ->map($source)
-            ->using(StrictStrategy::class)
+            ->using(
+                (new DataCastingStrategy())->allow('string', DateTime::class)
+            )
             ->into($class);
 
-        $this->assertSame(1, $class->getInt());
+        $this->assertEquals(new DateTime('2022-12-01'), $class->value);
     }
 }

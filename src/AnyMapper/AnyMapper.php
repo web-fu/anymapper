@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace WebFu\AnyMapper;
 
 use stdClass;
-use WebFu\AnyMapper\Strategy\StrategyInterface;
+use WebFu\AnyMapper\Strategy\AbstractStrategy;
 use WebFu\AnyMapper\Strategy\StrictStrategy;
 use WebFu\Proxy\Proxy;
 
@@ -13,9 +13,12 @@ class AnyMapper
 {
     private Proxy $sourceProxy;
     private Proxy $destinationProxy;
-    /** @var array<string[]> */
-    private array $allowedDataCasting = [];
-    private string $strategyClass = StrictStrategy::class;
+    private AbstractStrategy $strategy;
+
+    public function __construct()
+    {
+        $this->strategy = new StrictStrategy();
+    }
 
     /**
      * @param mixed[]|object $source
@@ -27,12 +30,9 @@ class AnyMapper
         return $this;
     }
 
-    /**
-     * @param class-string<StrategyInterface> $strategyClass
-     */
-    public function using(string $strategyClass): self
+    public function using(AbstractStrategy $strategy): self
     {
-        $this->strategyClass = $strategyClass;
+        $this->strategy = $strategy;
 
         return $this;
     }
@@ -86,17 +86,8 @@ class AnyMapper
         return $output;
     }
 
-    public function allowDataCasting(string $from, string $to): self
-    {
-        $this->allowedDataCasting[$from][] = $to;
-
-        return $this;
-    }
-
     private function doMapping(): void
     {
-        /** @var StrategyInterface $strategy */
-        $strategy = new $this->strategyClass($this->sourceProxy, $this->destinationProxy, $this->allowedDataCasting);
-        $strategy->run();
+        $this->strategy->init($this->sourceProxy, $this->destinationProxy)->run();
     }
 }

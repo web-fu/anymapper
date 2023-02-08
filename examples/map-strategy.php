@@ -6,25 +6,19 @@ require __DIR__ . '/../vendor/autoload.php';
 
 final class MyClass
 {
-    private int $int;
-
-    public function setInt(int $int): void {
-        $this->int = $int;
-    }
-
-    public function getInt(): int {
-        return $this->int;
-    }
+    public DateTime $value;
 }
 
 $source = [
-    'int' => 1,
+    'value' => '2022-12-01',
 ];
 
 $destination = (new \WebFu\AnyMapper\AnyMapper())
     ->map($source)
-    ->using(\WebFu\AnyMapper\StrictStrategy::class)
+    ->using(
+        (new \WebFu\AnyMapper\Strategy\DataCastingStrategy())->allow('string', DateTime::class)
+    )
     ->as(MyClass::class);
 
-echo $destination->getInt(); // 1
+echo $destination->value->format('Y-m-d H:i:s'); // 2022-12-01 00:00:00
 echo PHP_EOL;
