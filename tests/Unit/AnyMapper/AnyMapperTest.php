@@ -6,6 +6,7 @@ namespace WebFu\Tests\Unit\AnyMapper;
 
 use PHPUnit\Framework\TestCase;
 use WebFu\AnyMapper\AnyMapper;
+use WebFu\AnyMapper\Strategy\StrictStrategy;
 use WebFu\Tests\Fake\FakeEntity;
 use DateTime;
 use stdClass;
@@ -70,7 +71,7 @@ class AnyMapperTest extends TestCase
             'private' => '2022-12-31',
         ];
 
-        (new \WebFu\AnyMapper\AnyMapper())
+        (new AnyMapper())
             ->map($source)
             ->allowDataCasting('string', DateTime::class)
             ->into($class);
@@ -147,5 +148,31 @@ class AnyMapperTest extends TestCase
         $this->assertSame(1, $class->foo);
         $this->assertSame('bar', $class->bar);
         $this->assertEquals(['foo', 'bar'], $class->array);
+    }
+
+    public function testUsing(): void
+    {
+        $class = new class() {
+            private int $int;
+
+            public function setInt(int $int): void {
+                $this->int = $int;
+            }
+
+            public function getInt(): int {
+                return $this->int;
+            }
+        };
+
+        $source = [
+            'int' => 1,
+        ];
+
+        (new AnyMapper())
+            ->map($source)
+            ->using(StrictStrategy::class)
+            ->into($class);
+
+        $this->assertSame(1, $class->getInt());
     }
 }

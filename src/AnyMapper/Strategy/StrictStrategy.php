@@ -4,7 +4,9 @@ namespace WebFu\AnyMapper\Strategy;
 
 use WebFu\Analyzer\Track;
 use WebFu\AnyMapper\Caster;
+use WebFu\AnyMapper\MapperException;
 use WebFu\Proxy\Proxy;
+use function WebFu\Internal\get_type;
 
 class StrictStrategy implements StrategyInterface
 {
@@ -47,7 +49,7 @@ class StrictStrategy implements StrategyInterface
             return $value;
         }
 
-        $sourceType = gettype($value);
+        $sourceType = get_type($value);
 
         if (in_array($sourceType, $allowedDestinationDataTypes)) {
             // Source type is already accepted by destination, no casting needed
