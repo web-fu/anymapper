@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace WebFu\AnyMapper;
 
-use WebFu\Analyzer\Track;
-use WebFu\Proxy\Proxy;
 use stdClass;
+use WebFu\AnyMapper\Strategy\StrategyInterface;
+use WebFu\AnyMapper\Strategy\StrictStrategy;
+use WebFu\Proxy\Proxy;
 
 class AnyMapper
 {

@@ -1,8 +1,9 @@
 <?php
 
-namespace WebFu\AnyMapper;
+namespace WebFu\AnyMapper\Strategy;
 
 use WebFu\Analyzer\Track;
+use WebFu\AnyMapper\Caster;
 use WebFu\Proxy\Proxy;
 
 class StrictStrategy implements StrategyInterface

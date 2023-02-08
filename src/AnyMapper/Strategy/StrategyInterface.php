@@ -1,6 +1,6 @@
 <?php
 
-namespace WebFu\AnyMapper;
+namespace WebFu\AnyMapper\Strategy;
 
 interface StrategyInterface
 {
