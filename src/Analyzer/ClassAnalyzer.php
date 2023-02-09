@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace WebFu\Analyzer;
 
-use WebFu\Reflection\Reflection;
 use ReflectionClass;
 use ReflectionMethod;
+use ReflectionNamedType;
 use ReflectionProperty;
 
+use ReflectionUnionType;
 use function WebFu\Internal\camelcase_to_underscore;
+use function WebFu\Internal\reflection_type_names;
 
 class ClassAnalyzer implements AnalyzerInterface
 {
