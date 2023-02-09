@@ -8,7 +8,6 @@ use ReflectionClass;
 use ReflectionMethod;
 use ReflectionNamedType;
 use ReflectionProperty;
-
 use ReflectionUnionType;
 
 use function WebFu\Internal\camelcase_to_underscore;

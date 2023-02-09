@@ -8,10 +8,9 @@ use WebFu\Analyzer\ClassAnalyzer;
 use WebFu\Analyzer\Track;
 use WebFu\AnyMapper\MapperException;
 use ReflectionParameter;
-use ReflectionUnionType;
-use ReflectionNamedType;
 
 use function WebFu\Internal\get_type;
+use function WebFu\Internal\reflection_type_names;
 
 class AutodetectStrategy extends AbstractStrategy
 {
@@ -56,7 +55,7 @@ class AutodetectStrategy extends AbstractStrategy
                 continue;
             }
 
-            $allowedTypes = $this->getParameterType($constructorParameters[0]);
+            $allowedTypes = reflection_type_names($constructorParameters[0]->getType());
             foreach ($allowedTypes as $allowedType) {
                 if ($sourceType !== $allowedType) {
                     continue;
@@ -66,22 +65,5 @@ class AutodetectStrategy extends AbstractStrategy
         }
 
         throw new MapperException('Cannot convert type ' . $sourceType . ' into any of the following types: '. implode(',', $allowedDestinationDataTypes));
-    }
-
-    /** @return string[] */
-    private function getParameterType(ReflectionParameter $parameter): array
-    {
-        $type = $parameter->getType();
-        if ($type instanceof ReflectionNamedType) {
-            return [$type->getName()];
-        }
-
-        if ($type instanceof ReflectionUnionType) {
-            return array_map(
-                fn (ReflectionNamedType $type): string => $type->getName(),
-                $type->getTypes()
-            );
-        }
-        return [];
     }
 }
