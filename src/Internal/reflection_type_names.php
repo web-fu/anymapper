@@ -27,7 +27,5 @@ function reflection_type_names(ReflectionType|ReflectionNamedType|ReflectionUnio
         throw new Exception('This exception cannot be thrown');
     }
 
-    return array_map(function (ReflectionNamedType $type): string {
-        return $type->getName();
-    }, $type->getTypes());
+    return array_map(fn (ReflectionNamedType $type): string => $type->getName(), $type->getTypes());
 }

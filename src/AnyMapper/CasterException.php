@@ -1,8 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
-namespace WebFu\Tests\Unit\AnyMapper;
+namespace WebFu\AnyMapper;
 use Exception;
+
 class CasterException extends Exception
 {
 }

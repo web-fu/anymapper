@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace WebFu\AnyMapper;
 
 use DateTime;
-use WebFu\Tests\Unit\AnyMapper\CasterException;
 
 class Caster
 {
@@ -55,7 +54,7 @@ class Caster
     private string $destType;
 
     public function __construct(
-        private readonly mixed $value
+        private mixed $value
     ) {
     }
 

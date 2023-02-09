@@ -9,6 +9,7 @@ use WebFu\Analyzer\ClassAnalyzer;
 use WebFu\Analyzer\Track;
 use WebFu\Analyzer\TrackType;
 use WebFu\Tests\Fake\FakeEntity;
+use stdClass;
 
 class ClassAnalyzerTest extends TestCase
 {
@@ -19,6 +20,12 @@ class ClassAnalyzerTest extends TestCase
         $constructor = $classAnalyzer->getConstructor();
 
         $this->assertNotNull($constructor);
+    }
+
+    public function testGetConstructorReturnNull(): void
+    {
+        $classAnalyzer = new ClassAnalyzer(stdClass::class);
+        $this->assertNull($classAnalyzer->getConstructor());
     }
 
     public function testGetGetters(): void

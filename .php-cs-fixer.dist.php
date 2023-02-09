@@ -12,5 +12,6 @@ return (new PhpCsFixer\Config())
         ],
         'single_quote' => true,
         'trailing_comma_in_multiline' => true,
+        '@PHP80Migration:risky' => true,
     ])
     ->setFinder($finder);

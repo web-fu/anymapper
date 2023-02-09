@@ -11,14 +11,14 @@ AnyMapper will not interfere with private or protected properties or methods and
 
 This library is an Alpha version and should not be used in a production environment.
 
-## Example
+## Examples
 
+### Simple Mapping
 ```php
 final class MyClass
 {
     private string $foo;
     public string $bar;
-    private \DateTime $startingDate;
 
     public function setFoo(string $foo): MyClass {
         $this->foo = $foo . ' and I was set in a setter';
@@ -29,30 +29,11 @@ final class MyClass
     {
         return $this->foo;
     }
-
-    /**
-     * @return DateTime
-     */
-    public function getStartingDate(): DateTime
-    {
-        return $this->startingDate;
-    }
-
-    /**
-     * @param DateTime $startingDate
-     * @return MyClass
-     */
-    public function setStartingDate(DateTime $startingDate): MyClass
-    {
-        $this->startingDate = $startingDate;
-        return $this;
-    }
 }
 
 $source = [
     'foo' => 'I am foo',
     'bar' => 'I am bar',
-    'startingDate' => '2022-12-01 00:00:00',
 ];
 
 // Fill an existing class
@@ -60,30 +41,96 @@ $destination = new MyClass();
 
 (new \WebFu\AnyMapper\AnyMapper())
     ->map($source)
-    ->allowDataCasting('string', DateTime::class)
     ->into($destination);
 
 echo $destination->getFoo(); // I am foo and I was set in a setter
 echo PHP_EOL;
 echo $destination->bar; // I am bar;
 echo PHP_EOL;
-echo $destination->getStartingDate()->format('Y-m-d'); // 2022-12-01
-echo PHP_EOL;
 
 // Create a new object of a class
 $destination = (new \WebFu\AnyMapper\AnyMapper())
     ->map($source)
-    ->allowDataCasting('string', DateTime::class)
     ->as(MyClass::class);
 
 echo $destination->getFoo(); // I am foo and I was set in a setter
 echo PHP_EOL;
 echo $destination->bar; // I am bar;
 echo PHP_EOL;
-echo $destination->getStartingDate()->format('Y-m-d'); // 2022-12-01
-echo PHP_EOL;
+```
 
+### Casting Strategy
+```php
+// Use a strategy to customize mapping
+final class MyClass
+{
+    public DateTime $value;
+}
+
+$source = [
+    'value' => '2022-12-01',
+];
+
+$destination = (new \WebFu\AnyMapper\AnyMapper())
+    ->map($source)
+    ->using(
+        (new \WebFu\AnyMapper\Strategy\DataCastingStrategy())->allow('string', DateTime::class)
+    )
+    ->as(MyClass::class);
+
+echo $destination->value->format('Y-m-d H:i:s'); // 2022-12-01 00:00:00
+echo PHP_EOL;
+```
+
+### Serialization
+```php
 // Perform a standard serialization
+final class Bar
+{
+    private string $element;
+
+    public function getElement(): string
+    {
+        return $this->element;
+    }
+
+    public function setElement(string $element): Bar
+    {
+        $this->element = $element;
+
+        return $this;
+    }
+}
+
+final class Foo
+{
+    /** @var Bar[] */
+    private array $bars;
+
+    /**
+     * @return array
+     */
+    public function getBars(): array
+    {
+        return $this->bars;
+    }
+
+    /**
+     * @param array $bars
+     * @return Foo
+     */
+    public function setBars(array $bars): Foo
+    {
+        $this->bars = $bars;
+        return $this;
+    }
+}
+
+$foo = new Foo();
+$foo->setBars([
+    (new Bar())->setElement('string'),
+]);
+
 $destination =  (new \WebFu\AnyMapper\AnyMapper())
     ->map($foo)
     ->serialize();
