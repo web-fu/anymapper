@@ -14,5 +14,8 @@ return (new PhpCsFixer\Config())
             'allow_mixed' => true,
             'remove_inheritdoc' => true,
         ],
+        'single_quote' => true,
+        'trailing_comma_in_multiline' => true,
+        '@PHP80Migration:risky' => true,
     ])
     ->setFinder($finder);

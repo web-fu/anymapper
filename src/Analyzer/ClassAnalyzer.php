@@ -49,7 +49,7 @@ class ClassAnalyzer implements AnalyzerInterface
         foreach ($reflection->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
             $this->properties[$property->getName()] = $property;
             $underscoreName = camelcase_to_underscore($property->getName());
-            $types = Reflection::types($property);
+            $types = reflection_type_names($property->getType());
 
             if (PHP_VERSION_ID < 80100 or !$property->isReadOnly()) {
                 $this->inputTrackList[$underscoreName] = new Track($property->getName(), TrackType::PROPERTY, $types);
@@ -70,7 +70,7 @@ class ClassAnalyzer implements AnalyzerInterface
 
                 $underscoreName = camelcase_to_underscore($method->getName());
                 $underscoreName = preg_replace('#^get_|is_#', '', $underscoreName);
-                $types = Reflection::types($method);
+                $types = reflection_type_names($method->getReturnType());
                 $this->outputTrackList[$underscoreName] = new Track($method->getName(), TrackType::METHOD, $types);
             }
             if ('__set' === $method->getName()
@@ -84,10 +84,12 @@ class ClassAnalyzer implements AnalyzerInterface
                     continue;
                 }
                 $lastParameter = array_pop($parameters);
-                $types = Reflection::types($lastParameter);
+                $types = reflection_type_names($lastParameter->getType());
                 $this->inputTrackList[$underscoreName] = new Track($method->getName(), TrackType::METHOD, $types);
             }
-            $returnTypeNames = Reflection::types($method);
+            /** @var ReflectionNamedType|ReflectionUnionType|null $returnType */
+            $returnType = $method->getReturnType();
+            $returnTypeNames = reflection_type_names($returnType);
 
             if (
                 !empty(array_intersect($returnTypeNames, [

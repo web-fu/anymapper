@@ -6,6 +6,7 @@ namespace WebFu\Tests\Unit\AnyMapper;
 
 use PHPUnit\Framework\TestCase;
 use WebFu\AnyMapper\AnyMapper;
+use WebFu\AnyMapper\Strategy\DataCastingStrategy;
 use WebFu\Tests\Fake\EntityWithAnnotation;
 use WebFu\Tests\Fake\FakeEntity;
 use DateTime;
@@ -41,37 +42,6 @@ class AnyMapperTest extends TestCase
         $this->assertSame('byConstructor is set by constructor', $class->getByConstructor());
         $this->assertSame('public', $class->public);
         $this->assertSame('bySetter is set by setter', $class->getBySetter());
-    }
-
-    public function testAllowDataCasting(): void
-    {
-        $class = new class () {
-            public DateTime $public;
-            private DateTime $private;
-
-            public function getPrivate(): DateTime
-            {
-                return $this->private;
-            }
-
-            public function setPrivate(DateTime $private): void
-            {
-                $this->private = $private;
-            }
-        };
-
-        $source = [
-            'public' => '2022-12-01',
-            'private' => '2022-12-31',
-        ];
-
-        (new \WebFu\AnyMapper\AnyMapper())
-            ->map($source)
-            ->allowDataCasting('string', DateTime::class)
-            ->into($class);
-
-        $this->assertEquals(new DateTime('2022-12-01 00:00:00'), $class->public);
-        $this->assertEquals(new DateTime('2022-12-31 00:00:00'), $class->getPrivate());
     }
 
     public function testSerialize(): void
@@ -142,6 +112,26 @@ class AnyMapperTest extends TestCase
         $this->assertSame(1, $class->foo);
         $this->assertSame('bar', $class->bar);
         $this->assertEquals(['foo', 'bar'], $class->array);
+    }
+
+    public function testUsing(): void
+    {
+        $class = new class {
+            public DateTime $value;
+        };
+
+        $source = [
+            'value' => '2022-12-01',
+        ];
+
+        (new AnyMapper())
+            ->map($source)
+            ->using(
+                (new DataCastingStrategy())->allow('string', DateTime::class)
+            )
+            ->into($class);
+
+        $this->assertEquals(new DateTime('2022-12-01'), $class->value);
     }
 
     public function testUseDocBlocks(): void
