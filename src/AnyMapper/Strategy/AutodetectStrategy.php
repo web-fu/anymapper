@@ -8,6 +8,9 @@ use WebFu\Analyzer\ClassAnalyzer;
 use WebFu\Analyzer\Track;
 use WebFu\AnyMapper\MapperException;
 use function WebFu\Internal\get_type;
+use ReflectionParameter;
+use ReflectionUnionType;
+use ReflectionNamedType;
 
 class AutodetectStrategy extends AbstractStrategy
 {
@@ -28,9 +31,9 @@ class AutodetectStrategy extends AbstractStrategy
         }
 
         // Autodetect can be used only on classes
-        $classDestinationTypes = array_filter($allowedDestinationDataTypes, function (string $type) {
-            return class_exists($type);
-        });
+        $classDestinationTypes = array_filter($allowedDestinationDataTypes,
+            fn (string $type) => class_exists($type)
+        );
 
         foreach ($classDestinationTypes as $class) {
             $analyzer = new ClassAnalyzer($class);
@@ -41,9 +44,9 @@ class AutodetectStrategy extends AbstractStrategy
                 continue;
             }
 
-            $constructorParametersSkippable = array_filter($constructorParameters, function (\ReflectionParameter $parameter): bool {
-               return $parameter->isDefaultValueAvailable() || $parameter->isOptional();
-            });
+            $constructorParametersSkippable = array_filter($constructorParameters,
+                fn (ReflectionParameter $parameter): bool => $parameter->isDefaultValueAvailable() || $parameter->isOptional()
+            );
 
             // Autodetect can be used only on unary constructors
             if (count($constructorParameters) - count($constructorParametersSkippable) > 1) {
@@ -62,17 +65,18 @@ class AutodetectStrategy extends AbstractStrategy
         throw new MapperException('Cannot convert type ' . $sourceType . ' into any of the following types: '. implode(',', $allowedDestinationDataTypes));
     }
 
-    private function getParameterType(\ReflectionParameter $parameter): array
+    /** @return string[] */
+    private function getParameterType(ReflectionParameter $parameter): array
     {
         $type = $parameter->getType();
-        if ($type instanceof \ReflectionNamedType) {
+        if ($type instanceof ReflectionNamedType) {
             return [$type->getName()];
         }
 
-        if ($type instanceof \ReflectionUnionType) {
-            return array_map(function (\ReflectionNamedType $type): string {
-                return $type->getName();
-            }, $type->getTypes());
+        if ($type instanceof ReflectionUnionType) {
+            return array_map(
+                fn (ReflectionNamedType $type): string => $type->getName(), $type->getTypes()
+            );
         }
         return [];
     }
