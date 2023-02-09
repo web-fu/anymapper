@@ -7,6 +7,7 @@ namespace WebFu\AnyMapper\Strategy;
 use WebFu\Analyzer\Track;
 use WebFu\AnyMapper\Caster;
 use WebFu\AnyMapper\MapperException;
+
 use function WebFu\Internal\get_type;
 
 class DataCastingStrategy extends AbstractStrategy

@@ -12,7 +12,7 @@ class StrictStrategyTest extends TestCase
 {
     public function testRun(): void
     {
-        $class = new class {
+        $class = new class () {
             public int $int;
         };
 

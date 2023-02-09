@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace WebFu\Internal;
+
 use ReflectionUnionType;
 use ReflectionNamedType;
 use ReflectionType;

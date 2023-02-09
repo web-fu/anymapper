@@ -23,9 +23,7 @@ class ExtendedReflectionClass extends ReflectionClass
      */
     public function getExtendedProperties(int|null $filter = null): array
     {
-        return array_map(function (ReflectionProperty $property) {
-            return new ExtendedReflectionProperty($this->getName(), $property->getName());
-        }, $this->getProperties($filter));
+        return array_map(fn (ReflectionProperty $property) => new ExtendedReflectionProperty($this->getName(), $property->getName()), $this->getProperties($filter));
     }
 
     /**
@@ -98,7 +96,7 @@ class ExtendedReflectionClass extends ReflectionClass
         $record = false;
         $currentUse = [
             'class' => '',
-            'as' => ''
+            'as' => '',
         ];
 
         foreach ($tokens as $token) {
@@ -132,7 +130,7 @@ class ExtendedReflectionClass extends ReflectionClass
                     $record = false;
                     $currentUse = [
                         'class' => '',
-                        'as' => ''
+                        'as' => '',
                     ];
                 }
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace WebFu\Tests\Fake;
 
 use DateTime as DT;

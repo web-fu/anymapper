@@ -20,7 +20,8 @@ abstract class AbstractStrategy
         return $this;
     }
 
-    public function run(): void {
+    public function run(): void
+    {
         $sourceTracks = $this->sourceProxy->getAnalyzer()->getOutputTrackList();
 
         foreach ($sourceTracks as $trackName => $sourceTrack) {

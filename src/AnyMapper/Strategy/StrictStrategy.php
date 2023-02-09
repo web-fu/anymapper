@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace WebFu\AnyMapper\Strategy;
 
 use WebFu\Analyzer\Track;
-use WebFu\AnyMapper\Caster;
 use WebFu\AnyMapper\MapperException;
-use WebFu\Proxy\Proxy;
+
 use function WebFu\Internal\get_type;
 
 class StrictStrategy extends AbstractStrategy

@@ -52,9 +52,7 @@ class Reflection
         }
 
         if ($type instanceof ReflectionUnionType) {
-            return array_map(function (ReflectionNamedType $type): string {
-                return $type->getName();
-            }, $type->getTypes());
+            return array_map(fn (ReflectionNamedType $type): string => $type->getName(), $type->getTypes());
         }
 
         return ['void'];

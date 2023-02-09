@@ -116,7 +116,7 @@ class AnyMapperTest extends TestCase
 
     public function testUsing(): void
     {
-        $class = new class {
+        $class = new class () {
             public DateTime $value;
         };
 

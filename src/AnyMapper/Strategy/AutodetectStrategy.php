@@ -7,10 +7,11 @@ namespace WebFu\AnyMapper\Strategy;
 use WebFu\Analyzer\ClassAnalyzer;
 use WebFu\Analyzer\Track;
 use WebFu\AnyMapper\MapperException;
-use function WebFu\Internal\get_type;
 use ReflectionParameter;
 use ReflectionUnionType;
 use ReflectionNamedType;
+
+use function WebFu\Internal\get_type;
 
 class AutodetectStrategy extends AbstractStrategy
 {
@@ -31,7 +32,8 @@ class AutodetectStrategy extends AbstractStrategy
         }
 
         // Autodetect can be used only on classes
-        $classDestinationTypes = array_filter($allowedDestinationDataTypes,
+        $classDestinationTypes = array_filter(
+            $allowedDestinationDataTypes,
             fn (string $type) => class_exists($type)
         );
 
@@ -44,7 +46,8 @@ class AutodetectStrategy extends AbstractStrategy
                 continue;
             }
 
-            $constructorParametersSkippable = array_filter($constructorParameters,
+            $constructorParametersSkippable = array_filter(
+                $constructorParameters,
                 fn (ReflectionParameter $parameter): bool => $parameter->isDefaultValueAvailable() || $parameter->isOptional()
             );
 
@@ -75,7 +78,8 @@ class AutodetectStrategy extends AbstractStrategy
 
         if ($type instanceof ReflectionUnionType) {
             return array_map(
-                fn (ReflectionNamedType $type): string => $type->getName(), $type->getTypes()
+                fn (ReflectionNamedType $type): string => $type->getName(),
+                $type->getTypes()
             );
         }
         return [];
