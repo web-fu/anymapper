@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 require __DIR__ . '/../vendor/autoload.php';
 
-class Bar
+final class Bar
 {
     private string $element;
 
