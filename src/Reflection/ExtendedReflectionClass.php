@@ -18,6 +18,12 @@ class ExtendedReflectionClass extends ReflectionClass
     protected array $useStatements = [];
     protected bool $useStatementsParsed = false;
 
+    public function getExtendedParentClass(): ExtendedReflectionClass|null
+    {
+        $parentClass = $this->getParentClass();
+        return $parentClass ? new self($parentClass->getName()) : null;
+    }
+
     /**
      * @return ExtendedReflectionProperty[]
      */

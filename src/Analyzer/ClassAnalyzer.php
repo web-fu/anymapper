@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace WebFu\Analyzer;
 
-use ReflectionClass;
 use ReflectionMethod;
 use ReflectionNamedType;
-use ReflectionProperty;
 use ReflectionUnionType;
 
+use WebFu\Reflection\ExtendedReflectionClass;
+use WebFu\Reflection\ExtendedReflectionProperty;
 use function WebFu\Internal\camelcase_to_underscore;
 use function WebFu\Internal\reflection_type_names;
 
 class ClassAnalyzer implements AnalyzerInterface
 {
-    /** @var ReflectionProperty[] */
+    /** @var ExtendedReflectionProperty[] */
     private array $properties = [];
     private ReflectionMethod|null $constructor = null;
     /** @var ReflectionMethod[] */
@@ -34,26 +34,26 @@ class ClassAnalyzer implements AnalyzerInterface
      */
     public function __construct(object|string $class)
     {
-        $reflection = new ReflectionClass($class);
+        $reflection = new ExtendedReflectionClass($class);
 
         $this->init($reflection);
     }
 
     /**
-     * @param ReflectionClass<object> $reflection
+     * @param ExtendedReflectionClass<object> $reflection
      */
-    private function init(ReflectionClass $reflection): void
+    private function init(ExtendedReflectionClass $reflection): void
     {
-        if ($parent = $reflection->getParentClass()) {
+        if ($parent = $reflection->getExtendedParentClass()) {
             $this->init($parent);
         }
 
-        foreach ($reflection->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
+        foreach ($reflection->getExtendedProperties(ExtendedReflectionProperty::IS_PUBLIC) as $property) {
             $this->properties[$property->getName()] = $property;
             $underscoreName = camelcase_to_underscore($property->getName());
-            $types = reflection_type_names($property->getType());
+            $types = $property->getTypes();
 
-            if (PHP_VERSION_ID < 80100 or !$property->isReadOnly()) {
+            if (!$property->isReadOnly()) {
                 $this->inputTrackList[$underscoreName] = new Track($property->getName(), TrackType::PROPERTY, $types);
             }
 
@@ -107,7 +107,7 @@ class ClassAnalyzer implements AnalyzerInterface
     }
 
     /**
-     * @return ReflectionProperty[]
+     * @return ExtendedReflectionProperty[]
      */
     public function getProperties(): array
     {

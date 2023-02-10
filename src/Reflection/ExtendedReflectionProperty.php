@@ -6,35 +6,18 @@ namespace WebFu\Reflection;
 
 use ReflectionUnionType;
 use ReflectionNamedType;
+use function WebFu\Internal\reflection_type_names;
 
-class ExtendedReflectionProperty
+class ExtendedReflectionProperty extends \ReflectionProperty
 {
-    private \ReflectionProperty $reflectionProperty;
-
-    /**
-     * @param object|class-string $objectOrClass
-     */
-    public function __construct(object|string $objectOrClass, string $name)
-    {
-        $this->reflectionProperty = new \ReflectionProperty($objectOrClass, $name);
-    }
-
     /**
      * @return string[]
      */
     public function getTypes(): array
     {
-        $type = $this->reflectionProperty->getType();
+        $type = $this->getType();
 
-        if ($type instanceof ReflectionNamedType) {
-            return [$type->getName()];
-        }
-
-        if ($type instanceof ReflectionUnionType) {
-            return array_map(fn (ReflectionNamedType $type): string => $type->getName(), $type->getTypes());
-        }
-
-        return [];
+        return reflection_type_names($type);
     }
 
     /**
@@ -42,9 +25,14 @@ class ExtendedReflectionProperty
      */
     public function getDocTypes(): array
     {
-        $docBlock = Reflection::sanitizeDocBlock($this->reflectionProperty);
+        $docBlock = Reflection::sanitizeDocBlock($this);
         $annotation = preg_replace('/@var\s/', '$1', $docBlock) ?: '';
 
         return explode('|', $annotation);
+    }
+
+    public function isReadOnly(): bool
+    {
+        return PHP_VERSION_ID >= 80100 && parent::isReadOnly();
     }
 }
