@@ -7,6 +7,7 @@ namespace WebFu\Tests\Unit\AnyMapper;
 use PHPUnit\Framework\TestCase;
 use WebFu\AnyMapper\AnyMapper;
 use WebFu\AnyMapper\Strategy\DataCastingStrategy;
+use WebFu\AnyMapper\Strategy\DocBlockDetectStrategy;
 use WebFu\Tests\Fake\EntityWithAnnotation;
 use WebFu\Tests\Fake\FakeEntity;
 use DateTime;
@@ -139,7 +140,8 @@ class AnyMapperTest extends TestCase
         /** @var EntityWithAnnotation $class */
         $class = (new AnyMapper())->map([
             'foo' => 1,
-        ])->as(EntityWithAnnotation::class);
+        ])->using(new DocBlockDetectStrategy())
+            ->as(EntityWithAnnotation::class);
 
         $this->assertSame(1, $class->getFoo()->getValue());
     }
