@@ -136,6 +136,7 @@ class AnyMapperTest extends TestCase
 
     public function testUseDocBlocks(): void
     {
+        /** @var EntityWithAnnotation $class */
         $class = (new AnyMapper())->map([
             'foo' => 1,
         ])->as(EntityWithAnnotation::class);
