@@ -15,9 +15,9 @@ class AnyMapper
     private Proxy $destinationProxy;
     private StrategyInterface $strategy;
 
-    public function __construct()
+    public function __construct(StrategyInterface|null $strategy = null)
     {
-        $this->strategy = new StrictStrategy();
+        $this->strategy = $strategy ?: new StrictStrategy();
     }
 
     /**
