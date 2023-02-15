@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace WebFu\Reflection;
 
-use ReflectionUnionType;
-use ReflectionNamedType;
 use function WebFu\Internal\reflection_type_names;
 
 class ExtendedReflectionProperty extends \ReflectionProperty

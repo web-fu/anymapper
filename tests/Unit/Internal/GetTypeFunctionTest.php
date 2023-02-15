@@ -61,7 +61,7 @@ class GetTypeFunctionTest extends TestCase
             'expected' => 'class@anonymous',
         ];
         yield 'Closure' => [
-            'value' => function(): bool { return true; },
+            'value' => fn (): bool => true,
             'expected' => 'Closure',
         ];
     }

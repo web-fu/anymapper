@@ -10,6 +10,7 @@ use ReflectionUnionType;
 
 use WebFu\Reflection\ExtendedReflectionClass;
 use WebFu\Reflection\ExtendedReflectionProperty;
+
 use function WebFu\Internal\camelcase_to_underscore;
 use function WebFu\Internal\reflection_type_names;
 
