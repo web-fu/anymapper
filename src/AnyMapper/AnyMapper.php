@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace WebFu\AnyMapper;
 
 use stdClass;
-use WebFu\AnyMapper\Strategy\AbstractStrategy;
+use WebFu\AnyMapper\Strategy\StrategyInterface;
 use WebFu\AnyMapper\Strategy\StrictStrategy;
 use WebFu\Proxy\Proxy;
 
@@ -13,7 +13,7 @@ class AnyMapper
 {
     private Proxy $sourceProxy;
     private Proxy $destinationProxy;
-    private AbstractStrategy $strategy;
+    private StrategyInterface $strategy;
 
     public function __construct()
     {
@@ -30,7 +30,7 @@ class AnyMapper
         return $this;
     }
 
-    public function using(AbstractStrategy $strategy): self
+    public function using(StrategyInterface $strategy): self
     {
         $this->strategy = $strategy;
 

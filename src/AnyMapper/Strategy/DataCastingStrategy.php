@@ -10,7 +10,7 @@ use WebFu\AnyMapper\MapperException;
 
 use function WebFu\Internal\get_type;
 
-class DataCastingStrategy extends AbstractStrategy
+class DataCastingStrategy implements StrategyInterface
 {
     /** @var array<string[]> */
     private array $allowedDataCasting = [];

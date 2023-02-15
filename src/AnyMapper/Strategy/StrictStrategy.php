@@ -9,7 +9,7 @@ use WebFu\AnyMapper\MapperException;
 
 use function WebFu\Internal\get_type;
 
-class StrictStrategy extends AbstractStrategy
+class StrictStrategy implements StrategyInterface
 {
     public function cast(mixed $value, Track|null $destinationTrack): mixed
     {

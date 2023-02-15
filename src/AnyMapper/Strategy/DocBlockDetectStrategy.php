@@ -9,7 +9,7 @@ use WebFu\AnyMapper\MapperException;
 
 use function WebFu\Internal\get_type;
 
-class DocBlockDetectStrategy extends AbstractStrategy
+class DocBlockDetectStrategy implements StrategyInterface
 {
     public function cast(mixed $value, Track|null $destinationTrack): mixed
     {
