@@ -15,10 +15,8 @@ class AutodetectStrategyTest extends TestCase
 {
     public function testCast(): void
     {
-        $destinationTrack = new Track('value', TrackType::PROPERTY, [DateTime::class]);
-
         $strategy = new AutodetectStrategy();
-        $actual = $strategy->cast('2022-12-01', $destinationTrack);
+        $actual = $strategy->cast('2022-12-01', [DateTime::class]);
 
         $this->assertEquals(new DateTime('2022-12-01'), $actual);
     }

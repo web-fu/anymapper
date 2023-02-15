@@ -98,7 +98,7 @@ class AnyMapper
 
             $sourceValue = $this->sourceProxy->get($trackName);
 
-            $destinationValue = $this->strategy->cast($sourceValue, $destinationTrack);
+            $destinationValue = $this->strategy->cast($sourceValue, $destinationTrack->getDataTypes());
 
             $this->destinationProxy->set($trackName, $destinationValue);
         }

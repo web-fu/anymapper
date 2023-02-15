@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace WebFu\AnyMapper\Strategy;
 
-use WebFu\Analyzer\Track;
 use WebFu\AnyMapper\Caster;
 use WebFu\AnyMapper\MapperException;
 
@@ -22,18 +21,16 @@ class DataCastingStrategy implements StrategyInterface
         return $this;
     }
 
-    public function cast(mixed $value, Track|null $destinationTrack): mixed
+    public function cast(mixed $value, array $allowedTypes): mixed
     {
-        $allowedDestinationDataTypes = $destinationTrack?->getDataTypes();
-
-        if (is_null($allowedDestinationDataTypes)) {
+        if (!count($allowedTypes)) {
             // Dynamic Properties are allowed, no casting needed
             return $value;
         }
-
+        
         $sourceType = get_type($value);
 
-        if (in_array($sourceType, $allowedDestinationDataTypes)) {
+        if (in_array($sourceType, $allowedTypes)) {
             // Source type is already accepted by destination, no casting needed
             return $value;
         }
@@ -41,12 +38,12 @@ class DataCastingStrategy implements StrategyInterface
         $allowedDataCasting = $this->allowedDataCasting[$sourceType] ?? [];
 
         foreach ($allowedDataCasting as $to) {
-            if (! in_array($to, $allowedDestinationDataTypes)) {
+            if (! in_array($to, $allowedTypes)) {
                 continue;
             }
             return (new Caster($value))->as($to);
         }
 
-        throw new MapperException('Cannot convert type ' . $sourceType . ' into any of the following types: '. implode(',', $allowedDestinationDataTypes));
+        throw new MapperException('Cannot convert type ' . $sourceType . ' into any of the following types: '. implode(',', $allowedTypes));
     }
 }

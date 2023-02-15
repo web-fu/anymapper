@@ -13,10 +13,8 @@ class StrictStrategyTest extends TestCase
 {
     public function testCast(): void
     {
-        $destinationTrack = new Track('value', TrackType::PROPERTY, ['int']);
-
         $strategy = new StrictStrategy();
-        $actual = $strategy->cast(1, $destinationTrack);
+        $actual = $strategy->cast(1, ['int']);
 
         $this->assertSame(1, $actual);
     }

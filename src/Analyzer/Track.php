@@ -8,7 +8,7 @@ class Track
 {
     /**
      * @param TrackType::* $source
-     * @param string[] $dataTypes
+     * @param DataType::*[] $dataTypes
      */
     public function __construct(
         private string|int $name,
@@ -31,7 +31,7 @@ class Track
     }
 
     /**
-     * @return string[]
+     * @return DataType::*[]
      */
     public function getDataTypes(): array
     {
