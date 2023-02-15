@@ -10,7 +10,7 @@ use function WebFu\Internal\get_type;
 
 class DocBlockDetectStrategy extends AbstractStrategy
 {
-    protected function cast(mixed $value, Track|null $destinationTrack): mixed
+    public function cast(mixed $value, Track|null $destinationTrack): mixed
     {
         $allowedDestinationDataTypes = $destinationTrack?->getDataTypes();
 

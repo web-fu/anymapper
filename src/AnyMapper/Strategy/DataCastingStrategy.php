@@ -22,7 +22,7 @@ class DataCastingStrategy extends AbstractStrategy
         return $this;
     }
 
-    protected function cast(mixed $value, Track|null $destinationTrack): mixed
+    public function cast(mixed $value, Track|null $destinationTrack): mixed
     {
         $allowedDestinationDataTypes = $destinationTrack?->getDataTypes();
 

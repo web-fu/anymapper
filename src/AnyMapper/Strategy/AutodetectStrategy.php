@@ -14,7 +14,7 @@ use function WebFu\Internal\reflection_type_names;
 
 class AutodetectStrategy extends AbstractStrategy
 {
-    protected function cast(mixed $value, Track|null $destinationTrack): mixed
+    public function cast(mixed $value, Track|null $destinationTrack): mixed
     {
         $allowedDestinationDataTypes = $destinationTrack?->getDataTypes();
 

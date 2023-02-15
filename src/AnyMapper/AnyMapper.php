@@ -87,6 +87,20 @@ class AnyMapper
 
     private function doMapping(): void
     {
-        $this->strategy->init($this->sourceProxy, $this->destinationProxy)->run();
+        $sourceTracks = $this->sourceProxy->getAnalyzer()->getOutputTrackList();
+
+        foreach ($sourceTracks as $trackName => $sourceTrack) {
+            $destinationTrack = $this->destinationProxy->getAnalyzer()->getInputTrack($trackName);
+
+            if (! $destinationTrack) {
+                continue;
+            }
+
+            $sourceValue = $this->sourceProxy->get($trackName);
+
+            $destinationValue = $this->strategy->cast($sourceValue, $destinationTrack);
+
+            $this->destinationProxy->set($trackName, $destinationValue);
+        }
     }
 }
