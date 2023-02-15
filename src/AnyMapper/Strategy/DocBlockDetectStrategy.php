@@ -6,6 +6,7 @@ namespace WebFu\AnyMapper\Strategy;
 
 use WebFu\Analyzer\Track;
 use WebFu\AnyMapper\MapperException;
+
 use function WebFu\Internal\get_type;
 
 class DocBlockDetectStrategy extends AbstractStrategy
