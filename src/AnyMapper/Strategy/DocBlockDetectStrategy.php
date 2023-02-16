@@ -24,6 +24,23 @@ class DocBlockDetectStrategy implements StrategyInterface
             return $value;
         }
 
+        foreach ($allowedTypes as $allowedType) {
+            if (!$this->isCompatible($sourceType, $allowedType)) {
+                continue;
+            }
+            return $value;
+        }
+
         throw new MapperException('Cannot convert type ' . $sourceType . ' into any of the following types: '. implode(',', $allowedTypes));
+    }
+
+    private function isCompatible(string $sourceType, string $destType): bool
+    {
+        return match($sourceType) {
+            'bool' => $destType === 'true' || $destType === 'false',
+            'int' => $destType === 'positive-int' || $destType === 'negative-int',
+            'string' => $destType === 'class-string' || $destType === 'non-empty-string' || $destType === 'non-falsy-string' || $destType === 'literal-string',
+            default => false,
+        };
     }
 }
