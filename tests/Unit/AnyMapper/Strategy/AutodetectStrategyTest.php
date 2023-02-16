@@ -6,8 +6,6 @@ namespace WebFu\Tests\Unit\AnyMapper\Strategy;
 
 use PHPUnit\Framework\TestCase;
 
-use WebFu\Analyzer\Track;
-use WebFu\Analyzer\TrackType;
 use WebFu\AnyMapper\Strategy\AutodetectStrategy;
 use DateTime;
 
