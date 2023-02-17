@@ -5,7 +5,7 @@ $finder = (new PhpCsFixer\Finder())
 
 return (new PhpCsFixer\Config())
     ->setRules([
-        '@PSR1' => true,
+        '@PSR2' => true,
         '@PSR12' => true,
         'no_unused_imports' => true,
         'no_extra_blank_lines' => true,
