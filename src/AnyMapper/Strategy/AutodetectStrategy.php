@@ -44,7 +44,7 @@ class AutodetectStrategy implements StrategyInterface
 
             $constructorParametersSkippable = array_filter(
                 $constructorParameters,
-                fn (ReflectionParameter $parameter): bool => $parameter->isDefaultValueAvailable() || $parameter->isOptional()
+                fn (ReflectionParameter $parameter): bool => $parameter->isDefaultValueAvailable() or $parameter->isOptional()
             );
 
             // Autodetect can be used only on unary constructors

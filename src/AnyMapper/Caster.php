@@ -66,7 +66,10 @@ class Caster
             return $this->value;
         }
 
-        if (str_ends_with($destType, '[]') && is_iterable($this->value)) {
+        if (
+            str_ends_with($destType, '[]')
+            and is_iterable($this->value)
+        ) {
             $destType = str_replace('[]', '', $destType);
             $result = [];
             foreach ($this->value as $value) {

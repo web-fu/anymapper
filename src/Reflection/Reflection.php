@@ -75,7 +75,10 @@ class Reflection
         $docBlock = self::sanitizeDocBlock($reflector);
         preg_match('/@template\s(?<template>\w+)\sof\s(?<type>\w+)/', $docBlock, $matches);
 
-        if (isset($matches['template']) and isset($matches['type'])) {
+        if (
+            isset($matches['template'])
+            and isset($matches['type'])
+        ) {
             return [$matches['template'] => self::namespace($reflector).'\\'.$matches['type']];
         }
 
