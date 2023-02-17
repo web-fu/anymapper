@@ -92,7 +92,10 @@ class Caster
             return $this->scalarConversion();
         }
 
-        if (is_iterable($this->value) || is_object($this->value)) {
+        if (
+            is_iterable($this->value)
+            || is_object($this->value)
+        ) {
             return $this->complexConversion();
         }
 

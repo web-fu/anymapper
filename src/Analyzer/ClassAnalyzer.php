@@ -66,7 +66,8 @@ class ClassAnalyzer implements AnalyzerInterface
         }
 
         foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
-            if ('__get' === $method->getName()
+            if (
+                '__get' === $method->getName()
                 || preg_match('#^get[A-Z]+|is[A-Z]+#', $method->getName())
             ) {
                 $this->getters[$method->getName()] = $method;
@@ -76,7 +77,8 @@ class ClassAnalyzer implements AnalyzerInterface
                 $types = reflection_type_names($method->getReturnType());
                 $this->outputTrackList[$underscoreName] = new Track($method->getName(), TrackType::METHOD, $types);
             }
-            if ('__set' === $method->getName()
+            if (
+                '__set' === $method->getName()
                 || preg_match('#^set[A-Z]+#', $method->getName())
             ) {
                 $this->setters[$method->getName()] = $method;
