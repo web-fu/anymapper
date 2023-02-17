@@ -19,7 +19,7 @@ function camelcase_to_underscore(string $string): string
 
     if (
         preg_last_error()
-        or null === $str
+        || null === $str
     ) {
         throw new RuntimeException('Regular exception error: '.preg_last_error_msg());
     }

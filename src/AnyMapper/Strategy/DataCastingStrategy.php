@@ -27,7 +27,7 @@ class DataCastingStrategy implements StrategyInterface
             // Dynamic Properties are allowed, no casting needed
             return $value;
         }
-        
+
         $sourceType = get_type($value);
 
         if (in_array($sourceType, $allowedTypes)) {

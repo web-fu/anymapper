@@ -67,7 +67,7 @@ class ClassAnalyzer implements AnalyzerInterface
 
         foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
             if ('__get' === $method->getName()
-                or preg_match('#^get[A-Z]+|is[A-Z]+#', $method->getName())
+                || preg_match('#^get[A-Z]+|is[A-Z]+#', $method->getName())
             ) {
                 $this->getters[$method->getName()] = $method;
 
@@ -77,7 +77,7 @@ class ClassAnalyzer implements AnalyzerInterface
                 $this->outputTrackList[$underscoreName] = new Track($method->getName(), TrackType::METHOD, $types);
             }
             if ('__set' === $method->getName()
-                or preg_match('#^set[A-Z]+#', $method->getName())
+                || preg_match('#^set[A-Z]+#', $method->getName())
             ) {
                 $this->setters[$method->getName()] = $method;
                 $underscoreName = camelcase_to_underscore($method->getName());
@@ -100,7 +100,7 @@ class ClassAnalyzer implements AnalyzerInterface
                     'self',
                     'static',
                 ]))
-                and $method->isStatic()
+                && $method->isStatic()
             ) {
                 $this->generators[$method->getName()] = $method;
             }

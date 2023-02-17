@@ -77,7 +77,7 @@ class Reflection
 
         if (
             isset($matches['template'])
-            and isset($matches['type'])
+            && isset($matches['type'])
         ) {
             return [$matches['template'] => self::namespace($reflector).'\\'.$matches['type']];
         }

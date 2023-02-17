@@ -68,7 +68,7 @@ class Caster
 
         if (
             str_ends_with($destType, '[]')
-            and is_iterable($this->value)
+            && is_iterable($this->value)
         ) {
             $destType = str_replace('[]', '', $destType);
             $result = [];
@@ -92,7 +92,7 @@ class Caster
             return $this->scalarConversion();
         }
 
-        if (is_iterable($this->value) or is_object($this->value)) {
+        if (is_iterable($this->value) || is_object($this->value)) {
             return $this->complexConversion();
         }
 
@@ -117,7 +117,7 @@ class Caster
      */
     private function complexConversion(): object|iterable|string
     {
-        assert(is_iterable($this->value) or is_object($this->value));
+        assert(is_iterable($this->value) || is_object($this->value));
 
         if ($this->destType === 'string') {
             return var_export($this->value, true);

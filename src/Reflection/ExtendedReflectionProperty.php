@@ -31,6 +31,6 @@ class ExtendedReflectionProperty extends \ReflectionProperty
 
     public function isReadOnly(): bool
     {
-        return PHP_VERSION_ID >= 80100 and parent::isReadOnly();
+        return PHP_VERSION_ID >= 80100 && parent::isReadOnly();
     }
 }

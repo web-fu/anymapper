@@ -78,7 +78,7 @@ class AnyMapper
             $value = $this->sourceProxy->get((string) $trackName);
             if (
                 is_array($value)
-                or is_object($value)
+                || is_object($value)
             ) {
                 $value = (new self())->map($value)->serialize();
             }

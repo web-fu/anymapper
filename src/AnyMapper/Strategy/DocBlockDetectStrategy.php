@@ -31,8 +31,8 @@ class DocBlockDetectStrategy implements StrategyInterface
 
             if (
                 $sourceType === 'string'
-                and $allowedType === 'class-string'
-                and !class_exists($value)
+                && $allowedType === 'class-string'
+                && !class_exists($value)
             ) {
                 throw new MapperException('Class ' . $value . ' does not exists');
             }
@@ -45,10 +45,10 @@ class DocBlockDetectStrategy implements StrategyInterface
 
     private function isCompatible(string $sourceType, string $destType): bool
     {
-        return match($sourceType) {
-            'bool' => $destType === 'true' or $destType === 'false',
-            'int' => $destType === 'positive-int' or $destType === 'negative-int',
-            'string' => $destType === 'class-string' or $destType === 'non-empty-string' or $destType === 'non-falsy-string' or $destType === 'literal-string' or $destType === 'numeric-string',
+        return match ($sourceType) {
+            'bool' => $destType === 'true' || $destType === 'false',
+            'int' => $destType === 'positive-int' || $destType === 'negative-int',
+            'string' => $destType === 'class-string' || $destType === 'non-empty-string' || $destType === 'non-falsy-string' || $destType === 'literal-string' || $destType === 'numeric-string',
             default => false,
         };
     }
