@@ -21,6 +21,9 @@ class DataCastingStrategy implements StrategyInterface
         return $this;
     }
 
+    /**
+     * @param string[] $allowedTypes
+     */
     public function cast(mixed $value, array $allowedTypes): mixed
     {
         if (!count($allowedTypes)) {

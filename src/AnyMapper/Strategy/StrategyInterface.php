@@ -7,7 +7,7 @@ namespace WebFu\AnyMapper\Strategy;
 interface StrategyInterface
 {
     /**
-     * @param DataType::*[] $allowedTypes
+     * @param string[] $allowedTypes
      */
     public function cast(mixed $value, array $allowedTypes): mixed;
 }

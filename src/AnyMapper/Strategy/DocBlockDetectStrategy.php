@@ -10,6 +10,9 @@ use function WebFu\Internal\get_type;
 
 class DocBlockDetectStrategy implements StrategyInterface
 {
+    /**
+     * @param string[] $allowedTypes
+     */
     public function cast(mixed $value, array $allowedTypes): mixed
     {
         if (!count($allowedTypes)) {
@@ -30,7 +33,7 @@ class DocBlockDetectStrategy implements StrategyInterface
             }
 
             if (
-                $sourceType === 'string'
+                is_string($value)
                 && $allowedType === 'class-string'
                 && !class_exists($value)
             ) {
@@ -40,7 +43,7 @@ class DocBlockDetectStrategy implements StrategyInterface
             return $value;
         }
 
-        throw new MapperException('Cannot convert type ' . $sourceType . ' into any of the following types: '. implode(',', $allowedTypes));
+        throw new MapperException('Cannot convert type ' . $sourceType . ' into any of the following types: ' . implode(',', $allowedTypes));
     }
 
     private function isCompatible(string $sourceType, string $destType): bool

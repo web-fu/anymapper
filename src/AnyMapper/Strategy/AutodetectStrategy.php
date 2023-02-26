@@ -13,6 +13,9 @@ use function WebFu\Internal\reflection_type_names;
 
 class AutodetectStrategy implements StrategyInterface
 {
+    /**
+     * @param string[] $allowedTypes
+     */
     public function cast(mixed $value, array $allowedTypes): mixed
     {
         if (!count($allowedTypes)) {
