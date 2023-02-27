@@ -10,6 +10,9 @@ use function WebFu\Internal\get_type;
 
 class StrictStrategy implements StrategyInterface
 {
+    /**
+     * @param string[] $allowedTypes
+     */
     public function cast(mixed $value, array $allowedTypes): mixed
     {
         if (!count($allowedTypes)) {
