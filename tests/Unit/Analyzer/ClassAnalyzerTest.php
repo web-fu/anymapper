@@ -8,14 +8,14 @@ use PHPUnit\Framework\TestCase;
 use WebFu\Analyzer\ClassAnalyzer;
 use WebFu\Analyzer\Track;
 use WebFu\Analyzer\TrackType;
-use WebFu\Tests\Fixture\FakeEntity;
+use WebFu\Tests\Fixture\ChildClass;
 use stdClass;
 
 class ClassAnalyzerTest extends TestCase
 {
     public function testGetConstructor(): void
     {
-        $class = new FakeEntity();
+        $class = new ChildClass();
         $classAnalyzer = new ClassAnalyzer($class);
         $constructor = $classAnalyzer->getConstructor();
 
@@ -30,7 +30,7 @@ class ClassAnalyzerTest extends TestCase
 
     public function testGetGetters(): void
     {
-        $class = new FakeEntity();
+        $class = new ChildClass();
         $classAnalyzer = new ClassAnalyzer($class);
         $getters = $classAnalyzer->getGetters();
 
@@ -46,7 +46,7 @@ class ClassAnalyzerTest extends TestCase
 
     public function testGetSetters(): void
     {
-        $class = new FakeEntity();
+        $class = new ChildClass();
         $classAnalyzer = new ClassAnalyzer($class);
         $setters = $classAnalyzer->getSetters();
 
@@ -60,7 +60,7 @@ class ClassAnalyzerTest extends TestCase
 
     public function testGetProperties(): void
     {
-        $class = new FakeEntity();
+        $class = new ChildClass();
         $classAnalyzer = new ClassAnalyzer($class);
         $properties = $classAnalyzer->getProperties();
 
@@ -73,7 +73,7 @@ class ClassAnalyzerTest extends TestCase
 
     public function testGetGenerators(): void
     {
-        $class = new FakeEntity();
+        $class = new ChildClass();
         $classAnalyzer = new ClassAnalyzer($class);
         $generators = $classAnalyzer->getGenerators();
 
@@ -86,7 +86,7 @@ class ClassAnalyzerTest extends TestCase
 
     public function testGetOutputTrackList(): void
     {
-        $class = new FakeEntity();
+        $class = new ChildClass();
         $classAnalyzer = new ClassAnalyzer($class);
 
         $gettablePathMap = $classAnalyzer->getOutputTrackList();
@@ -106,7 +106,7 @@ class ClassAnalyzerTest extends TestCase
 
     public function testGetInputTrackList(): void
     {
-        $class = new FakeEntity();
+        $class = new ChildClass();
         $classAnalyzer = new ClassAnalyzer($class);
 
         $gettablePathMap = $classAnalyzer->getInputTrackList();
@@ -127,7 +127,7 @@ class ClassAnalyzerTest extends TestCase
      */
     public function testGetOutputTrack(Track|null $expected, string $track): void
     {
-        $class = new FakeEntity();
+        $class = new ChildClass();
         $classAnalyzer = new ClassAnalyzer($class);
 
         $this->assertEquals($expected, $classAnalyzer->getOutputTrack($track));
@@ -185,7 +185,7 @@ class ClassAnalyzerTest extends TestCase
      */
     public function testGetInputTrack(Track|null $expected, string $track): void
     {
-        $class = new FakeEntity();
+        $class = new ChildClass();
         $classAnalyzer = new ClassAnalyzer($class);
 
         $this->assertEquals($expected, $classAnalyzer->getInputTrack($track));

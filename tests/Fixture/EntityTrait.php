@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace WebFu\Tests\Fixture;
 
-trait FakeTrait
+trait EntityTrait
 {
     public mixed $trait;
     private mixed $traitProperty;

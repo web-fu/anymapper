@@ -8,9 +8,9 @@ namespace WebFu\Tests\Fixture;
  * This class is created as example of the functionality of AnyMapper and for testing purposes.
  * This class SHOULD NOT be used as an example of design
  */
-class FakeEntity extends FakeParentEntity
+class ChildClass extends ParentClass
 {
-    use FakeTrait;
+    use EntityTrait;
 
     /*
      * Public properties CAN be mapped
@@ -85,9 +85,9 @@ class FakeEntity extends FakeParentEntity
         return new self();
     }
 
-    public static function create(): FakeEntity
+    public static function create(): ChildClass
     {
-        return new FakeEntity();
+        return new ChildClass();
     }
 
     /*

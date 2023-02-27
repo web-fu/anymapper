@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace WebFu\Tests\Fixture;
 
-class FakeParentEntity
+class ParentClass
 {
     public mixed $parent;
     private mixed $parentProperty;

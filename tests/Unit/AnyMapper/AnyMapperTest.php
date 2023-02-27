@@ -9,7 +9,7 @@ use WebFu\AnyMapper\AnyMapper;
 use WebFu\AnyMapper\Strategy\DataCastingStrategy;
 use WebFu\AnyMapper\Strategy\DocBlockDetectStrategy;
 use WebFu\Tests\Fixture\EntityWithAnnotation;
-use WebFu\Tests\Fixture\FakeEntity;
+use WebFu\Tests\Fixture\ChildClass;
 use DateTime;
 use stdClass;
 
@@ -17,7 +17,7 @@ class AnyMapperTest extends TestCase
 {
     public function testMapInto(): void
     {
-        $class = new FakeEntity();
+        $class = new ChildClass();
 
         (new AnyMapper())->map([
             'byConstructor' => 'byConstructor',
@@ -36,9 +36,9 @@ class AnyMapperTest extends TestCase
             'byConstructor' => 'byConstructor',
             'public' => 'public',
             'bySetter' => 'bySetter',
-        ])->as(FakeEntity::class);
+        ])->as(ChildClass::class);
 
-        $this->assertInstanceOf(FakeEntity::class, $class);
+        $this->assertInstanceOf(ChildClass::class, $class);
 
         $this->assertSame('byConstructor is set by constructor', $class->getByConstructor());
         $this->assertSame('public', $class->public);
