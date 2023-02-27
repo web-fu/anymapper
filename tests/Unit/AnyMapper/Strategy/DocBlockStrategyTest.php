@@ -6,7 +6,7 @@ namespace WebFu\Tests\Unit\AnyMapper\Strategy;
 
 use PHPUnit\Framework\TestCase;
 use WebFu\AnyMapper\Strategy\DocBlockDetectStrategy;
-use WebFu\Tests\Fake\Foo;
+use WebFu\Tests\Fixture\Foo;
 
 class DocBlockStrategyTest extends TestCase
 {

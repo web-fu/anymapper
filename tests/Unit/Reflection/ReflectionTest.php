@@ -6,12 +6,12 @@ namespace WebFu\Tests\Unit\Reflection;
 
 use PHPUnit\Framework\TestCase;
 use WebFu\Reflection\Reflection;
-use WebFu\Tests\Fake\EntityWithAnnotation;
+use WebFu\Tests\Fixture\EntityWithAnnotation;
 use ReflectionProperty;
 use ReflectionParameter;
 use ReflectionMethod;
 use ReflectionClass;
-use WebFu\Tests\Fake\Foo;
+use WebFu\Tests\Fixture\Foo;
 
 class ReflectionTest extends TestCase
 {

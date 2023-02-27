@@ -6,8 +6,8 @@ namespace WebFu\Tests\Unit\Reflection;
 
 use WebFu\Reflection\ExtendedReflectionClass;
 use PHPUnit\Framework\TestCase;
-use WebFu\Tests\Fake\EntityWithAnnotation;
-use WebFu\Tests\Fake\Foo;
+use WebFu\Tests\Fixture\EntityWithAnnotation;
+use WebFu\Tests\Fixture\Foo;
 use DateTime;
 
 class ExtendedReflectionClassTest extends TestCase

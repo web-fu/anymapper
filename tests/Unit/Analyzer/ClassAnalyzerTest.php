@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use WebFu\Analyzer\ClassAnalyzer;
 use WebFu\Analyzer\Track;
 use WebFu\Analyzer\TrackType;
-use WebFu\Tests\Fake\FakeEntity;
+use WebFu\Tests\Fixture\FakeEntity;
 use stdClass;
 
 class ClassAnalyzerTest extends TestCase

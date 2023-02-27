@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace WebFu\Tests\Unit\Internal;
 
 use PHPUnit\Framework\TestCase;
-use WebFu\Tests\Fake\Foo;
+use WebFu\Tests\Fixture\Foo;
 
 use function WebFu\Internal\get_type;
 

@@ -8,8 +8,8 @@ use PHPUnit\Framework\TestCase;
 use WebFu\AnyMapper\AnyMapper;
 use WebFu\AnyMapper\Strategy\DataCastingStrategy;
 use WebFu\AnyMapper\Strategy\DocBlockDetectStrategy;
-use WebFu\Tests\Fake\EntityWithAnnotation;
-use WebFu\Tests\Fake\FakeEntity;
+use WebFu\Tests\Fixture\EntityWithAnnotation;
+use WebFu\Tests\Fixture\FakeEntity;
 use DateTime;
 use stdClass;
 

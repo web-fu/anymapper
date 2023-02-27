@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebFu\Tests\Fake;
+namespace WebFu\Tests\Fixture;
 
 class Foo
 {

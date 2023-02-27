@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebFu\Tests\Fake;
+namespace WebFu\Tests\Fixture;
 
 /*
  * This class is created as example of the functionality of AnyMapper and for testing purposes.
