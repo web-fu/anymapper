@@ -6,10 +6,9 @@ namespace WebFu\AnyMapper\Strategy;
 
 use WebFu\Analyzer\ClassAnalyzer;
 use WebFu\AnyMapper\MapperException;
-use ReflectionParameter;
+use WebFu\Reflection\ReflectionParameter;
 
 use function WebFu\Internal\get_type;
-use function WebFu\Internal\reflection_type_names;
 
 class AutodetectStrategy implements StrategyInterface
 {
@@ -55,7 +54,7 @@ class AutodetectStrategy implements StrategyInterface
                 continue;
             }
 
-            $allowedTypes = reflection_type_names($constructorParameters[0]->getType());
+            $allowedTypes = $constructorParameters[0]->getType()->getTypeNames();
             foreach ($allowedTypes as $allowedType) {
                 if ($sourceType !== $allowedType) {
                     continue;

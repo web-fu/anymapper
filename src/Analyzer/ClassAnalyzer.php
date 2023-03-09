@@ -4,19 +4,14 @@ declare(strict_types=1);
 
 namespace WebFu\Analyzer;
 
-use ReflectionMethod;
-use ReflectionNamedType;
-use ReflectionUnionType;
-
-use WebFu\Reflection\ExtendedReflectionClass;
-use WebFu\Reflection\ExtendedReflectionProperty;
-
+use WebFu\Reflection\ReflectionClass;
+use WebFu\Reflection\ReflectionMethod;
+use WebFu\Reflection\ReflectionProperty;
 use function WebFu\Internal\camelcase_to_underscore;
-use function WebFu\Internal\reflection_type_names;
 
 class ClassAnalyzer implements AnalyzerInterface
 {
-    /** @var ExtendedReflectionProperty[] */
+    /** @var ReflectionProperty[] */
     private array $properties = [];
     private ReflectionMethod|null $constructor = null;
     /** @var ReflectionMethod[] */
@@ -35,30 +30,27 @@ class ClassAnalyzer implements AnalyzerInterface
      */
     public function __construct(object|string $class)
     {
-        $reflection = new ExtendedReflectionClass($class);
+        $reflection = new ReflectionClass($class);
 
         $this->init($reflection);
     }
 
-    /**
-     * @param ExtendedReflectionClass<object> $reflection
-     */
-    private function init(ExtendedReflectionClass $reflection): void
+    private function init(ReflectionClass $reflection): void
     {
-        if ($parent = $reflection->getExtendedParentClass()) {
+        if ($parent = $reflection->getParentClass()) {
             $this->init($parent);
         }
 
-        foreach ($reflection->getExtendedProperties(ExtendedReflectionProperty::IS_PUBLIC) as $property) {
+        foreach ($reflection->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
             $this->properties[$property->getName()] = $property;
             $underscoreName = camelcase_to_underscore($property->getName());
-            $types = $property->getTypes();
+            $types = $property->getType();
 
             if (!$property->isReadOnly()) {
-                $this->inputTrackList[$underscoreName] = new Track($property->getName(), TrackType::PROPERTY, $types);
+                $this->inputTrackList[$underscoreName] = new Track($property->getName(), TrackType::PROPERTY, $types->getTypeNames());
             }
 
-            $this->outputTrackList[$underscoreName] = new Track($property->getName(), TrackType::PROPERTY, $types);
+            $this->outputTrackList[$underscoreName] = new Track($property->getName(), TrackType::PROPERTY, $types->getTypeNames());
         }
 
         if ($reflection->getConstructor()?->isPublic()) {
@@ -74,8 +66,7 @@ class ClassAnalyzer implements AnalyzerInterface
 
                 $underscoreName = camelcase_to_underscore($method->getName());
                 $underscoreName = preg_replace('#^get_|is_#', '', $underscoreName);
-                $types = reflection_type_names($method->getReturnType());
-                $this->outputTrackList[$underscoreName] = new Track($method->getName(), TrackType::METHOD, $types);
+                $this->outputTrackList[$underscoreName] = new Track($method->getName(), TrackType::METHOD, $method->getReturnType()->getTypeNames());
             }
             if (
                 '__set' === $method->getName()
@@ -85,19 +76,17 @@ class ClassAnalyzer implements AnalyzerInterface
                 $underscoreName = camelcase_to_underscore($method->getName());
                 $underscoreName = preg_replace('#^set_#', '', $underscoreName);
                 $parameters = $method->getParameters();
-                if (!count($parameters)) {
+                if (!$method->getNumberOfParameters()) {
                     continue;
                 }
                 $lastParameter = array_pop($parameters);
-                $types = reflection_type_names($lastParameter->getType());
-                $this->inputTrackList[$underscoreName] = new Track($method->getName(), TrackType::METHOD, $types);
+                $this->inputTrackList[$underscoreName] = new Track($method->getName(), TrackType::METHOD, $lastParameter->getType()->getTypeNames());
             }
-            /** @var ReflectionNamedType|ReflectionUnionType|null $returnType */
+
             $returnType = $method->getReturnType();
-            $returnTypeNames = reflection_type_names($returnType);
 
             if (
-                !empty(array_intersect($returnTypeNames, [
+                !empty(array_intersect($returnType->getTypeNames(), [
                     $reflection->getName(),
                     'self',
                     'static',
@@ -110,7 +99,7 @@ class ClassAnalyzer implements AnalyzerInterface
     }
 
     /**
-     * @return ExtendedReflectionProperty[]
+     * @return ReflectionProperty[]
      */
     public function getProperties(): array
     {
