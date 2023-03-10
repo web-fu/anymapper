@@ -8,14 +8,13 @@ use DateTime as DT;
 
 /**
  * @internal
- * @template F of Foo
  */
 class EntityWithAnnotation
 {
     /** @var DT */
     private $DT;
 
-    /** @var F */
+    /** @var Foo */
     private $foo;
 
     /**
@@ -69,7 +68,7 @@ class EntityWithAnnotation
     }
 
     /**
-     * @return F
+     * @return Foo
      */
     public function getFoo()
     {
@@ -77,7 +76,7 @@ class EntityWithAnnotation
     }
 
     /**
-     * @param F $foo
+     * @param Foo $foo
      */
     public function setFoo($foo): void
     {

@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace WebFu\Tests\Unit\AnyMapper;
+namespace WebFu\Tests\Integration\AnyMapper;
 
+use DateTime;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 use WebFu\AnyMapper\AnyMapper;
 use WebFu\AnyMapper\Strategy\DataCastingStrategy;
 use WebFu\AnyMapper\Strategy\DocBlockDetectStrategy;
-use WebFu\Tests\Fixture\EntityWithAnnotation;
 use WebFu\Tests\Fixture\ChildClass;
-use DateTime;
-use stdClass;
+use WebFu\Tests\Fixture\EntityWithAnnotation;
 
 class AnyMapperTest extends TestCase
 {
