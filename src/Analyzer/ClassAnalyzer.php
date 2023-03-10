@@ -7,6 +7,7 @@ namespace WebFu\Analyzer;
 use WebFu\Reflection\ReflectionClass;
 use WebFu\Reflection\ReflectionMethod;
 use WebFu\Reflection\ReflectionProperty;
+
 use function WebFu\Internal\camelcase_to_underscore;
 
 class ClassAnalyzer implements AnalyzerInterface
@@ -44,13 +45,13 @@ class ClassAnalyzer implements AnalyzerInterface
         foreach ($reflection->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
             $this->properties[$property->getName()] = $property;
             $underscoreName = camelcase_to_underscore($property->getName());
-            $types = $property->getType();
+            $types = $property->getTypeExtended();
 
             if (!$property->isReadOnly()) {
-                $this->inputTrackList[$underscoreName] = new Track($property->getName(), TrackType::PROPERTY, $types->getTypeNames());
+                $this->inputTrackList[$underscoreName] = new Track($property->getName(), TrackType::PROPERTY, $types);
             }
 
-            $this->outputTrackList[$underscoreName] = new Track($property->getName(), TrackType::PROPERTY, $types->getTypeNames());
+            $this->outputTrackList[$underscoreName] = new Track($property->getName(), TrackType::PROPERTY, $types);
         }
 
         if ($reflection->getConstructor()?->isPublic()) {
@@ -66,7 +67,7 @@ class ClassAnalyzer implements AnalyzerInterface
 
                 $underscoreName = camelcase_to_underscore($method->getName());
                 $underscoreName = preg_replace('#^get_|is_#', '', $underscoreName);
-                $this->outputTrackList[$underscoreName] = new Track($method->getName(), TrackType::METHOD, $method->getReturnType()->getTypeNames());
+                $this->outputTrackList[$underscoreName] = new Track($method->getName(), TrackType::METHOD, $method->getReturnTypeExtended());
             }
             if (
                 '__set' === $method->getName()
@@ -80,7 +81,7 @@ class ClassAnalyzer implements AnalyzerInterface
                     continue;
                 }
                 $lastParameter = array_pop($parameters);
-                $this->inputTrackList[$underscoreName] = new Track($method->getName(), TrackType::METHOD, $lastParameter->getType()->getTypeNames());
+                $this->inputTrackList[$underscoreName] = new Track($method->getName(), TrackType::METHOD, $lastParameter->getTypeExtended());
             }
 
             $returnType = $method->getReturnType();

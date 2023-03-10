@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-fu/reflection.git",
-                "reference": "521fa80fdc861f97354fb8bf0fb9b884f2794679"
+                "reference": "cf5ec4179a53bc4aeaf0ff241f4b973a38adff41"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-fu/reflection/zipball/521fa80fdc861f97354fb8bf0fb9b884f2794679",
-                "reference": "521fa80fdc861f97354fb8bf0fb9b884f2794679",
+                "url": "https://api.github.com/repos/web-fu/reflection/zipball/cf5ec4179a53bc4aeaf0ff241f4b973a38adff41",
+                "reference": "cf5ec4179a53bc4aeaf0ff241f4b973a38adff41",
                 "shasum": ""
             },
             "require": {
@@ -56,7 +56,7 @@
                 "issues": "https://github.com/web-fu/reflection/issues",
                 "source": "https://github.com/web-fu/reflection/tree/main"
             },
-            "time": "2023-03-07T17:04:29+00:00"
+            "time": "2023-03-10T11:50:01+00:00"
         }
     ],
     "packages-dev": [

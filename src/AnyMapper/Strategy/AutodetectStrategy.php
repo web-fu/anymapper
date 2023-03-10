@@ -7,16 +7,16 @@ namespace WebFu\AnyMapper\Strategy;
 use WebFu\Analyzer\ClassAnalyzer;
 use WebFu\AnyMapper\MapperException;
 use WebFu\Reflection\ReflectionParameter;
+use WebFu\Reflection\ReflectionTypeExtended;
 
 use function WebFu\Internal\get_type;
 
 class AutodetectStrategy implements StrategyInterface
 {
-    /**
-     * @param string[] $allowedTypes
-     */
-    public function cast(mixed $value, array $allowedTypes): mixed
+    public function cast(mixed $value, ReflectionTypeExtended $allowed): mixed
     {
+        $allowedTypes = $allowed->getTypeNames();
+
         if (!count($allowedTypes)) {
             // Dynamic Properties are allowed, no casting needed
             return $value;

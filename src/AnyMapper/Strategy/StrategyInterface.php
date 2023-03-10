@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace WebFu\AnyMapper\Strategy;
 
+use WebFu\Reflection\ReflectionTypeExtended;
+
 interface StrategyInterface
 {
-    /**
-     * @param string[] $allowedTypes
-     */
-    public function cast(mixed $value, array $allowedTypes): mixed;
+    public function cast(mixed $value, ReflectionTypeExtended $allowed): mixed;
 }

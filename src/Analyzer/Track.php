@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace WebFu\Analyzer;
 
+use WebFu\Reflection\ReflectionTypeExtended;
+
 class Track
 {
     /**
      * @param TrackType::* $source
-     * @param string[] $dataTypes
      */
     public function __construct(
         private string|int $name,
         private string $source,
-        private array $dataTypes,
+        private ReflectionTypeExtended $dataTypes,
     ) {
     }
 
@@ -30,10 +31,7 @@ class Track
         return $this->source;
     }
 
-    /**
-     * @return string[]
-     */
-    public function getDataTypes(): array
+    public function getDataTypes(): ReflectionTypeExtended
     {
         return $this->dataTypes;
     }
