@@ -38,20 +38,24 @@ class AutodetectStrategy implements StrategyInterface
         foreach ($classDestinationTypes as $class) {
             $analyzer = new ClassAnalyzer($class);
 
-            $constructorParameters = $analyzer->getConstructor()?->getParameters() ?? [];
-            // Autodetect can be used only if constructor can accept parameters
-            if (!count($constructorParameters)) {
+            /* Constructor does not accept parameters */
+            if (!$analyzer->getConstructor()?->getNumberOfParameters()) {
                 continue;
             }
 
-            $constructorParametersSkippable = array_filter(
-                $constructorParameters,
-                fn (ReflectionParameter $parameter): bool => $parameter->isDefaultValueAvailable() || $parameter->isOptional()
-            );
-
-            // Autodetect can be used only on unary constructors
-            if (count($constructorParameters) - count($constructorParametersSkippable) > 1) {
+            /* Constructor require more than one parameter */
+            if ($analyzer->getConstructor()?->getNumberOfRequiredParameters() > 1) {
                 continue;
+            }
+
+            $constructorParameters = $analyzer->getConstructor()->getParameters();
+
+            $allowedTypes = $constructorParameters[0]->getType()->getTypeNames();
+            foreach ($allowedTypes as $allowedType) {
+                if ($sourceType !== $allowedType) {
+                    continue;
+                }
+                return new $class($value);
             }
 
             $allowedTypes = $constructorParameters[0]->getType()->getTypeNames();
