@@ -34,6 +34,7 @@
     "phpunit/phpunit": "^9.5",
     "friendsofphp/php-cs-fixer": "^3.13",
     "phpstan/phpstan": "^1.9",
-    "vimeo/psalm": "^5.4"
+    "vimeo/psalm": "^5.4",
+    "phpbench/phpbench": "^1.2"
   }
 }
