@@ -6,7 +6,6 @@ namespace WebFu\AnyMapper\Strategy;
 
 use WebFu\Analyzer\ClassAnalyzer;
 use WebFu\AnyMapper\MapperException;
-use WebFu\Reflection\ReflectionParameter;
 use WebFu\Reflection\ReflectionTypeExtended;
 
 use function WebFu\Internal\get_type;
@@ -44,7 +43,7 @@ class AutodetectStrategy implements StrategyInterface
             }
 
             /* Constructor require more than one parameter */
-            if ($analyzer->getConstructor()?->getNumberOfRequiredParameters() > 1) {
+            if ($analyzer->getConstructor()->getNumberOfRequiredParameters() > 1) {
                 continue;
             }
 

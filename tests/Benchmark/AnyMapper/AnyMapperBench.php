@@ -16,7 +16,7 @@ class AnyMapperBench
             'bar' => 'I am bar',
         ];
 
-        $destination = new class {
+        $destination = new class () {
             private string $foo;
             public string $bar;
 

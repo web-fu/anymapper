@@ -6,6 +6,7 @@ namespace WebFu\Analyzer;
 
 use WebFu\Reflection\ReflectionClass;
 use WebFu\Reflection\ReflectionMethod;
+use WebFu\Reflection\ReflectionParameter;
 use WebFu\Reflection\ReflectionProperty;
 
 use function WebFu\Internal\camelcase_to_underscore;
@@ -80,6 +81,7 @@ class ClassAnalyzer implements AnalyzerInterface
                 if (!$method->getNumberOfParameters()) {
                     continue;
                 }
+                /** @var ReflectionParameter $lastParameter */
                 $lastParameter = array_pop($parameters);
                 $this->inputTrackList[$underscoreName] = new Track($method->getName(), TrackType::METHOD, $lastParameter->getTypeExtended());
             }

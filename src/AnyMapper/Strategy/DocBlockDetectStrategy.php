@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace WebFu\AnyMapper\Strategy;
 
+use WebFu\Analyzer\ClassAnalyzer;
 use WebFu\AnyMapper\MapperException;
-
 use WebFu\Reflection\ReflectionTypeExtended;
 
 use function WebFu\Internal\get_type;
@@ -14,7 +14,7 @@ class DocBlockDetectStrategy implements StrategyInterface
 {
     public function cast(mixed $value, ReflectionTypeExtended $allowed): mixed
     {
-        $allowedTypes = $allowed->getTypeNames();
+        $allowedTypes = array_merge($allowed->getTypeNames(), $allowed->getDocBlockTypeNames());
 
         if (!count($allowedTypes)) {
             // Dynamic Properties are allowed, no casting needed
@@ -28,32 +28,37 @@ class DocBlockDetectStrategy implements StrategyInterface
             return $value;
         }
 
-        foreach ($allowedTypes as $allowedType) {
-            if (!$this->isCompatible($sourceType, $allowedType)) {
+        // Autodetect can be used only on classes
+        $classDestinationTypes = array_filter(
+            $allowedTypes,
+            fn (string $type) => class_exists($type)
+        );
+
+        foreach ($classDestinationTypes as $class) {
+            $analyzer = new ClassAnalyzer($class);
+
+            /* Constructor does not accept parameters */
+            if (!$analyzer->getConstructor()?->getNumberOfParameters()) {
                 continue;
             }
 
-            if (
-                is_string($value)
-                && $allowedType === 'class-string'
-                && !class_exists($value)
-            ) {
-                throw new MapperException('Class ' . $value . ' does not exists');
+            /* Constructor require more than one parameter */
+            if ($analyzer->getConstructor()->getNumberOfRequiredParameters() > 1) {
+                continue;
             }
 
-            return $value;
+            $constructorParameters = $analyzer->getConstructor()->getParameters();
+
+            $allowedTypes = $constructorParameters[0]->getType()->getTypeNames();
+
+            foreach ($allowedTypes as $allowedType) {
+                if ($sourceType !== $allowedType) {
+                    continue;
+                }
+                return new $class($value);
+            }
         }
 
         throw new MapperException('Cannot convert type ' . $sourceType . ' into any of the following types: ' . implode(',', $allowedTypes));
-    }
-
-    private function isCompatible(string $sourceType, string $destType): bool
-    {
-        return match ($sourceType) {
-            'bool' => $destType === 'true' || $destType === 'false',
-            'int' => $destType === 'positive-int' || $destType === 'negative-int',
-            'string' => $destType === 'class-string' || $destType === 'non-empty-string' || $destType === 'non-falsy-string' || $destType === 'literal-string' || $destType === 'numeric-string',
-            default => false,
-        };
     }
 }

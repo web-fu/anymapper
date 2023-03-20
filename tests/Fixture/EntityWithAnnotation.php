@@ -62,6 +62,9 @@ class EntityWithAnnotation
         return $this->DT;
     }
 
+    /**
+     * @param DT $DT
+     */
     public function setDTValue($DT): void
     {
         $this->DT = $DT;
