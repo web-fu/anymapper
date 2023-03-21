@@ -14,7 +14,7 @@ use function WebFu\Internal\get_type;
 class DataCastingStrategy implements StrategyInterface
 {
     /** @var array<string[]> */
-    private array $allowedDataCasting = [];
+    protected array $allowedDataCasting = [];
 
     public function allow(string $from, string $to): self
     {

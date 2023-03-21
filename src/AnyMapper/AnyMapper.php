@@ -40,30 +40,26 @@ class AnyMapper
     /**
      * @param mixed[]|object $destination
      */
-    public function into(array|object $destination): void
+    public function into(array|object $destination): self
     {
         $this->destinationProxy = new Proxy($destination);
-        $this->doMapping();
+
+        return $this;
     }
 
     /**
      * @param class-string $className
      */
-    public function as(string $className): object
+    public function as(string $className): self
     {
         if (!class_exists($className)) {
             throw new MapperException('Class ' . $className . ' does not exist');
         }
+
         $destination = new $className();
-
-        if ($className === stdClass::class) {
-            return (object) $this->serialize();
-        }
-
         $this->destinationProxy = new Proxy($destination);
-        $this->doMapping();
 
-        return $destination;
+        return $this;
     }
 
     /**
@@ -88,12 +84,13 @@ class AnyMapper
         return $output;
     }
 
-    private function doMapping(): void
+    public function run()
     {
         $sourceTracks = $this->sourceProxy->getAnalyzer()->getOutputTrackList();
+        $destinationAnalyzer = $this->destinationProxy->getAnalyzer();
 
         foreach ($sourceTracks as $trackName => $sourceTrack) {
-            $destinationTrack = $this->destinationProxy->getAnalyzer()->getInputTrack($trackName);
+            $destinationTrack = $destinationAnalyzer->getInputTrack($trackName);
 
             if (! $destinationTrack) {
                 continue;
@@ -105,5 +102,7 @@ class AnyMapper
 
             $this->destinationProxy->set($trackName, $destinationValue);
         }
+
+        return $this->destinationProxy->getElement();
     }
 }

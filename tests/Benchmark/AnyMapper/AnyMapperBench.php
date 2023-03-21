@@ -34,6 +34,7 @@ class AnyMapperBench
 
         (new \WebFu\AnyMapper\AnyMapper())
             ->map($source)
-            ->into($destination);
+            ->into($destination)
+            ->run();
     }
 }

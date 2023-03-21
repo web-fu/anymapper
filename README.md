@@ -38,7 +38,8 @@ $destination = new MyClass();
 
 (new \WebFu\AnyMapper\AnyMapper())
     ->map($source)
-    ->into($destination);
+    ->into($destination)
+    ->run();
 
 echo $destination->getFoo(); // I am foo and I was set in a setter
 echo PHP_EOL;
@@ -48,7 +49,8 @@ echo PHP_EOL;
 // Create a new object of a class
 $destination = (new \WebFu\AnyMapper\AnyMapper())
     ->map($source)
-    ->as(MyClass::class);
+    ->as(MyClass::class)
+    ->run();
 
 echo $destination->getFoo(); // I am foo and I was set in a setter
 echo PHP_EOL;
@@ -73,7 +75,8 @@ $destination = (new \WebFu\AnyMapper\AnyMapper())
     ->using(
         (new \WebFu\AnyMapper\Strategy\DataCastingStrategy())->allow('string', DateTime::class)
     )
-    ->as(MyClass::class);
+    ->as(MyClass::class)
+    ->run();
 
 echo $destination->value->format('Y-m-d H:i:s'); // 2022-12-01 00:00:00
 echo PHP_EOL;
@@ -97,7 +100,8 @@ $destination = (new \WebFu\AnyMapper\AnyMapper())
     ->using(
         (new \WebFu\AnyMapper\Strategy\DocBlockDetectStrategy())
     )
-    ->as(MyClass::class);
+    ->as(MyClass::class)
+    ->run();
 
 echo $destination->value->format('Y-m-d H:i:s'); // 2022-12-01 00:00:00
 echo PHP_EOL;

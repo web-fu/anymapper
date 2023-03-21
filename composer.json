@@ -35,6 +35,7 @@
     "friendsofphp/php-cs-fixer": "^3.13",
     "phpstan/phpstan": "^1.9",
     "vimeo/psalm": "^5.4",
-    "phpbench/phpbench": "^1.2"
+    "phpbench/phpbench": "^1.2",
+    "vimeo/php-mysql-engine": "^0.6.1"
   }
 }

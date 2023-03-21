@@ -30,7 +30,8 @@ $destination = new MyClass();
 
 (new \WebFu\AnyMapper\AnyMapper())
     ->map($source)
-    ->into($destination);
+    ->into($destination)
+    ->run();
 
 echo $destination->getFoo(); // I am foo and I was set in a setter
 echo PHP_EOL;

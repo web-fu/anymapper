@@ -23,6 +23,13 @@ class Proxy
         $this->analyzer = AnalyzerFactory::create($element);
     }
 
+    /**
+     * @return mixed[]|array
+     */
+    public function getElement(): object|array {
+        return $this->element;
+    }
+
     public function getAnalyzer(): AnalyzerInterface
     {
         return $this->analyzer;

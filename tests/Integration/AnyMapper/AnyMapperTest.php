@@ -7,11 +7,14 @@ namespace WebFu\Tests\Integration\AnyMapper;
 use DateTime;
 use PHPUnit\Framework\TestCase;
 use stdClass;
+use Vimeo\MysqlEngine\Php8\FakePdo;
 use WebFu\AnyMapper\AnyMapper;
 use WebFu\AnyMapper\Strategy\DataCastingStrategy;
 use WebFu\AnyMapper\Strategy\DocBlockDetectStrategy;
+use WebFu\AnyMapper\Strategy\SQLFetchStrategy;
 use WebFu\Tests\Fixture\ChildClass;
 use WebFu\Tests\Fixture\EntityWithAnnotation;
+use WebFu\Tests\Fixture\GameScoreEntity;
 
 class AnyMapperTest extends TestCase
 {
@@ -23,7 +26,7 @@ class AnyMapperTest extends TestCase
             'byConstructor' => 'byConstructor',
             'public' => 'public',
             'bySetter' => 'bySetter',
-        ])->into($class);
+        ])->into($class)->run();
 
         $this->assertSame('byConstructor is set by constructor', $class->getByConstructor());
         $this->assertSame('public', $class->public);
@@ -36,7 +39,9 @@ class AnyMapperTest extends TestCase
             'byConstructor' => 'byConstructor',
             'public' => 'public',
             'bySetter' => 'bySetter',
-        ])->as(ChildClass::class);
+        ])
+            ->as(ChildClass::class)
+            ->run();
 
         $this->assertInstanceOf(ChildClass::class, $class);
 
@@ -95,26 +100,6 @@ class AnyMapperTest extends TestCase
         ], $serialized);
     }
 
-    public function testAllowDynamicProperties(): void
-    {
-        $class = (new AnyMapper())->map([
-            'foo' => 1,
-            'bar' => 'bar',
-            'array' => [
-                'foo',
-                'bar',
-            ],
-        ])->as(stdClass::class);
-
-        assert(property_exists($class, 'foo'));
-        assert(property_exists($class, 'bar'));
-        assert(property_exists($class, 'array'));
-
-        $this->assertSame(1, $class->foo);
-        $this->assertSame('bar', $class->bar);
-        $this->assertEquals(['foo', 'bar'], $class->array);
-    }
-
     public function testUsing(): void
     {
         $class = new class () {
@@ -130,7 +115,8 @@ class AnyMapperTest extends TestCase
             ->using(
                 (new DataCastingStrategy())->allow('string', DateTime::class)
             )
-            ->into($class);
+            ->into($class)
+            ->run();
 
         $this->assertEquals(new DateTime('2022-12-01'), $class->value);
     }
@@ -141,8 +127,50 @@ class AnyMapperTest extends TestCase
         $class = (new AnyMapper())->map([
             'foo' => 1,
         ])->using(new DocBlockDetectStrategy())
-            ->as(EntityWithAnnotation::class);
+            ->as(EntityWithAnnotation::class)
+            ->run();
 
         $this->assertSame(1, $class->getFoo()->getValue());
+    }
+
+    public function testSQLFetchStrategy(): void
+    {
+        $dbConnection = self::createConnection();
+        $stmt = $dbConnection->query('SELECT * FROM game_scores');
+
+        $sqlMapper = (new AnyMapper())
+            ->using(new SQLFetchStrategy())
+            ->as(GameScoreEntity::class);
+
+        while ($result = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $entity = $sqlMapper->map($result)->run();
+            $this->assertIsInt($entity->getId());
+            $this->assertIsString($entity->getName());
+            $this->assertIsInt($entity->getScore());
+        }
+    }
+
+    public static function createConnection(): \PDO {
+        $dbConnection = new FakePdo('mysql:foo;dbname=test;', '', ' ', [
+            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+            \PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"
+        ]);
+
+        $dbConnection->query(
+            'CREATE TABLE `game_scores` (
+                `id` INT(10) NOT NULL AUTO_INCREMENT,
+                `name` VARCHAR(16) NOT NULL DEFAULT "",
+                `score` INT(10) NOT NULL,
+                PRIMARY KEY (`id`)
+            ) CHARSET=utf8 ENGINE=InnoDB'
+        );
+        $dbConnection->query(
+            'INSERT INTO `game_scores` (`name`, `score`)
+               VALUES ("Matt", 20), ("Matt", 1200),
+               ("Matt", 2300), ("Kathleen", 6700),
+               ("Will", 6200), ("Will", 4800)'
+        );
+
+        return $dbConnection;
     }
 }

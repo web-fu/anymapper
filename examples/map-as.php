@@ -28,7 +28,8 @@ $source = [
 
 $destination = (new \WebFu\AnyMapper\AnyMapper())
     ->map($source)
-    ->as(MyClass::class);
+    ->as(MyClass::class)
+    ->run();
 
 echo $destination->getFoo(); // I am foo and I was set in a setter
 echo PHP_EOL;
