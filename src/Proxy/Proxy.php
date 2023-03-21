@@ -26,7 +26,8 @@ class Proxy
     /**
      * @return mixed[]|array
      */
-    public function getElement(): object|array {
+    public function getElement(): object|array
+    {
         return $this->element;
     }
 

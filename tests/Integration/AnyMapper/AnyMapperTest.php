@@ -6,7 +6,6 @@ namespace WebFu\Tests\Integration\AnyMapper;
 
 use DateTime;
 use PHPUnit\Framework\TestCase;
-use stdClass;
 use Vimeo\MysqlEngine\Php8\FakePdo;
 use WebFu\AnyMapper\AnyMapper;
 use WebFu\AnyMapper\Strategy\DataCastingStrategy;
@@ -136,6 +135,7 @@ class AnyMapperTest extends TestCase
     public function testSQLFetchStrategy(): void
     {
         $dbConnection = self::createConnection();
+        /** @var \PDOStatement $stmt */
         $stmt = $dbConnection->query('SELECT * FROM game_scores');
 
         $sqlMapper = (new AnyMapper())
@@ -143,18 +143,21 @@ class AnyMapperTest extends TestCase
             ->as(GameScoreEntity::class);
 
         while ($result = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            assert(is_array($result));
+
             $entity = $sqlMapper->map($result)->run();
+
+            assert($entity instanceof  GameScoreEntity);
+
             $this->assertIsInt($entity->getId());
             $this->assertIsString($entity->getName());
             $this->assertIsInt($entity->getScore());
         }
     }
 
-    public static function createConnection(): \PDO {
-        $dbConnection = new FakePdo('mysql:foo;dbname=test;', '', ' ', [
-            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
-            \PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"
-        ]);
+    public static function createConnection(): \PDO
+    {
+        $dbConnection = new FakePdo('mysql:foo;dbname=test;', '', ' ');
 
         $dbConnection->query(
             'CREATE TABLE `game_scores` (

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace WebFu\AnyMapper;
 
-use stdClass;
 use WebFu\AnyMapper\Strategy\StrategyInterface;
 use WebFu\AnyMapper\Strategy\StrictStrategy;
 use WebFu\Proxy\Proxy;
@@ -84,7 +83,10 @@ class AnyMapper
         return $output;
     }
 
-    public function run()
+    /**
+     * @return mixed[]|array
+     */
+    public function run(): object|array
     {
         $sourceTracks = $this->sourceProxy->getAnalyzer()->getOutputTrackList();
         $destinationAnalyzer = $this->destinationProxy->getAnalyzer();
