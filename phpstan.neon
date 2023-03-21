@@ -1,7 +1,10 @@
+includes:
+    - .config/ignore-by-php-version.neon.php
 parameters:
     level: 9
     paths:
         - src
         - tests
     excludePaths:
-        - tests/Fake
+        - tests/Fixture
+    checkGenericClassInNonGenericObjectType: false

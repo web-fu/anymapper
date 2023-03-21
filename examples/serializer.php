@@ -26,18 +26,11 @@ final class Foo
     /** @var Bar[] */
     private array $bars;
 
-    /**
-     * @return array
-     */
     public function getBars(): array
     {
         return $this->bars;
     }
 
-    /**
-     * @param array $bars
-     * @return Foo
-     */
     public function setBars(array $bars): Foo
     {
         $this->bars = $bars;

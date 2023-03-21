@@ -6,27 +6,15 @@ namespace WebFu\Tests\Unit\AnyMapper\Strategy;
 
 use PHPUnit\Framework\TestCase;
 use WebFu\AnyMapper\Strategy\StrictStrategy;
-use WebFu\Proxy\Proxy;
+use WebFu\Reflection\ReflectionTypeExtended;
 
 class StrictStrategyTest extends TestCase
 {
-    public function testRun(): void
+    public function testCast(): void
     {
-        $class = new class {
-            public int $int;
-        };
-
-        $sourceProxy = new Proxy([
-            'int' => 1,
-        ]);
-        $destinationProxy = new Proxy(
-            $class
-        );
-
         $strategy = new StrictStrategy();
-        $strategy->init($sourceProxy, $destinationProxy);
-        $strategy->run();
+        $actual = $strategy->cast(1, new ReflectionTypeExtended(['int']));
 
-        $this->assertSame(1, $class->int);
+        $this->assertSame(1, $actual);
     }
 }

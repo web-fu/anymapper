@@ -10,11 +10,11 @@ use WebFu\Reflection\ReflectionTypeExtended;
 
 use function WebFu\Internal\get_type;
 
-class AutodetectStrategy implements StrategyInterface
+class DocBlockDetectStrategy implements StrategyInterface
 {
     public function cast(mixed $value, ReflectionTypeExtended $allowed): mixed
     {
-        $allowedTypes = $allowed->getTypeNames();
+        $allowedTypes = array_merge($allowed->getTypeNames(), $allowed->getDocBlockTypeNames());
 
         if (!count($allowedTypes)) {
             // Dynamic Properties are allowed, no casting needed
@@ -50,14 +50,7 @@ class AutodetectStrategy implements StrategyInterface
             $constructorParameters = $analyzer->getConstructor()->getParameters();
 
             $allowedTypes = $constructorParameters[0]->getType()->getTypeNames();
-            foreach ($allowedTypes as $allowedType) {
-                if ($sourceType !== $allowedType) {
-                    continue;
-                }
-                return new $class($value);
-            }
 
-            $allowedTypes = $constructorParameters[0]->getType()->getTypeNames();
             foreach ($allowedTypes as $allowedType) {
                 if ($sourceType !== $allowedType) {
                     continue;
@@ -66,6 +59,6 @@ class AutodetectStrategy implements StrategyInterface
             }
         }
 
-        throw new MapperException('Cannot convert type ' . $sourceType . ' into any of the following types: '. implode(',', $allowedTypes));
+        throw new MapperException('Cannot convert type ' . $sourceType . ' into any of the following types: ' . implode(',', $allowedTypes));
     }
 }

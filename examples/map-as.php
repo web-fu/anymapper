@@ -9,7 +9,8 @@ final class MyClass
     private string $foo;
     public string $bar;
 
-    public function setFoo(string $foo): MyClass {
+    public function setFoo(string $foo): MyClass
+    {
         $this->foo = $foo . ' and I was set in a setter';
         return $this;
     }

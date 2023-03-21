@@ -11,7 +11,6 @@ use stdClass;
 
 class CasterTest extends TestCase
 {
-
     /**
      * @dataProvider castProvider
      * @param int|float|bool|string|object|mixed[]|null $value
@@ -115,6 +114,17 @@ class CasterTest extends TestCase
                 '  \'foo\' => 1,' . PHP_EOL .
                 '  \'bar\' => \'bar\',' . PHP_EOL .
                 ')',
+        ];
+        yield 'array_of_string_to_array_of_DateTime' => [
+            'value' => [
+                '2022-01-01',
+                '2022-12-01 06:30',
+            ],
+            'type' => 'DateTime[]',
+            'expected' => [
+                new DateTime('2022-01-01'),
+                new DateTime('2022-12-01 06:30:00'),
+            ],
         ];
         yield 'object_to_array' => [
             'value' => $class,

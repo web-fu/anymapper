@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace WebFu\Analyzer;
 
+use WebFu\Reflection\ReflectionClass;
+use WebFu\Reflection\ReflectionMethod;
+use WebFu\Reflection\ReflectionParameter;
+use WebFu\Reflection\ReflectionProperty;
+
 use function WebFu\Internal\camelcase_to_underscore;
-use function WebFu\Internal\reflection_type_names;
-use ReflectionUnionType;
-use ReflectionNamedType;
-use ReflectionClass;
-use ReflectionMethod;
-use ReflectionProperty;
 
 class ClassAnalyzer implements AnalyzerInterface
 {
@@ -23,9 +22,9 @@ class ClassAnalyzer implements AnalyzerInterface
     private array $getters = [];
     /** @var ReflectionMethod[] */
     private array $setters = [];
-    /** @var Track[]  */
+    /** @var Track[] */
     private array $inputTrackList = [];
-    /** @var Track[]  */
+    /** @var Track[] */
     private array $outputTrackList = [];
 
     /**
@@ -38,9 +37,6 @@ class ClassAnalyzer implements AnalyzerInterface
         $this->init($reflection);
     }
 
-    /**
-     * @param ReflectionClass<object> $reflection
-     */
     private function init(ReflectionClass $reflection): void
     {
         if ($parent = $reflection->getParentClass()) {
@@ -50,14 +46,13 @@ class ClassAnalyzer implements AnalyzerInterface
         foreach ($reflection->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
             $this->properties[$property->getName()] = $property;
             $underscoreName = camelcase_to_underscore($property->getName());
-            $types = reflection_type_names($property->getType());
+            $types = $property->getTypeExtended();
 
-            /** @phpstan-ignore-next-line-until 8.1 */
-            if (PHP_VERSION_ID < 80100 or !$property->isReadOnly()) {
-                $this->inputTrackList[$underscoreName]  = new Track($property->getName(), TrackType::PROPERTY, $types);
+            if (!$property->isReadOnly()) {
+                $this->inputTrackList[$underscoreName] = new Track($property->getName(), TrackType::PROPERTY, $types);
             }
 
-            $this->outputTrackList[$underscoreName]  = new Track($property->getName(), TrackType::PROPERTY, $types);
+            $this->outputTrackList[$underscoreName] = new Track($property->getName(), TrackType::PROPERTY, $types);
         }
 
         if ($reflection->getConstructor()?->isPublic()) {
@@ -65,41 +60,41 @@ class ClassAnalyzer implements AnalyzerInterface
         }
 
         foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
-            if ('__get' === $method->getName()
-                or preg_match('#^get[A-Z]+|is[A-Z]+#', $method->getName())
+            if (
+                '__get' === $method->getName()
+                || preg_match('#^get[A-Z]+|is[A-Z]+#', $method->getName())
             ) {
                 $this->getters[$method->getName()] = $method;
 
                 $underscoreName = camelcase_to_underscore($method->getName());
                 $underscoreName = preg_replace('#^get_|is_#', '', $underscoreName);
-                $types = reflection_type_names($method->getReturnType());
-                $this->outputTrackList[$underscoreName] = new Track($method->getName(), TrackType::METHOD, $types);
+                $this->outputTrackList[$underscoreName] = new Track($method->getName(), TrackType::METHOD, $method->getReturnTypeExtended());
             }
-            if ('__set' === $method->getName()
-                or preg_match('#^set[A-Z]+#', $method->getName())
+            if (
+                '__set' === $method->getName()
+                || preg_match('#^set[A-Z]+#', $method->getName())
             ) {
                 $this->setters[$method->getName()] = $method;
                 $underscoreName = camelcase_to_underscore($method->getName());
                 $underscoreName = preg_replace('#^set_#', '', $underscoreName);
                 $parameters = $method->getParameters();
-                if (!count($parameters)) {
+                if (!$method->getNumberOfParameters()) {
                     continue;
                 }
+                /** @var ReflectionParameter $lastParameter */
                 $lastParameter = array_pop($parameters);
-                $types = reflection_type_names($lastParameter->getType());
-                $this->inputTrackList[$underscoreName] = new Track($method->getName(), TrackType::METHOD, $types);
+                $this->inputTrackList[$underscoreName] = new Track($method->getName(), TrackType::METHOD, $lastParameter->getTypeExtended());
             }
-            /** @var ReflectionNamedType|ReflectionUnionType|null $returnType */
+
             $returnType = $method->getReturnType();
-            $returnTypeNames = reflection_type_names($returnType);
 
             if (
-                !empty(array_intersect($returnTypeNames, [
+                !empty(array_intersect($returnType->getTypeNames(), [
                     $reflection->getName(),
                     'self',
                     'static',
                 ]))
-                and $method->isStatic()
+                && $method->isStatic()
             ) {
                 $this->generators[$method->getName()] = $method;
             }

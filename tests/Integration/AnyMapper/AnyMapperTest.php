@@ -2,20 +2,22 @@
 
 declare(strict_types=1);
 
-namespace WebFu\Tests\Unit\AnyMapper;
+namespace WebFu\Tests\Integration\AnyMapper;
 
+use DateTime;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 use WebFu\AnyMapper\AnyMapper;
 use WebFu\AnyMapper\Strategy\DataCastingStrategy;
-use WebFu\Tests\Fake\FakeEntity;
-use DateTime;
-use stdClass;
+use WebFu\AnyMapper\Strategy\DocBlockDetectStrategy;
+use WebFu\Tests\Fixture\ChildClass;
+use WebFu\Tests\Fixture\EntityWithAnnotation;
 
 class AnyMapperTest extends TestCase
 {
     public function testMapInto(): void
     {
-        $class = new FakeEntity();
+        $class = new ChildClass();
 
         (new AnyMapper())->map([
             'byConstructor' => 'byConstructor',
@@ -34,9 +36,9 @@ class AnyMapperTest extends TestCase
             'byConstructor' => 'byConstructor',
             'public' => 'public',
             'bySetter' => 'bySetter',
-        ])->as(FakeEntity::class);
+        ])->as(ChildClass::class);
 
-        $this->assertInstanceOf(FakeEntity::class, $class);
+        $this->assertInstanceOf(ChildClass::class, $class);
 
         $this->assertSame('byConstructor is set by constructor', $class->getByConstructor());
         $this->assertSame('public', $class->public);
@@ -45,7 +47,7 @@ class AnyMapperTest extends TestCase
 
     public function testSerialize(): void
     {
-        $class = new class {
+        $class = new class () {
             public string $public = 'public';
             private string $value;
 
@@ -61,7 +63,7 @@ class AnyMapperTest extends TestCase
 
             public function getClass(): object
             {
-                return new class {
+                return new class () {
                     public string $element = 'element';
                 };
             }
@@ -115,7 +117,7 @@ class AnyMapperTest extends TestCase
 
     public function testUsing(): void
     {
-        $class = new class {
+        $class = new class () {
             public DateTime $value;
         };
 
@@ -131,5 +133,16 @@ class AnyMapperTest extends TestCase
             ->into($class);
 
         $this->assertEquals(new DateTime('2022-12-01'), $class->value);
+    }
+
+    public function testUseDocBlocks(): void
+    {
+        /** @var EntityWithAnnotation $class */
+        $class = (new AnyMapper())->map([
+            'foo' => 1,
+        ])->using(new DocBlockDetectStrategy())
+            ->as(EntityWithAnnotation::class);
+
+        $this->assertSame(1, $class->getFoo()->getValue());
     }
 }

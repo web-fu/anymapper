@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace WebFu\AnyMapper;
 
 use stdClass;
-use WebFu\AnyMapper\Strategy\AbstractStrategy;
+use WebFu\AnyMapper\Strategy\StrategyInterface;
 use WebFu\AnyMapper\Strategy\StrictStrategy;
 use WebFu\Proxy\Proxy;
 
@@ -13,11 +13,11 @@ class AnyMapper
 {
     private Proxy $sourceProxy;
     private Proxy $destinationProxy;
-    private AbstractStrategy $strategy;
+    private StrategyInterface $strategy;
 
-    public function __construct()
+    public function __construct(StrategyInterface|null $strategy = null)
     {
-        $this->strategy = new StrictStrategy();
+        $this->strategy = $strategy ?: new StrictStrategy();
     }
 
     /**
@@ -30,7 +30,7 @@ class AnyMapper
         return $this;
     }
 
-    public function using(AbstractStrategy $strategy): self
+    public function using(StrategyInterface $strategy): self
     {
         $this->strategy = $strategy;
 
@@ -48,7 +48,6 @@ class AnyMapper
 
     /**
      * @param class-string $className
-     * @return object
      */
     public function as(string $className): object
     {
@@ -77,7 +76,10 @@ class AnyMapper
         $output = [];
         foreach ($sourceTracks as $trackName => $sourceTrack) {
             $value = $this->sourceProxy->get((string) $trackName);
-            if (is_array($value) || is_object($value)) {
+            if (
+                is_array($value)
+                || is_object($value)
+            ) {
                 $value = (new self())->map($value)->serialize();
             }
             $output[$trackName] = $value;
@@ -88,6 +90,20 @@ class AnyMapper
 
     private function doMapping(): void
     {
-        $this->strategy->init($this->sourceProxy, $this->destinationProxy)->run();
+        $sourceTracks = $this->sourceProxy->getAnalyzer()->getOutputTrackList();
+
+        foreach ($sourceTracks as $trackName => $sourceTrack) {
+            $destinationTrack = $this->destinationProxy->getAnalyzer()->getInputTrack($trackName);
+
+            if (! $destinationTrack) {
+                continue;
+            }
+
+            $sourceValue = $this->sourceProxy->get($trackName);
+
+            $destinationValue = $this->strategy->cast($sourceValue, $destinationTrack->getDataTypes());
+
+            $this->destinationProxy->set($trackName, $destinationValue);
+        }
     }
 }

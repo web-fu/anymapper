@@ -1,14 +1,11 @@
 # AnyMapper
 ### A library that allows to map objects and arrays into objects and arrays with strong type support and pattern detection.
 
-AnyMapper can get a variety of data inputs (object, arrays and composite of both) and hydrate a destination object or array ensuring safe type handling for the data during the process.
-
-AnyMapper can detect and extract data from public properties, standard getter / setter, use constructors and class factories and optionally perform smart data casting (ie: from a string to a date time).
-
+AnyMapper can get a variety of data inputs (object, arrays and composite of both) and hydrate a destination object or array ensuring safe type handling for the data during the process.  
+AnyMapper can detect and extract data from public properties, standard getter / setter, use constructors and class factories and optionally perform smart data casting (ie: from a string to a date time).  
 AnyMapper will not interfere with private or protected properties or methods and cannot grant the resulting object is in a "valid state"
 
 ## Note
-
 This library is an Alpha version and should not be used in a production environment.
 
 ## Examples
@@ -75,6 +72,30 @@ $destination = (new \WebFu\AnyMapper\AnyMapper())
     ->map($source)
     ->using(
         (new \WebFu\AnyMapper\Strategy\DataCastingStrategy())->allow('string', DateTime::class)
+    )
+    ->as(MyClass::class);
+
+echo $destination->value->format('Y-m-d H:i:s'); // 2022-12-01 00:00:00
+echo PHP_EOL;
+```
+
+### DocBlock Type Support
+```php
+// Use a strategy to customize mapping
+final class MyClass
+{
+    /** @var DateTime */
+    public $value;
+}
+
+$source = [
+    'value' => '2022-12-01',
+];
+
+$destination = (new \WebFu\AnyMapper\AnyMapper())
+    ->map($source)
+    ->using(
+        (new \WebFu\AnyMapper\Strategy\DocBlockDetectStrategy())
     )
     ->as(MyClass::class);
 
