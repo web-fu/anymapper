@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use WebFu\Proxy\Proxy;
 use stdClass;
 use DateTime;
+use WebFu\Proxy\ProxyException;
 
 class ProxyTest extends TestCase
 {
@@ -98,6 +99,18 @@ class ProxyTest extends TestCase
         ];
     }
 
+    public function testGetFail(): void
+    {
+        $element = ['foo' => 1];
+
+        $proxy = new Proxy($element);
+
+        $this->expectException(ProxyException::class);
+        $this->expectExceptionMessage('bar gettable not found');
+
+        $proxy->get('bar');
+    }
+
     /**
      * @dataProvider setDataProvider
      */
@@ -157,5 +170,17 @@ class ProxyTest extends TestCase
             'value' => 'test',
             'expected' => 'test',
         ];
+    }
+
+    public function testSetFail(): void
+    {
+        $element = ['foo' => 1];
+
+        $proxy = new Proxy($element);
+
+        $this->expectException(ProxyException::class);
+        $this->expectExceptionMessage('bar settable not found');
+
+        $proxy->set('bar', 2);
     }
 }
