@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use WebFu\Tests\Fixture\Foo;
 
 use function WebFu\Internal\get_type;
+use stdClass;
 
 class GetTypeFunctionTest extends TestCase
 {
@@ -59,6 +60,10 @@ class GetTypeFunctionTest extends TestCase
         yield 'anonymous_object' => [
             'value' => new class () {},
             'expected' => 'class@anonymous',
+        ];
+        yield 'stdClass_object' => [
+            'value' => (object) ['foo' => 'bar'],
+            'expected' => stdClass::class,
         ];
         yield 'Closure' => [
             'value' => fn (): bool => true,
