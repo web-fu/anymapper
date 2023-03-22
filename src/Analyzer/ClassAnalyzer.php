@@ -9,6 +9,7 @@ use WebFu\Reflection\ReflectionMethod;
 use WebFu\Reflection\ReflectionParameter;
 use WebFu\Reflection\ReflectionProperty;
 
+use WebFu\Reflection\ReflectionTypeExtended;
 use function WebFu\Internal\camelcase_to_underscore;
 
 class ClassAnalyzer implements AnalyzerInterface
@@ -60,30 +61,48 @@ class ClassAnalyzer implements AnalyzerInterface
         }
 
         foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
-            if (
-                '__get' === $method->getName()
-                || preg_match('#^get[A-Z]+|is[A-Z]+#', $method->getName())
-            ) {
+            //Standard Getters and Setters
+            if (preg_match('#^get[A-Z]+|is[A-Z]+#', $method->getName())) {
+                if ($method->getNumberOfRequiredParameters() > 0) {
+                    continue;
+                }
+
                 $this->getters[$method->getName()] = $method;
 
                 $underscoreName = camelcase_to_underscore($method->getName());
                 $underscoreName = preg_replace('#^get_|is_#', '', $underscoreName);
                 $this->outputTrackList[$underscoreName] = new Track($method->getName(), TrackType::METHOD, $method->getReturnTypeExtended());
             }
-            if (
-                '__set' === $method->getName()
-                || preg_match('#^set[A-Z]+#', $method->getName())
-            ) {
-                $this->setters[$method->getName()] = $method;
-                $underscoreName = camelcase_to_underscore($method->getName());
-                $underscoreName = preg_replace('#^set_#', '', $underscoreName);
-                $parameters = $method->getParameters();
+
+            if (preg_match('#^set[A-Z]+#', $method->getName())) {
                 if (!$method->getNumberOfParameters()) {
                     continue;
                 }
-                /** @var ReflectionParameter $lastParameter */
-                $lastParameter = array_pop($parameters);
-                $this->inputTrackList[$underscoreName] = new Track($method->getName(), TrackType::METHOD, $lastParameter->getTypeExtended());
+
+                if ($method->getNumberOfRequiredParameters() > 1) {
+                    continue;
+                }
+
+                $this->setters[$method->getName()] = $method;
+
+                $underscoreName = camelcase_to_underscore($method->getName());
+                $underscoreName = preg_replace('#^set_#', '', $underscoreName);
+                $parameters = $method->getParameters();
+
+                /** @var ReflectionParameter $firstParameter */
+                $firstParameter = array_shift($parameters);
+                $this->inputTrackList[$underscoreName] = new Track($method->getName(), TrackType::METHOD, $firstParameter->getTypeExtended());
+            }
+
+            //Magic Method Getters and Setters
+            if ($method->getName() === '__get') {
+                $this->getters[$method->getName()] = $method;
+                $this->outputTrackList['__get'] = new Track($method->getName(), TrackType::METHOD, new ReflectionTypeExtended(['mixed']));
+            }
+
+            if ($method->getName() === '__set') {
+                $this->setters[$method->getName()] = $method;
+                $this->inputTrackList['__set'] = new Track($method->getName(), TrackType::METHOD, new ReflectionTypeExtended(['mixed']));
             }
 
             $returnType = $method->getReturnType();

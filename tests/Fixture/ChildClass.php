@@ -73,6 +73,22 @@ class ChildClass extends ParentClass
     }
 
     /*
+     * These functions look like getter and setters, but require a number of parameters that is not standard
+     */
+    public function getIRequireOneParameter(string $parameter): string
+    {
+        return $parameter;
+    }
+
+    public function setIRequireZeroParameters(): void
+    {
+    }
+
+    public function setIRequireTwoParameters(string $param1, string $param2): void
+    {
+    }
+
+    /*
      * The following functions return instances of the class and CAN be used for mapping ONLY if specified explicitly
      */
     public static function createStatic(): static
