@@ -10,6 +10,7 @@ use WebFu\Reflection\ReflectionParameter;
 use WebFu\Reflection\ReflectionProperty;
 
 use WebFu\Reflection\ReflectionTypeExtended;
+
 use function WebFu\Internal\camelcase_to_underscore;
 
 class ClassAnalyzer implements AnalyzerInterface
