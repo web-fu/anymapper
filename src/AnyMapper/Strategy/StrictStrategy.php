@@ -16,8 +16,8 @@ class StrictStrategy implements StrategyInterface
     {
         $allowedTypes = $allowed->getTypeNames();
 
-        if (!count($allowedTypes)) {
-            // Dynamic Properties are allowed, no casting needed
+        if (in_array('mixed', $allowedTypes)) {
+            // Mixed type allowed, no casting needed
             return $value;
         }
 
@@ -28,6 +28,14 @@ class StrictStrategy implements StrategyInterface
             return $value;
         }
 
-        throw new MapperException('Cannot convert type ' . $sourceType . ' into any of the following types: '. implode(',', $allowedTypes));
+        if (
+            in_array('object', $allowedTypes)
+            && is_object($value)
+        ) {
+            // Source type is a class and object type is accepted, no casting needed
+            return $value;
+        }
+
+        throw new MapperException('Cannot convert type ' . $sourceType . ' into any of the following types: '. implode(', ', $allowedTypes));
     }
 }
