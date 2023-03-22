@@ -24,7 +24,7 @@ class StrictStrategyTest extends TestCase
     }
 
     /**
-     * @return iterable{value: mixed, types: string[]}
+     * @return iterable<array{value: mixed, types: string[]}>
      */
     public function typeProvider(): iterable
     {

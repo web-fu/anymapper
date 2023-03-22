@@ -10,21 +10,14 @@ use WebFu\Reflection\ReflectionTypeExtended;
 
 use function WebFu\Internal\get_type;
 
-class AutodetectStrategy implements StrategyInterface
+class AutodetectStrategy extends StrictStrategy
 {
     public function cast(mixed $value, ReflectionTypeExtended $allowed): mixed
     {
         $allowedTypes = $allowed->getTypeNames();
-
-        if (!count($allowedTypes)) {
-            // Dynamic Properties are allowed, no casting needed
-            return $value;
-        }
-
         $sourceType = get_type($value);
 
-        if (in_array($sourceType, $allowedTypes)) {
-            // Source type is already accepted by destination, no casting needed
+        if ($this->isCastable($sourceType, $allowedTypes)) {
             return $value;
         }
 

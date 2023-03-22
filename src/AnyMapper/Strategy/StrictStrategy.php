@@ -12,27 +12,38 @@ use function WebFu\Internal\get_type;
 
 class StrictStrategy implements StrategyInterface
 {
-    public function cast(mixed $value, ReflectionTypeExtended $allowed): mixed
+    /**
+     * @param string[] $allowedTypes
+     */
+    public function isCastable(string $sourceType, array $allowedTypes): bool
     {
-        $allowedTypes = $allowed->getTypeNames();
-
         if (in_array('mixed', $allowedTypes)) {
             // Mixed type allowed, no casting needed
-            return $value;
+            return true;
         }
-
-        $sourceType = get_type($value);
 
         if (in_array($sourceType, $allowedTypes)) {
             // Source type is already accepted by destination, no casting needed
-            return $value;
+            return true;
         }
 
         if (
             in_array('object', $allowedTypes)
-            && is_object($value)
+            && (class_exists($sourceType) || $sourceType === 'class@anonymous')
         ) {
             // Source type is a class and object type is accepted, no casting needed
+            return true;
+        }
+
+        return false;
+    }
+
+    public function cast(mixed $value, ReflectionTypeExtended $allowed): mixed
+    {
+        $allowedTypes = $allowed->getTypeNames();
+        $sourceType = get_type($value);
+
+        if ($this->isCastable($sourceType, $allowedTypes)) {
             return $value;
         }
 

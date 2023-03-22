@@ -7,8 +7,9 @@ namespace WebFu\Tests\Unit\Internal;
 use PHPUnit\Framework\TestCase;
 use WebFu\Tests\Fixture\Foo;
 
-use function WebFu\Internal\get_type;
 use stdClass;
+
+use function WebFu\Internal\get_type;
 
 class GetTypeFunctionTest extends TestCase
 {
