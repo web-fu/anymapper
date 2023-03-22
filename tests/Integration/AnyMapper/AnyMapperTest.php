@@ -8,6 +8,7 @@ use DateTime;
 use PHPUnit\Framework\TestCase;
 use Vimeo\MysqlEngine\Php8\FakePdo;
 use WebFu\AnyMapper\AnyMapper;
+use WebFu\AnyMapper\MapperException;
 use WebFu\AnyMapper\Strategy\DataCastingStrategy;
 use WebFu\AnyMapper\Strategy\DocBlockDetectStrategy;
 use WebFu\AnyMapper\Strategy\SQLFetchStrategy;
@@ -47,6 +48,15 @@ class AnyMapperTest extends TestCase
         $this->assertSame('byConstructor is set by constructor', $class->getByConstructor());
         $this->assertSame('public', $class->public);
         $this->assertSame('bySetter is set by setter', $class->getBySetter());
+    }
+
+    public function testMapAsFail(): void
+    {
+        $this->expectException(MapperException::class);
+        $this->expectExceptionMessage('Class IDoNotExist does not exist');
+
+        /** @phpstan-ignore-next-line */
+        (new AnyMapper())->as('IDoNotExist');
     }
 
     public function testSerialize(): void
