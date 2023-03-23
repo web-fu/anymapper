@@ -42,17 +42,9 @@ class AutodetectStrategy extends StrictStrategy
 
             $constructorParameters = $analyzer->getConstructor()->getParameters();
 
-            $allowedTypes = $constructorParameters[0]->getType()->getTypeNames();
-            foreach ($allowedTypes as $allowedType) {
-                if ($sourceType !== $allowedType) {
-                    continue;
-                }
-                return new $class($value);
-            }
-
-            $allowedTypes = $constructorParameters[0]->getType()->getTypeNames();
-            foreach ($allowedTypes as $allowedType) {
-                if ($sourceType !== $allowedType) {
+            $allowedParameterTypes = $constructorParameters[0]->getType()->getTypeNames();
+            foreach ($allowedParameterTypes as $allowedParameterType) {
+                if ($sourceType !== $allowedParameterType) {
                     continue;
                 }
                 return new $class($value);
