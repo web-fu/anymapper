@@ -4,9 +4,16 @@ declare(strict_types=1);
 
 namespace WebFu\AnyMapper\Strategy;
 
+use DateTime;
+
 class SQLFetchStrategy extends DataCastingStrategy
 {
     protected array $allowedDataCasting = [
-        'string' => ['int', 'float', \DateTime::class],
+        'string' => [
+            'bool',
+            'int',
+            'float',
+            DateTime::class,
+        ],
     ];
 }

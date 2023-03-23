@@ -18,6 +18,7 @@ class AutodetectStrategyTest extends TestCase
 {
     /**
      * @dataProvider typeProvider
+     * @param string[] $types
      */
     public function testCast(mixed $value, mixed $expected, array $types): void
     {
