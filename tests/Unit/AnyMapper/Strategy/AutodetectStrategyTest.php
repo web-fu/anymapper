@@ -33,11 +33,11 @@ class AutodetectStrategyTest extends TestCase
      */
     public function typeProvider(): iterable
     {
-       yield 'int_as_int' => [
-           'value' => 1,
-           'expected' => 1,
-           'types' => ['int'],
-       ];
+        yield 'int_as_int' => [
+            'value' => 1,
+            'expected' => 1,
+            'types' => ['int'],
+        ];
         yield 'string_as_datetime' => [
             'value' => '2022-12-01',
             'expected' => new DateTime('2022-12-01'),
@@ -58,6 +58,9 @@ class AutodetectStrategyTest extends TestCase
         $strategy->cast(1, new ReflectionTypeExtended([$className]));
     }
 
+    /**
+     * @return iterable<array{class_name: class-string}>
+     */
     public function failTypeProvider(): iterable
     {
         yield 'zero_parameters' => ['class_name' => ClassWithZeroParameters::class];

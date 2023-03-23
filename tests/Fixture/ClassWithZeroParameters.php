@@ -6,5 +6,7 @@ namespace WebFu\Tests\Fixture;
 
 class ClassWithZeroParameters
 {
-    public function __construct() {}
+    public function __construct()
+    {
+    }
 }

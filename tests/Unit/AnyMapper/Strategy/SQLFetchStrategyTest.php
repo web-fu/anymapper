@@ -7,7 +7,8 @@ namespace WebFu\Tests\Unit\AnyMapper\Strategy;
 use PHPUnit\Framework\TestCase;
 use WebFu\AnyMapper\Strategy\SQLFetchStrategy;
 use WebFu\Reflection\ReflectionTypeExtended;
-use \DateTime;
+use DateTime;
+
 class SQLFetchStrategyTest extends TestCase
 {
     /**
