@@ -15,7 +15,7 @@
   ],
   "require": {
     "php": "8.0.* || 8.1.* || 8.2.*",
-    "web-fu/reflection": "dev-main"
+    "web-fu/reflection": "1.*"
   },
   "autoload": {
     "psr-4": {
