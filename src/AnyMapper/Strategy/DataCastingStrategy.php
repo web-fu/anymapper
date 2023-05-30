@@ -28,7 +28,7 @@ class DataCastingStrategy extends StrictStrategy
         $allowedTypes = $allowed->getTypeNames();
         $sourceType = get_type($value);
 
-        if ($this->isCastable($sourceType, $allowedTypes)) {
+        if ($this->isAllowed($sourceType, $allowedTypes)) {
             return $value;
         }
 
