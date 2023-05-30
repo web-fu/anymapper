@@ -6,7 +6,7 @@ namespace WebFu\AnyMapper\Strategy;
 
 use DateTime;
 
-class SQLFetchStrategy extends DataCastingStrategy
+class SQLFetchStrategy extends CastingStrategy
 {
     protected array $allowedDataCasting = [
         'string' => [

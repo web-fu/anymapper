@@ -59,6 +59,7 @@ echo PHP_EOL;
 ```
 
 ### Casting Strategy
+
 ```php
 // Use a strategy to customize mapping
 final class MyClass
@@ -73,7 +74,7 @@ $source = [
 $destination = (new \WebFu\AnyMapper\AnyMapper())
     ->map($source)
     ->using(
-        (new \WebFu\AnyMapper\Strategy\DataCastingStrategy())->allow('string', DateTime::class)
+        (new \WebFu\AnyMapper\Strategy\CastingStrategy())->allow('string', DateTime::class)
     )
     ->as(MyClass::class)
     ->run();

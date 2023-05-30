@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace WebFu\AnyMapper;
+namespace WebFu\AnyMapper\Caster;
 
 use DateTime;
 
-class Caster
+class Caster implements CasterInterface
 {
     private const ALLOWED = [
         'boolean' => [
@@ -51,38 +51,41 @@ class Caster
         ],
     ];
 
+    private mixed $value;
     private string $destType;
 
-    public function __construct(
-        private mixed $value
-    ) {
+    public function setValue(mixed $value): self
+    {
+        $this->value = $value;
+
+        return $this;
     }
 
-    public function as(string $destType): mixed
+    public function as(string $type): mixed
     {
         $sourceType = gettype($this->value);
 
-        if ($sourceType === $destType) {
+        if ($sourceType === $type) {
             return $this->value;
         }
 
         if (
-            str_ends_with($destType, '[]')
+            str_ends_with($type, '[]')
             && is_iterable($this->value)
         ) {
-            $destType = str_replace('[]', '', $destType);
+            $type = str_replace('[]', '', $type);
             $result = [];
             foreach ($this->value as $value) {
-                $result[] = (new self($value))->as($destType);
+                $result[] = (new self())->setValue($value)->as($type);
             }
             return $result;
         }
 
-        if (!in_array($destType, self::ALLOWED[$sourceType])) {
-            throw new CasterException('Data casting from '.$sourceType.' to '.$destType.' not allowed');
+        if (!in_array($type, self::ALLOWED[$sourceType])) {
+            throw new CasterException('Data casting from '.$sourceType.' to '.$type.' not allowed');
         }
 
-        $this->destType = $destType;
+        $this->destType = $type;
 
         if (is_null($this->value)) {
             return null;

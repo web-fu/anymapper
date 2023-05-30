@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebFu\AnyMapper;
+namespace WebFu\AnyMapper\Caster;
 
 use Exception;
 
