@@ -8,13 +8,15 @@ use WebFu\AnyMapper\Caster\Caster;
 use WebFu\AnyMapper\Caster\CasterInterface;
 use WebFu\AnyMapper\MapperException;
 use WebFu\Reflection\ReflectionTypeExtended;
+
 use function WebFu\Internal\get_type;
 
 class CastingStrategy extends StrictStrategy
 {
     protected CasterInterface $caster;
 
-    public function __construct(CasterInterface|null $caster = null) {
+    public function __construct(CasterInterface|null $caster = null)
+    {
         $this->caster = $caster ?: new Caster();
     }
 
@@ -43,7 +45,7 @@ class CastingStrategy extends StrictStrategy
             if (! in_array($to, $allowedTypes)) {
                 continue;
             }
-            return $this->caster->setValue($value)->as($to);
+            return $this->caster->cast($value, $to);
         }
 
         throw new MapperException('Cannot convert type ' . $sourceType . ' into any of the following types: '. implode(',', $allowedTypes));

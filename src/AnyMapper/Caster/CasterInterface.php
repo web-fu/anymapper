@@ -6,6 +6,5 @@ namespace WebFu\AnyMapper\Caster;
 
 interface CasterInterface
 {
-    public function setValue(mixed $value): self;
-    public function as(string $type): mixed;
+    public function cast(mixed $value, string $type): mixed;
 }

@@ -19,7 +19,7 @@ class CasterTest extends TestCase
     public function testAs(int|float|bool|string|object|array|null $value, string $type, int|float|bool|string|object|array|null $expected): void
     {
         $caster = new Caster();
-        $actual = $caster->setValue($value)->as($type);
+        $actual = $caster->cast($value, $type);
         $this->assertEquals($expected, $actual);
     }
 

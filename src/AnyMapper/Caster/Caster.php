@@ -51,32 +51,22 @@ class Caster implements CasterInterface
         ],
     ];
 
-    private mixed $value;
-    private string $destType;
-
-    public function setValue(mixed $value): self
+    public function cast(mixed $value, string $type): mixed
     {
-        $this->value = $value;
-
-        return $this;
-    }
-
-    public function as(string $type): mixed
-    {
-        $sourceType = gettype($this->value);
+        $sourceType = gettype($value);
 
         if ($sourceType === $type) {
-            return $this->value;
+            return $value;
         }
 
         if (
             str_ends_with($type, '[]')
-            && is_iterable($this->value)
+            && is_iterable($value)
         ) {
             $type = str_replace('[]', '', $type);
             $result = [];
-            foreach ($this->value as $value) {
-                $result[] = (new self())->setValue($value)->as($type);
+            foreach ($value as $item) {
+                $result[] = (new self())->cast($item, $type);
             }
             return $result;
         }
@@ -85,53 +75,49 @@ class Caster implements CasterInterface
             throw new CasterException('Data casting from '.$sourceType.' to '.$type.' not allowed');
         }
 
-        $this->destType = $type;
-
-        if (is_null($this->value)) {
+        if (is_null($value)) {
             return null;
         }
 
-        if (is_scalar($this->value)) {
-            return $this->scalarConversion();
+        if (is_scalar($value)) {
+            return $this->scalarConversion($value, $type);
         }
 
         if (
-            is_iterable($this->value)
-            || is_object($this->value)
+            is_iterable($value)
+            || is_object($value)
         ) {
-            return $this->complexConversion();
+            return $this->complexConversion($value, $type);
         }
 
         throw new CasterException('Data casting from '.$sourceType.' not allowed');
     }
 
-    private function scalarConversion(): int|float|bool|string|DateTime
+    private function scalarConversion(int|float|bool|string $value, string $type): int|float|bool|string|DateTime
     {
-        assert(is_scalar($this->value));
-        return match ($this->destType) {
-            'int', 'integer' => (int) $this->value,
-            'double', 'float' => (float) $this->value,
-            'bool', 'boolean' => (bool) $this->value,
-            'string' => (string) $this->value,
-            'DateTime' => new DateTime((string) $this->value),
+        return match ($type) {
+            'int', 'integer' => (int) $value,
+            'double', 'float' => (float) $value,
+            'bool', 'boolean' => (bool) $value,
+            'string' => (string) $value,
+            'DateTime' => new DateTime((string) $value),
             default => throw new CasterException('Unknown error'),
         };
     }
 
     /**
+     * @param iterable<mixed>|object $value
      * @return object|iterable<mixed>|string
      */
-    private function complexConversion(): object|iterable|string
+    private function complexConversion(iterable|object $value, string $type): object|iterable|string
     {
-        assert(is_iterable($this->value) || is_object($this->value));
-
-        if ($this->destType === 'string') {
-            return var_export($this->value, true);
+        if ($type === 'string') {
+            return var_export($value, true);
         }
 
-        return match ($this->destType) {
-            'object' => (object) $this->value,
-            'array' => (array) $this->value,
+        return match ($type) {
+            'object' => (object) $value,
+            'array' => (array) $value,
             default => throw new CasterException('Unknown error'),
         };
     }
