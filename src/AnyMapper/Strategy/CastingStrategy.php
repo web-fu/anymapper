@@ -35,7 +35,7 @@ class CastingStrategy extends StrictStrategy
         $allowedTypes = $allowed->getTypeNames();
         $sourceType = get_type($value);
 
-        if ($this->isAllowed($sourceType, $allowedTypes)) {
+        if ($this->noCastingNeeded($sourceType, $allowedTypes)) {
             return $value;
         }
 

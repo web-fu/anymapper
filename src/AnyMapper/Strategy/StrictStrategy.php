@@ -15,7 +15,7 @@ class StrictStrategy implements StrategyInterface
     /**
      * @param string[] $allowedTypes
      */
-    protected function isAllowed(string $sourceType, array $allowedTypes): bool
+    protected function noCastingNeeded(string $sourceType, array $allowedTypes): bool
     {
         if (in_array('mixed', $allowedTypes)) {
             // Mixed type allowed, no casting needed
@@ -43,7 +43,7 @@ class StrictStrategy implements StrategyInterface
         $allowedTypes = $allowed->getTypeNames();
         $sourceType = get_type($value);
 
-        if ($this->isAllowed($sourceType, $allowedTypes)) {
+        if ($this->noCastingNeeded($sourceType, $allowedTypes)) {
             return $value;
         }
 
