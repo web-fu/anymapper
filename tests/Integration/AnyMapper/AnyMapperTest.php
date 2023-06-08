@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 use Vimeo\MysqlEngine\Php8\FakePdo;
 use WebFu\AnyMapper\AnyMapper;
 use WebFu\AnyMapper\MapperException;
-use WebFu\AnyMapper\Strategy\CastingStrategy;
+use WebFu\AnyMapper\Strategy\AllowedCastingStrategy;
 use WebFu\AnyMapper\Strategy\DocBlockDetectStrategy;
 use WebFu\AnyMapper\Strategy\SQLFetchStrategy;
 use WebFu\Tests\Fixture\ChildClass;
@@ -122,7 +122,7 @@ class AnyMapperTest extends TestCase
         (new AnyMapper())
             ->map($source)
             ->using(
-                (new CastingStrategy())->allow('string', DateTime::class)
+                (new AllowedCastingStrategy())->allow('string', DateTime::class)
             )
             ->into($class)
             ->run();

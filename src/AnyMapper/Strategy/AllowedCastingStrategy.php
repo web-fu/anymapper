@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace WebFu\AnyMapper\Strategy;
 
-use WebFu\AnyMapper\Caster\Caster;
+use WebFu\AnyMapper\Caster\DefaultCaster;
 use WebFu\AnyMapper\Caster\CasterInterface;
 use WebFu\AnyMapper\MapperException;
 use WebFu\Reflection\ReflectionTypeExtended;
 
 use function WebFu\Internal\get_type;
 
-class CastingStrategy extends StrictStrategy
+class AllowedCastingStrategy extends StrictStrategy
 {
     protected CasterInterface $caster;
 
     public function __construct(CasterInterface|null $caster = null)
     {
-        $this->caster = $caster ?: new Caster();
+        $this->caster = $caster ?: new DefaultCaster();
     }
 
     /** @var array<string[]> */

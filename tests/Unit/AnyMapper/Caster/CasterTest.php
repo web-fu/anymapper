@@ -7,7 +7,7 @@ namespace WebFu\Tests\Unit\AnyMapper\Caster;
 use DateTime;
 use PHPUnit\Framework\TestCase;
 use stdClass;
-use WebFu\AnyMapper\Caster\Caster;
+use WebFu\AnyMapper\Caster\DefaultCaster;
 
 class CasterTest extends TestCase
 {
@@ -18,7 +18,7 @@ class CasterTest extends TestCase
      */
     public function testAs(int|float|bool|string|object|array|null $value, string $type, int|float|bool|string|object|array|null $expected): void
     {
-        $caster = new Caster();
+        $caster = new DefaultCaster();
         $actual = $caster->cast($value, $type);
         $this->assertEquals($expected, $actual);
     }

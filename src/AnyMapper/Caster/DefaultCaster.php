@@ -6,7 +6,7 @@ namespace WebFu\AnyMapper\Caster;
 
 use DateTime;
 
-class Caster implements CasterInterface
+class DefaultCaster implements CasterInterface
 {
     private const ALLOWED = [
         'boolean' => [

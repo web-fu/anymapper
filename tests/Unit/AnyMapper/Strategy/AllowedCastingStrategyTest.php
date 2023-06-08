@@ -6,16 +6,16 @@ namespace WebFu\Tests\Unit\AnyMapper\Strategy;
 
 use PHPUnit\Framework\TestCase;
 use WebFu\AnyMapper\MapperException;
-use WebFu\AnyMapper\Strategy\CastingStrategy;
+use WebFu\AnyMapper\Strategy\AllowedCastingStrategy;
 use DateTime;
 use WebFu\Reflection\ReflectionTypeExtended;
 use WebFu\Tests\Fixture\Foo;
 
-class DataCastingStrategyTest extends TestCase
+class AllowedCastingStrategyTest extends TestCase
 {
     public function testCast(): void
     {
-        $strategy = new CastingStrategy();
+        $strategy = new AllowedCastingStrategy();
         $strategy->allow('string', DateTime::class);
         $actual = $strategy->cast('2022-12-01', new ReflectionTypeExtended([DateTime::class]));
 
@@ -24,7 +24,7 @@ class DataCastingStrategyTest extends TestCase
 
     public function testCastFail(): void
     {
-        $strategy = new CastingStrategy();
+        $strategy = new AllowedCastingStrategy();
         $strategy->allow('string', Foo::class);
 
         $this->expectException(MapperException::class);
