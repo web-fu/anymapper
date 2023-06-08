@@ -16,7 +16,8 @@ $source = [
 $destination = (new \WebFu\AnyMapper\AnyMapper())
     ->map($source)
     ->using(
-        (new \WebFu\AnyMapper\Strategy\AllowedCastingStrategy())->allow('string', DateTime::class)
+        (new \WebFu\AnyMapper\Strategy\AllowedCastingStrategy())
+            ->allow('string', DateTime::class)
     )
     ->as(MyClass::class)
     ->run();

@@ -10,6 +10,7 @@ use Vimeo\MysqlEngine\Php8\FakePdo;
 use WebFu\AnyMapper\AnyMapper;
 use WebFu\AnyMapper\MapperException;
 use WebFu\AnyMapper\Strategy\AllowedCastingStrategy;
+use WebFu\AnyMapper\Strategy\CallbackCastingStrategy;
 use WebFu\AnyMapper\Strategy\DocBlockDetectStrategy;
 use WebFu\AnyMapper\Strategy\SQLFetchStrategy;
 use WebFu\Tests\Fixture\ChildClass;
@@ -163,6 +164,27 @@ class AnyMapperTest extends TestCase
             $this->assertIsString($entity->getName());
             $this->assertIsInt($entity->getScore());
         }
+    }
+
+    public function testCallbackCastingStrategy(): void
+    {
+        $class = new class () {
+            public int $value;
+        };
+
+        (new AnyMapper())
+            ->map([
+                'value' => true,
+            ])
+            ->using(
+                (new CallbackCastingStrategy())
+                    ->addMethod('bool', 'int', static fn (bool $value): int => (int) $value)
+            )
+            ->into($class)
+            ->run();
+        ;
+
+        $this->assertSame(1, $class->value);
     }
 
     public static function createConnection(): \PDO
