@@ -10,21 +10,20 @@ use WebFu\Reflection\ReflectionTypeExtended;
 
 use function WebFu\Internal\get_type;
 
-class DocBlockDetectStrategy implements StrategyInterface
+class DocBlockDetectStrategy extends StrictStrategy
 {
     public function cast(mixed $value, ReflectionTypeExtended $allowed): mixed
     {
         $allowedTypes = array_merge($allowed->getTypeNames(), $allowed->getDocBlockTypeNames());
-
-        if (!count($allowedTypes)) {
-            // Dynamic Properties are allowed, no casting needed
-            return $value;
-        }
-
         $sourceType = get_type($value);
 
-        if (in_array($sourceType, $allowedTypes)) {
-            // Source type is already accepted by destination, no casting needed
+        //Remove mixed type
+        $allowedTypes = array_filter(
+            $allowedTypes,
+            fn (string $type) => $type !== 'mixed'
+        );
+
+        if ($this->noCastingNeeded($sourceType, $allowedTypes)) {
             return $value;
         }
 

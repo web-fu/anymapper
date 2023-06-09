@@ -15,6 +15,7 @@ use WebFu\AnyMapper\Strategy\DocBlockDetectStrategy;
 use WebFu\AnyMapper\Strategy\SQLFetchStrategy;
 use WebFu\Tests\Fixture\ChildClass;
 use WebFu\Tests\Fixture\EntityWithAnnotation;
+use WebFu\Tests\Fixture\Foo;
 use WebFu\Tests\Fixture\GameScoreEntity;
 
 class AnyMapperTest extends TestCase
@@ -140,6 +141,7 @@ class AnyMapperTest extends TestCase
             ->as(EntityWithAnnotation::class)
             ->run();
 
+        $this->assertInstanceOf(Foo::class, $class->getFoo());
         $this->assertSame(1, $class->getFoo()->getValue());
     }
 
