@@ -132,7 +132,7 @@ class AnyMapperTest extends TestCase
         $this->assertEquals(new DateTime('2022-12-01'), $class->value);
     }
 
-    public function testUseDocBlocks(): void
+    public function testDocBlockStrategy(): void
     {
         /** @var EntityWithAnnotation $class */
         $class = (new AnyMapper())->map([
