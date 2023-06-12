@@ -4,21 +4,19 @@ declare(strict_types=1);
 
 namespace WebFu\AnyMapper\Strategy;
 
-use WebFu\AnyMapper\Caster;
 use WebFu\AnyMapper\MapperException;
-
 use WebFu\Reflection\ReflectionTypeExtended;
 
 use function WebFu\Internal\get_type;
 
-class DataCastingStrategy extends StrictStrategy
+class CallbackCastingStrategy extends StrictStrategy
 {
-    /** @var array<string[]> */
-    protected array $allowedDataCasting = [];
+    /** @var array<string, array<string, callable>> */
+    protected array $methods = [];
 
-    public function allow(string $from, string $to): self
+    public function addMethod(string $from, string $to, callable $callback): self
     {
-        $this->allowedDataCasting[$from][] = $to;
+        $this->methods[$from][$to] = $callback;
 
         return $this;
     }
@@ -28,17 +26,15 @@ class DataCastingStrategy extends StrictStrategy
         $allowedTypes = $allowed->getTypeNames();
         $sourceType = get_type($value);
 
-        if ($this->isCastable($sourceType, $allowedTypes)) {
+        if ($this->noCastingNeeded($sourceType, $allowedTypes)) {
             return $value;
         }
 
-        $allowedDataCasting = $this->allowedDataCasting[$sourceType] ?? [];
-
-        foreach ($allowedDataCasting as $to) {
+        foreach ($this->methods[$sourceType] ?? [] as $to => $callback) {
             if (! in_array($to, $allowedTypes)) {
                 continue;
             }
-            return (new Caster($value))->as($to);
+            return $callback($value);
         }
 
         throw new MapperException('Cannot convert type ' . $sourceType . ' into any of the following types: '. implode(',', $allowedTypes));

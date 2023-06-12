@@ -59,6 +59,7 @@ echo PHP_EOL;
 ```
 
 ### Casting Strategy
+
 ```php
 // Use a strategy to customize mapping
 final class MyClass
@@ -73,13 +74,42 @@ $source = [
 $destination = (new \WebFu\AnyMapper\AnyMapper())
     ->map($source)
     ->using(
-        (new \WebFu\AnyMapper\Strategy\DataCastingStrategy())->allow('string', DateTime::class)
+        (new \WebFu\AnyMapper\Strategy\AllowedCastingStrategy())
+            ->allow('string', DateTime::class)
     )
     ->as(MyClass::class)
     ->run();
 
 echo $destination->value->format('Y-m-d H:i:s'); // 2022-12-01 00:00:00
 echo PHP_EOL;
+```
+
+### Casting through callbacks
+
+```php
+final class MyClass
+{
+    public int $value;
+}
+
+$source = [
+    'value' => true,
+];
+
+$destination =  (new \WebFu\AnyMapper\AnyMapper())
+    ->map($source)
+    ->using(
+        (new \WebFu\AnyMapper\Strategy\CallbackCastingStrategy())
+            ->addMethod(
+                'bool',
+                'int',
+                fn (bool $value) => (int) $value,
+            )
+    )
+    ->as(MyClass::class)
+    ->run();
+
+echo $destination->value; // 1
 ```
 
 ### DocBlock Type Support
