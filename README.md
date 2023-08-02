@@ -1,4 +1,8 @@
-# AnyMapper
+AnyMapper
+==============================================================================================
+[![Latest Stable Version](http://poser.pugx.org/web-fu/anymapper/v)](https://packagist.org/packages/web-fu/anymapper)
+[![PHP Version Require](http://poser.pugx.org/web-fu/anymapper/require/php)](https://packagist.org/packages/web-fu/anymapper)
+
 ### A library that allows to map objects and arrays into objects and arrays with strong type support and pattern detection.
 
 AnyMapper can get a variety of data inputs (object, arrays and composite of both) and hydrate a destination object or array ensuring safe type handling for the data during the process.  
