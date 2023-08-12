@@ -7,6 +7,8 @@ return (new PhpCsFixer\Config())
     ->setRules([
         '@PSR2' => true,
         '@PSR12' => true,
+        'array_indentation' => true,
+        'declare_strict_types' => true,
         'no_unused_imports' => true,
         'no_extra_blank_lines' => true,
         'no_empty_phpdoc' => true,
