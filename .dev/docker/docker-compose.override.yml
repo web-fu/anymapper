@@ -1,0 +1,7 @@
+version: '3.8'
+services:
+  phpfpm:
+    volumes:
+      - ../..:/var/www/html:cached
+      - ~/.composer/cache:/home/local/.composer/cache
+      - ./phpfpm/xdebug/zz_xdebug.ini:/usr/local/etc/php/conf.d/zz_xdebug.ini
