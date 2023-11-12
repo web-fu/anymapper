@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WebFu\Tests\Fixture;
+namespace WebFu\Tests\Fixtures;
 
 use DateTime as DT;
 

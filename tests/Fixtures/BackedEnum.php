@@ -1,6 +1,6 @@
 <?php
 
-namespace WebFu\Tests\Fixture;
+namespace WebFu\Tests\Fixtures;
 
 enum BackedEnum: int
 {

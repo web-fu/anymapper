@@ -13,10 +13,13 @@ use WebFu\AnyMapper\Strategy\AllowedCastingStrategy;
 use WebFu\AnyMapper\Strategy\CallbackCastingStrategy;
 use WebFu\AnyMapper\Strategy\DocBlockDetectStrategy;
 use WebFu\AnyMapper\Strategy\SQLFetchStrategy;
-use WebFu\Tests\Fixture\ChildClass;
-use WebFu\Tests\Fixture\EntityWithAnnotation;
-use WebFu\Tests\Fixture\Foo;
-use WebFu\Tests\Fixture\GameScoreEntity;
+use WebFu\Tests\Fixtures\BackedEnum;
+use WebFu\Tests\Fixtures\BasicEnum;
+use WebFu\Tests\Fixtures\ChildClass;
+use WebFu\Tests\Fixtures\ClassWithEnumParameters;
+use WebFu\Tests\Fixtures\EntityWithAnnotation;
+use WebFu\Tests\Fixtures\Foo;
+use WebFu\Tests\Fixtures\GameScoreEntity;
 
 class AnyMapperTest extends TestCase
 {
@@ -52,6 +55,19 @@ class AnyMapperTest extends TestCase
         $this->assertSame('bySetter is set by setter', $class->getBySetter());
     }
 
+    public function testEnum(): void
+    {
+        $class = new ClassWithEnumParameters();
+
+        (new AnyMapper())->map([
+            'backedEnum' => 1,
+            'basicEnum' => 'ONE',
+        ])->into($class)->run();
+
+        $this->assertSame(BackedEnum::ONE, $class->backedEnum);
+        $this->assertSame(BasicEnum::ONE, $class->basicEnum);
+    }
+
     public function testMapAsFail(): void
     {
         $this->expectException(MapperException::class);
@@ -63,7 +79,7 @@ class AnyMapperTest extends TestCase
 
     public function testSerialize(): void
     {
-        $class = new class () {
+        $class = new class() {
             public string $public = 'public';
             private string $value;
 
@@ -79,7 +95,7 @@ class AnyMapperTest extends TestCase
 
             public function getClass(): object
             {
-                return new class () {
+                return new class() {
                     public string $element = 'element';
                 };
             }
@@ -113,7 +129,7 @@ class AnyMapperTest extends TestCase
 
     public function testUsing(): void
     {
-        $class = new class () {
+        $class = new class() {
             public DateTime $value;
         };
 
@@ -170,7 +186,7 @@ class AnyMapperTest extends TestCase
 
     public function testCallbackCastingStrategy(): void
     {
-        $class = new class () {
+        $class = new class() {
             public int $value;
         };
 
