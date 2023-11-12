@@ -1,0 +1,5 @@
+#!/bin/bash
+CONTAINER=$(cmd/container-name)
+NAME="_phpfpm";
+CONTAINER_NAME="$CONTAINER$NAME"
+docker exec -it --user $(id -u):$(id -g) $CONTAINER_NAME bash
