@@ -9,7 +9,7 @@ use WebFu\Analyzer\ClassAnalyzer;
 use WebFu\Analyzer\Track;
 use WebFu\Analyzer\TrackType;
 use WebFu\Reflection\ReflectionTypeExtended;
-use WebFu\Tests\Fixture\ChildClass;
+use WebFu\Tests\Fixtures\ChildClass;
 use stdClass;
 
 class ClassAnalyzerTest extends TestCase

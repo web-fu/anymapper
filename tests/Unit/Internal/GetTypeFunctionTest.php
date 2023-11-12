@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace WebFu\Tests\Unit\Internal;
 
 use PHPUnit\Framework\TestCase;
-use WebFu\Tests\Fixture\Foo;
+use WebFu\Tests\Fixtures\Foo;
 
 use stdClass;
 

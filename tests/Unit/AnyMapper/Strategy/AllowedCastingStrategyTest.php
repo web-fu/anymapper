@@ -9,7 +9,7 @@ use WebFu\AnyMapper\MapperException;
 use WebFu\AnyMapper\Strategy\AllowedCastingStrategy;
 use DateTime;
 use WebFu\Reflection\ReflectionTypeExtended;
-use WebFu\Tests\Fixture\Foo;
+use WebFu\Tests\Fixtures\Foo;
 
 class AllowedCastingStrategyTest extends TestCase
 {

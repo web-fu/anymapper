@@ -9,10 +9,10 @@ use WebFu\AnyMapper\MapperException;
 use WebFu\AnyMapper\Strategy\AutodetectStrategy;
 use WebFu\AnyMapper\Strategy\DocBlockDetectStrategy;
 use WebFu\Reflection\ReflectionTypeExtended;
-use WebFu\Tests\Fixture\ClassWithMultipleParameters;
-use WebFu\Tests\Fixture\ClassWithOneParameter;
-use WebFu\Tests\Fixture\ClassWithZeroParameters;
-use WebFu\Tests\Fixture\Foo;
+use WebFu\Tests\Fixtures\ClassWithMultipleParameters;
+use WebFu\Tests\Fixtures\ClassWithOneParameter;
+use WebFu\Tests\Fixtures\ClassWithZeroParameters;
+use WebFu\Tests\Fixtures\Foo;
 
 class DocBlockStrategyTest extends TestCase
 {

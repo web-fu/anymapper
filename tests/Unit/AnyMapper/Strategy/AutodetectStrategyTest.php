@@ -10,9 +10,9 @@ use WebFu\AnyMapper\MapperException;
 use WebFu\AnyMapper\Strategy\AutodetectStrategy;
 use DateTime;
 use WebFu\Reflection\ReflectionTypeExtended;
-use WebFu\Tests\Fixture\ClassWithMultipleParameters;
-use WebFu\Tests\Fixture\ClassWithOneParameter;
-use WebFu\Tests\Fixture\ClassWithZeroParameters;
+use WebFu\Tests\Fixtures\ClassWithMultipleParameters;
+use WebFu\Tests\Fixtures\ClassWithOneParameter;
+use WebFu\Tests\Fixtures\ClassWithZeroParameters;
 
 class AutodetectStrategyTest extends TestCase
 {

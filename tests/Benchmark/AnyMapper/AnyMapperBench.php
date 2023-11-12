@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace WebFu\Tests\Benchmark\AnyMapper;
 
+use PhpBench\Benchmark\Metadata\Annotations\Revs;
 use WebFu\AnyMapper\AnyMapper;
 use WebFu\AnyMapper\Strategy\CallbackCastingStrategy;
 use WebFu\AnyMapper\Strategy\DocBlockDetectStrategy;
-use WebFu\Tests\Fixture\ChildClass;
-use WebFu\Tests\Fixture\EntityWithAnnotation;
+use WebFu\Tests\Fixtures\ChildClass;
+use WebFu\Tests\Fixtures\EntityWithAnnotation;
 
 class AnyMapperBench
 {
@@ -90,7 +91,6 @@ class AnyMapperBench
      */
     public function benchDocBlockStrategy(): void
     {
-        /** @var EntityWithAnnotation $class */
         (new AnyMapper())->map([
             'foo' => 1,
         ])->using(new DocBlockDetectStrategy())

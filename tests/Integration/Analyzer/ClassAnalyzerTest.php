@@ -9,9 +9,9 @@ use WebFu\Analyzer\ClassAnalyzer;
 use WebFu\Analyzer\Track;
 use WebFu\Analyzer\TrackType;
 use WebFu\Reflection\ReflectionTypeExtended;
-use WebFu\Tests\Fixture\EntityWithAnnotation;
+use WebFu\Tests\Fixtures\EntityWithAnnotation;
 use DateTime;
-use WebFu\Tests\Fixture\Foo;
+use WebFu\Tests\Fixtures\Foo;
 
 class ClassAnalyzerTest extends TestCase
 {
