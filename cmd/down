@@ -1,0 +1,17 @@
+#!/bin/bash
+
+cd .dev/docker || exit
+while getopts "u" arg; do
+  case $arg in
+    u) UNIVERSE="-f docker-compose.universe.yml";;
+    *) UNIVERSE='';;
+  esac
+done
+docker-compose config -q > /dev/null 2>&1
+if [ $? -eq 0 ]; then
+  echo "Run docker-compose"
+  docker-compose ${UNIVERSE} down
+else
+  echo "Run docker compose"
+  docker compose ${UNIVERSE} down
+fi
