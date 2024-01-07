@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WebFu\Analyzer;
 
 use WebFu\Reflection\ReflectionClass;
+use WebFu\Reflection\ReflectionEnum;
 use WebFu\Reflection\ReflectionMethod;
 use WebFu\Reflection\ReflectionParameter;
 use WebFu\Reflection\ReflectionProperty;
@@ -15,6 +16,7 @@ use function WebFu\Internal\camelcase_to_underscore;
 
 class ClassAnalyzer implements AnalyzerInterface
 {
+
     /** @var ReflectionProperty[] */
     private array $properties = [];
     private ReflectionMethod|null $constructor = null;
@@ -30,19 +32,19 @@ class ClassAnalyzer implements AnalyzerInterface
     private array $outputTrackList = [];
 
     /**
-     * @param object|class-string $class
+     * @param object|class-string $originalClass
      */
-    public function __construct(object|string $class)
+    public function __construct(private readonly object|string $originalClass)
+    {
+        $this->init($this->originalClass);
+    }
+
+    private function init(object|string $class): void
     {
         $reflection = new ReflectionClass($class);
 
-        $this->init($reflection);
-    }
-
-    private function init(ReflectionClass $reflection): void
-    {
         if ($parent = $reflection->getParentClass()) {
-            $this->init($parent);
+            $this->init($parent->getName());
         }
 
         foreach ($reflection->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
@@ -119,6 +121,19 @@ class ClassAnalyzer implements AnalyzerInterface
                 $this->generators[$method->getName()] = $method;
             }
         }
+    }
+
+    public function isBackedEnum(): bool
+    {
+        $reflectionClass = new ReflectionClass($this->originalClass);
+
+        if (!$reflectionClass->isEnum()) {
+            return false;
+        }
+
+        $reflectionEnum = new ReflectionEnum($this->originalClass);
+
+        return $reflectionEnum->isBacked();
     }
 
     /**

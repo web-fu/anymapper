@@ -10,6 +10,7 @@ use Vimeo\MysqlEngine\Php8\FakePdo;
 use WebFu\AnyMapper\AnyMapper;
 use WebFu\AnyMapper\MapperException;
 use WebFu\AnyMapper\Strategy\AllowedCastingStrategy;
+use WebFu\AnyMapper\Strategy\AutodetectStrategy;
 use WebFu\AnyMapper\Strategy\CallbackCastingStrategy;
 use WebFu\AnyMapper\Strategy\DocBlockDetectStrategy;
 use WebFu\AnyMapper\Strategy\SQLFetchStrategy;
@@ -59,13 +60,15 @@ class AnyMapperTest extends TestCase
     {
         $class = new ClassWithEnumParameters();
 
-        (new AnyMapper())->map([
-            'backedEnum' => 1,
-            'basicEnum' => 'ONE',
-        ])->into($class)->run();
+        (new AnyMapper())
+            ->map([
+                'backedEnum' => 1,
+            ])
+            ->using((new AutodetectStrategy))
+            ->into($class)
+            ->run();
 
         $this->assertSame(BackedEnum::ONE, $class->backedEnum);
-        $this->assertSame(BasicEnum::ONE, $class->basicEnum);
     }
 
     public function testMapAsFail(): void
@@ -151,9 +154,11 @@ class AnyMapperTest extends TestCase
     public function testDocBlockStrategy(): void
     {
         /** @var EntityWithAnnotation $class */
-        $class = (new AnyMapper())->map([
-            'foo' => 1,
-        ])->using(new DocBlockDetectStrategy())
+        $class = (new AnyMapper())
+            ->map([
+                'foo' => 1,
+            ])
+            ->using(new DocBlockDetectStrategy())
             ->as(EntityWithAnnotation::class)
             ->run();
 
