@@ -2,7 +2,16 @@
 
 declare(strict_types=1);
 
-require __DIR__ . '/../vendor/autoload.php';
+/**
+ * This file is part of web-fu/anymapper
+ *
+ * @copyright Web-Fu <info@web-fu.it>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+require __DIR__.'/../vendor/autoload.php';
 
 final class Bar
 {
@@ -13,7 +22,7 @@ final class Bar
         return $this->element;
     }
 
-    public function setElement(string $element): Bar
+    public function setElement(string $element): self
     {
         $this->element = $element;
 
@@ -23,7 +32,9 @@ final class Bar
 
 final class Foo
 {
-    /** @var Bar[] */
+    /**
+     * @var Bar[]
+     */
     private array $bars;
 
     public function getBars(): array
@@ -31,9 +42,10 @@ final class Foo
         return $this->bars;
     }
 
-    public function setBars(array $bars): Foo
+    public function setBars(array $bars): self
     {
         $this->bars = $bars;
+
         return $this;
     }
 }
@@ -43,7 +55,7 @@ $foo->setBars([
     (new Bar())->setElement('string'),
 ]);
 
-$destination =  (new \WebFu\AnyMapper\AnyMapper())
+$destination = (new \WebFu\AnyMapper\AnyMapper())
     ->map($foo)
     ->serialize();
 

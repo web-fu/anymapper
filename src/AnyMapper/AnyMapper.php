@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of web-fu/anymapper
+ *
+ * @copyright Web-Fu <info@web-fu.it>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace WebFu\AnyMapper;
 
 use WebFu\AnyMapper\Strategy\StrategyInterface;
@@ -52,10 +61,10 @@ class AnyMapper
     public function as(string $className): self
     {
         if (!class_exists($className)) {
-            throw new MapperException('Class ' . $className . ' does not exist');
+            throw new MapperException('Class '.$className.' does not exist');
         }
 
-        $destination = new $className();
+        $destination            = new $className();
         $this->destinationProxy = new Proxy($destination);
 
         return $this;
@@ -88,13 +97,13 @@ class AnyMapper
      */
     public function run(): object|array
     {
-        $sourceTracks = $this->sourceProxy->getAnalyzer()->getOutputTrackList();
+        $sourceTracks        = $this->sourceProxy->getAnalyzer()->getOutputTrackList();
         $destinationAnalyzer = $this->destinationProxy->getAnalyzer();
 
         foreach ($sourceTracks as $trackName => $sourceTrack) {
             $destinationTrack = $destinationAnalyzer->getInputTrack($trackName);
 
-            if (! $destinationTrack) {
+            if (!$destinationTrack) {
                 continue;
             }
 

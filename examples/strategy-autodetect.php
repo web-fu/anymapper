@@ -2,7 +2,16 @@
 
 declare(strict_types=1);
 
-require __DIR__ . '/../vendor/autoload.php';
+/**
+ * This file is part of web-fu/anymapper
+ *
+ * @copyright Web-Fu <info@web-fu.it>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+require __DIR__.'/../vendor/autoload.php';
 
 final class MyClass
 {
@@ -16,7 +25,7 @@ $source = [
 $destination = (new \WebFu\AnyMapper\AnyMapper())
     ->map($source)
     ->using(
-        (new \WebFu\AnyMapper\Strategy\AutodetectStrategy())
+        new \WebFu\AnyMapper\Strategy\AutodetectStrategy()
     )
     ->as(MyClass::class)
     ->run();

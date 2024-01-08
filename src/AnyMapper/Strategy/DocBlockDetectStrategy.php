@@ -2,25 +2,35 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of web-fu/anymapper
+ *
+ * @copyright Web-Fu <info@web-fu.it>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace WebFu\AnyMapper\Strategy;
 
 use WebFu\Analyzer\ClassAnalyzer;
 use WebFu\AnyMapper\MapperException;
-use WebFu\Reflection\ReflectionTypeExtended;
 
 use function WebFu\Internal\get_type;
+
+use WebFu\Reflection\ReflectionTypeExtended;
 
 class DocBlockDetectStrategy extends StrictStrategy
 {
     public function cast(mixed $value, ReflectionTypeExtended $allowed): mixed
     {
         $allowedTypes = array_merge($allowed->getTypeNames(), $allowed->getDocBlockTypeNames());
-        $sourceType = get_type($value);
+        $sourceType   = get_type($value);
 
-        //Remove mixed type
+        // Remove mixed type
         $allowedTypes = array_filter(
             $allowedTypes,
-            fn (string $type) => $type !== 'mixed'
+            fn (string $type) => 'mixed' !== $type
         );
 
         if ($this->noCastingNeeded($sourceType, $allowedTypes)) {
@@ -54,10 +64,11 @@ class DocBlockDetectStrategy extends StrictStrategy
                 if ($sourceType !== $allowedType) {
                     continue;
                 }
+
                 return new $class($value);
             }
         }
 
-        throw new MapperException('Cannot convert type ' . $sourceType . ' into any of the following types: ' . implode(',', $allowedTypes));
+        throw new MapperException('Cannot convert type '.$sourceType.' into any of the following types: '.implode(',', $allowedTypes));
     }
 }
