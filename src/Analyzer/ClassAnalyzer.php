@@ -39,6 +39,9 @@ class ClassAnalyzer implements AnalyzerInterface
         $this->init($this->originalClass);
     }
 
+    /**
+     * @param object|class-string $class
+     */
     private function init(object|string $class): void
     {
         $reflection = new ReflectionClass($class);

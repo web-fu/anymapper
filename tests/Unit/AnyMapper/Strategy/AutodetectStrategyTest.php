@@ -10,6 +10,8 @@ use WebFu\AnyMapper\MapperException;
 use WebFu\AnyMapper\Strategy\AutodetectStrategy;
 use DateTime;
 use WebFu\Reflection\ReflectionTypeExtended;
+use WebFu\Tests\Fixtures\BackedEnum;
+use WebFu\Tests\Fixtures\BasicEnum;
 use WebFu\Tests\Fixtures\ClassWithMultipleParameters;
 use WebFu\Tests\Fixtures\ClassWithOneParameter;
 use WebFu\Tests\Fixtures\ClassWithZeroParameters;
@@ -43,6 +45,11 @@ class AutodetectStrategyTest extends TestCase
             'expected' => new DateTime('2022-12-01'),
             'types' => [DateTime::class],
         ];
+        yield 'int_as_enum' => [
+            'value' => 1,
+            'expected' => BackedEnum::ONE,
+            'types' => [BackedEnum::class],
+        ];
     }
 
     /**
@@ -59,12 +66,14 @@ class AutodetectStrategyTest extends TestCase
     }
 
     /**
-     * @return iterable<array{class_name: class-string}>
+     * @return iterable<array{class_name: class-string|string}>
      */
     public function failTypeProvider(): iterable
     {
         yield 'zero_parameters' => ['class_name' => ClassWithZeroParameters::class];
         yield 'one_parameter' => ['class_name' => ClassWithOneParameter::class];
         yield 'multiple_parameters' => ['class_name' => ClassWithMultipleParameters::class];
+        yield 'non_existent_class' => ['class_name' => 'NonExistentClass'];
+        yield 'basic_enum' => ['class_name' => BasicEnum::class];
     }
 }
