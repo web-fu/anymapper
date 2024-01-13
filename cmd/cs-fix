@@ -2,4 +2,4 @@
 CONTAINER=$(cmd/container-name)
 NAME="_phpfpm";
 CONTAINER_NAME="$CONTAINER$NAME"
-docker exec -it --user $(id -u):$(id -g) $CONTAINER_NAME vendor/bin/php-cs-fixer fix --config .php-cs-fixer.php --allow-risky yes --show-progress dots --verbose
+docker exec -it --user $(id -u):$(id -g) $CONTAINER_NAME vendor/bin/php-cs-fixer fix --allow-risky yes --show-progress dots --verbose

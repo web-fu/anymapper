@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of web-fu/anymapper
+ *
+ * @copyright Web-Fu <info@web-fu.it>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace WebFu\Tests\Unit\Analyzer;
 
 use PHPUnit\Framework\TestCase;
@@ -10,10 +19,14 @@ use WebFu\Analyzer\Track;
 use WebFu\Analyzer\TrackType;
 use WebFu\Reflection\ReflectionTypeExtended;
 
+/**
+ * @coversNothing
+ */
 class ArrayAnalyzerTest extends TestCase
 {
     /**
      * @dataProvider arrayDataProvider
+     *
      * @param mixed[] $array
      * @param mixed[] $expected
      */
@@ -26,6 +39,7 @@ class ArrayAnalyzerTest extends TestCase
 
     /**
      * @dataProvider arrayDataProvider
+     *
      * @param mixed[] $array
      * @param mixed[] $expected
      */
@@ -63,7 +77,7 @@ class ArrayAnalyzerTest extends TestCase
                 'fooIndex' => 'foo',
             ],
             'expected' => [
-                '0' => new Track(0, TrackType::NUMERIC_INDEX, new ReflectionTypeExtended(['string'])),
+                '0'         => new Track(0, TrackType::NUMERIC_INDEX, new ReflectionTypeExtended(['string'])),
                 'foo_index' => new Track('fooIndex', TrackType::STRING_INDEX, new ReflectionTypeExtended(['string'])),
             ],
         ];
@@ -104,15 +118,15 @@ class ArrayAnalyzerTest extends TestCase
     {
         yield 'numeric' => [
             'expected' => new Track(0, TrackType::NUMERIC_INDEX, new ReflectionTypeExtended(['string'])),
-            'track' => '0',
+            'track'    => '0',
         ];
         yield 'string' => [
             'expected' => new Track('bar', TrackType::STRING_INDEX, new ReflectionTypeExtended(['string'])),
-            'track' => 'bar',
+            'track'    => 'bar',
         ];
         yield 'null' => [
             'expected' => null,
-            'track' => 'does_not_exist',
+            'track'    => 'does_not_exist',
         ];
     }
 }

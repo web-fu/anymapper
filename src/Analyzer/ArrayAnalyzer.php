@@ -2,12 +2,21 @@
 
 declare(strict_types=1);
 
-namespace WebFu\Analyzer;
+/**
+ * This file is part of web-fu/anymapper
+ *
+ * @copyright Web-Fu <info@web-fu.it>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
-use WebFu\Reflection\ReflectionTypeExtended;
+namespace WebFu\Analyzer;
 
 use function WebFu\Internal\camelcase_to_underscore;
 use function WebFu\Internal\get_type;
+
+use WebFu\Reflection\ReflectionTypeExtended;
 
 class ArrayAnalyzer implements AnalyzerInterface
 {
@@ -22,19 +31,23 @@ class ArrayAnalyzer implements AnalyzerInterface
     public function __construct(array $data)
     {
         foreach ($data as $key => $value) {
-            $underscoreName = camelcase_to_underscore((string) $key);
-            $source = is_int($key) ? TrackType::NUMERIC_INDEX : TrackType::STRING_INDEX;
+            $underscoreName                   = camelcase_to_underscore((string) $key);
+            $source                           = is_int($key) ? TrackType::NUMERIC_INDEX : TrackType::STRING_INDEX;
             $this->trackList[$underscoreName] = new Track($key, $source, new ReflectionTypeExtended([get_type($value)]));
         }
     }
 
-    /** @return Track[] */
+    /**
+     * @return Track[]
+     */
     public function getOutputTrackList(): array
     {
         return $this->trackList;
     }
 
-    /** @return Track[] */
+    /**
+     * @return Track[]
+     */
     public function getInputTrackList(): array
     {
         return $this->trackList;

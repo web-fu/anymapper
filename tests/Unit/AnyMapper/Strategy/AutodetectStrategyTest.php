@@ -2,13 +2,21 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of web-fu/anymapper
+ *
+ * @copyright Web-Fu <info@web-fu.it>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace WebFu\Tests\Unit\AnyMapper\Strategy;
 
+use DateTime;
 use PHPUnit\Framework\TestCase;
-
 use WebFu\AnyMapper\MapperException;
 use WebFu\AnyMapper\Strategy\AutodetectStrategy;
-use DateTime;
 use WebFu\Reflection\ReflectionTypeExtended;
 use WebFu\Tests\Fixtures\BackedEnum;
 use WebFu\Tests\Fixtures\BasicEnum;
@@ -16,16 +24,20 @@ use WebFu\Tests\Fixtures\ClassWithMultipleParameters;
 use WebFu\Tests\Fixtures\ClassWithOneParameter;
 use WebFu\Tests\Fixtures\ClassWithZeroParameters;
 
+/**
+ * @coversNothing
+ */
 class AutodetectStrategyTest extends TestCase
 {
     /**
      * @dataProvider typeProvider
+     *
      * @param string[] $types
      */
     public function testCast(mixed $value, mixed $expected, array $types): void
     {
         $strategy = new AutodetectStrategy();
-        $actual = $strategy->cast($value, new ReflectionTypeExtended($types));
+        $actual   = $strategy->cast($value, new ReflectionTypeExtended($types));
 
         $this->assertEquals($expected, $actual);
     }
@@ -36,19 +48,19 @@ class AutodetectStrategyTest extends TestCase
     public function typeProvider(): iterable
     {
         yield 'int_as_int' => [
-            'value' => 1,
+            'value'    => 1,
             'expected' => 1,
-            'types' => ['int'],
+            'types'    => ['int'],
         ];
         yield 'string_as_datetime' => [
-            'value' => '2022-12-01',
+            'value'    => '2022-12-01',
             'expected' => new DateTime('2022-12-01'),
-            'types' => [DateTime::class],
+            'types'    => [DateTime::class],
         ];
         yield 'int_as_enum' => [
-            'value' => 1,
+            'value'    => 1,
             'expected' => BackedEnum::ONE,
-            'types' => [BackedEnum::class],
+            'types'    => [BackedEnum::class],
         ];
     }
 
@@ -60,7 +72,7 @@ class AutodetectStrategyTest extends TestCase
         $strategy = new AutodetectStrategy();
 
         $this->expectException(MapperException::class);
-        $this->expectExceptionMessage('Cannot convert type int into any of the following types: ' . $className);
+        $this->expectExceptionMessage('Cannot convert type int into any of the following types: '.$className);
 
         $strategy->cast(1, new ReflectionTypeExtended([$className]));
     }

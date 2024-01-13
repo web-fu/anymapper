@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of web-fu/anymapper
+ *
+ * @copyright Web-Fu <info@web-fu.it>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace WebFu\Proxy;
 
 use WebFu\Analyzer\AnalyzerFactory;
@@ -19,7 +28,7 @@ class Proxy
      */
     public function __construct(object|array $element)
     {
-        $this->element = $element;
+        $this->element  = $element;
         $this->analyzer = AnalyzerFactory::create($element);
     }
 
@@ -42,7 +51,7 @@ class Proxy
     public function get(string $path): int|float|bool|string|object|array|null
     {
         $pathTracks = explode('.', $path);
-        $track = array_shift($pathTracks);
+        $track      = array_shift($pathTracks);
 
         if (!$index = $this->analyzer->getOutputTrack($track)) {
             throw new ProxyException($track.' gettable not found');
@@ -50,8 +59,8 @@ class Proxy
 
         $value = match ($index->getSource()) {
             TrackType::PROPERTY => $this->element->{$index->getName()},
-            TrackType::METHOD => $this->element->{$index->getName()}(),
-            /** @phpstan-ignore-next-line */
+            TrackType::METHOD   => $this->element->{$index->getName()}(),
+            /* @phpstan-ignore-next-line */
             TrackType::NUMERIC_INDEX, TrackType::STRING_INDEX => $this->element[$index->getName()],
         };
 
@@ -67,7 +76,7 @@ class Proxy
     public function set(string $path, mixed $value): void
     {
         $pathTracks = explode('.', $path);
-        $track = array_pop($pathTracks);
+        $track      = array_pop($pathTracks);
 
         $endpoint = $this->element;
         if (count($pathTracks)) {
@@ -83,8 +92,8 @@ class Proxy
 
         match ($index->getSource()) {
             TrackType::PROPERTY => $endpoint->{$index->getName()} = $value,
-            TrackType::METHOD => $endpoint->{$index->getName()}($value),
-            /** @phpstan-ignore-next-line */
+            TrackType::METHOD   => $endpoint->{$index->getName()}($value),
+            /* @phpstan-ignore-next-line */
             TrackType::NUMERIC_INDEX, TrackType::STRING_INDEX => $endpoint[$index->getName()] = $value,
         };
     }

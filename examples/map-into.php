@@ -2,16 +2,26 @@
 
 declare(strict_types=1);
 
-require __DIR__ . '/../vendor/autoload.php';
+/**
+ * This file is part of web-fu/anymapper
+ *
+ * @copyright Web-Fu <info@web-fu.it>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+require __DIR__.'/../vendor/autoload.php';
 
 final class MyClass
 {
-    private string $foo;
     public string $bar;
+    private string $foo;
 
-    public function setFoo(string $foo): MyClass
+    public function setFoo(string $foo): self
     {
-        $this->foo = $foo . ' and I was set in a setter';
+        $this->foo = $foo.' and I was set in a setter';
+
         return $this;
     }
 
@@ -28,7 +38,7 @@ $source = [
 
 $destination = new MyClass();
 
-(new \WebFu\AnyMapper\AnyMapper())
+(new WebFu\AnyMapper\AnyMapper())
     ->map($source)
     ->into($destination)
     ->run();
