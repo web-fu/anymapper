@@ -36,7 +36,7 @@ $source = [
     'bar' => 'I am bar',
 ];
 
-$destination = (new \WebFu\AnyMapper\AnyMapper())
+$destination = (new WebFu\AnyMapper\AnyMapper())
     ->map($source)
     ->as(MyClass::class)
     ->run();

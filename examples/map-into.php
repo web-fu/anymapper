@@ -38,7 +38,7 @@ $source = [
 
 $destination = new MyClass();
 
-(new \WebFu\AnyMapper\AnyMapper())
+(new WebFu\AnyMapper\AnyMapper())
     ->map($source)
     ->into($destination)
     ->run();

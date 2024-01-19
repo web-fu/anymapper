@@ -55,7 +55,7 @@ $foo->setBars([
     (new Bar())->setElement('string'),
 ]);
 
-$destination = (new \WebFu\AnyMapper\AnyMapper())
+$destination = (new WebFu\AnyMapper\AnyMapper())
     ->map($foo)
     ->serialize();
 

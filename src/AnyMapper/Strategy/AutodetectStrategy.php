@@ -40,6 +40,10 @@ class AutodetectStrategy extends StrictStrategy
         foreach ($classDestinationTypes as $class) {
             $analyzer = new ClassAnalyzer($class);
 
+            if ($analyzer->isBackedEnum()) {
+                return $class::from($value);
+            }
+
             /* Constructor does not accept parameters */
             if (!$analyzer->getConstructor()?->getNumberOfParameters()) {
                 continue;

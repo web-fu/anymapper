@@ -23,7 +23,7 @@ return (new PhpCsFixer\Config())
         'combine_consecutive_unsets'                       => true,
         'combine_nested_dirname'                           => true,
         'comment_to_phpdoc'                                => true,
-        'compact_nullable_type_declaration"'               => true,
+        'compact_nullable_typehint'                        => true,
         'declare_strict_types'                             => true,
         'dir_constant'                                     => true,
         'doctrine_annotation_array_assignment'             => ['operator' => '='],
