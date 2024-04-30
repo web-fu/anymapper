@@ -1,7 +1,11 @@
 <?php
 
 $finder = (new PhpCsFixer\Finder())
-    ->in(__DIR__.'/src');
+    ->in(__DIR__.'/src')
+    ->in(__DIR__.'/tests/Benchmark')
+    ->in(__DIR__.'/tests/Integration')
+    ->in(__DIR__.'/tests/Unit')
+;
 
 return (new PhpCsFixer\Config())
     ->setRules([
@@ -23,12 +27,12 @@ return (new PhpCsFixer\Config())
         'combine_consecutive_unsets'                       => true,
         'combine_nested_dirname'                           => true,
         'comment_to_phpdoc'                                => true,
-        'compact_nullable_typehint'                        => true,
+        'nullable_type_declaration'                        => ['syntax' => 'union'],
+        'compact_nullable_type_declaration'                => true,
         'declare_strict_types'                             => true,
         'dir_constant'                                     => true,
         'doctrine_annotation_array_assignment'             => ['operator' => '='],
         'ereg_to_preg'                                     => true,
-        'escape_implicit_backslashes'                      => true,
         'explicit_indirect_variable'                       => true,
         'explicit_string_variable'                         => false,
         'self_static_accessor'                             => true,
@@ -94,6 +98,7 @@ return (new PhpCsFixer\Config())
         'set_type_to_cast'                                 => true,
         'simple_to_complex_string_variable'                => true,
         'simplified_null_return'                           => false,
+        'string_implicit_backslashes'                      => true,
         'strict_param'                                     => true,
         'ternary_to_null_coalescing'                       => true,
         'visibility_required'                              => true,
