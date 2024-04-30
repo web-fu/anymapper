@@ -1,0 +1,4 @@
+#!/bin/bash
+projectName=$(grep 'COMPOSE_PROJECT_NAME' .dev/docker/.env)
+projectName=${projectName/COMPOSE_PROJECT_NAME=/''}
+echo $projectName
