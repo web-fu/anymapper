@@ -21,6 +21,7 @@ use WebFu\Reflection\ReflectionMethod;
 use WebFu\Reflection\ReflectionParameter;
 use WebFu\Reflection\ReflectionProperty;
 use WebFu\Reflection\ReflectionType;
+use WebFu\Reflection\WrongPhpVersionException;
 
 class ClassAnalyzer implements AnalyzerInterface
 {
@@ -62,10 +63,15 @@ class ClassAnalyzer implements AnalyzerInterface
     {
         $reflectionClass = new ReflectionClass($this->originalClass);
 
-        if (!$reflectionClass->isEnum()) {
+        try {
+            if (!$reflectionClass->isEnum()) {
+                return false;
+            }
+        } catch (WrongPhpVersionException $e) {
             return false;
         }
 
+        /** @phpstan-ignore-next-line */
         $reflectionEnum = new ReflectionEnum($this->originalClass);
 
         return $reflectionEnum->isBacked();
