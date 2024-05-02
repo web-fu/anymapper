@@ -21,7 +21,6 @@ use WebFu\Reflection\ReflectionMethod;
 use WebFu\Reflection\ReflectionParameter;
 use WebFu\Reflection\ReflectionProperty;
 use WebFu\Reflection\ReflectionType;
-use WebFu\Reflection\WrongPhpVersionException;
 
 class ClassAnalyzer implements AnalyzerInterface
 {
