@@ -2,6 +2,9 @@ AnyMapper
 ==============================================================================================
 [![Latest Stable Version](http://poser.pugx.org/web-fu/anymapper/v)](https://packagist.org/packages/web-fu/anymapper)
 [![PHP Version Require](http://poser.pugx.org/web-fu/anymapper/require/php)](https://packagist.org/packages/web-fu/anymapper)
+![Test status](https://github.com/web-fu/anymapper/actions/workflows/tests.yaml/badge.svg)
+![Static analysis status](https://github.com/web-fu/anymapper/actions/workflows/static-analysis.yml/badge.svg)
+![Code style status](https://github.com/web-fu/anymapper/actions/workflows/code-style.yaml/badge.svg)
 
 ### A library that allows to map objects and arrays into objects and arrays with strong type support and pattern detection.
 
@@ -9,8 +12,15 @@ AnyMapper can get a variety of data inputs (object, arrays and composite of both
 AnyMapper can detect and extract data from public properties, standard getter / setter, use constructors and class factories and optionally perform smart data casting (ie: from a string to a date time).  
 AnyMapper will not interfere with private or protected properties or methods and cannot grant the resulting object is in a "valid state"
 
-## Note
-This library is an Alpha version and should not be used in a production environment.
+## Installation
+
+web-fu/anymapper is available on [Packagist](https://packagist.org/packages/web-fu/anymapper) and can be installed
+using [Composer](https://getcomposer.org/).
+
+```bash
+composer require web-fu/anymapper
+```
+> Requires PHP 8.1 or newer.
 
 ## Examples
 
