@@ -16,7 +16,7 @@ namespace WebFu\Tests\Unit\AnyMapper\Strategy;
 use PHPUnit\Framework\TestCase;
 use WebFu\AnyMapper\MapperException;
 use WebFu\AnyMapper\Strategy\StrictStrategy;
-use WebFu\Reflection\ReflectionTypeExtended;
+use WebFu\Reflection\ReflectionType;
 
 /**
  * @coversNothing
@@ -31,7 +31,7 @@ class StrictStrategyTest extends TestCase
     public function testCast(mixed $value, array $types): void
     {
         $strategy = new StrictStrategy();
-        $actual   = $strategy->cast($value, new ReflectionTypeExtended($types));
+        $actual   = $strategy->cast($value, new ReflectionType($types));
 
         $this->assertSame($value, $actual);
     }
@@ -133,6 +133,6 @@ class StrictStrategyTest extends TestCase
         $this->expectException(MapperException::class);
         $this->expectExceptionMessage('Cannot convert type int into any of the following types: string, boolean');
 
-        $strategy->cast(1, new ReflectionTypeExtended(['string', 'boolean']));
+        $strategy->cast(1, new ReflectionType(['string', 'boolean']));
     }
 }

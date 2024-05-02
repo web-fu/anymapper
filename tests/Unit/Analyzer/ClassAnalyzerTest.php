@@ -18,7 +18,7 @@ use stdClass;
 use WebFu\Analyzer\ClassAnalyzer;
 use WebFu\Analyzer\Track;
 use WebFu\Analyzer\TrackType;
-use WebFu\Reflection\ReflectionTypeExtended;
+use WebFu\Reflection\ReflectionType;
 use WebFu\Tests\Fixtures\ChildClass;
 
 /**
@@ -105,15 +105,15 @@ class ClassAnalyzerTest extends TestCase
         $gettablePathMap = $classAnalyzer->getOutputTrackList();
 
         $this->assertEquals([
-            'parent'          => new Track('parent', TrackType::PROPERTY, new ReflectionTypeExtended(['mixed'])),
-            'public'          => new Track('public', TrackType::PROPERTY, new ReflectionTypeExtended(['string'])),
-            'trait'           => new Track('trait', TrackType::PROPERTY, new ReflectionTypeExtended(['mixed'])),
-            'parent_property' => new Track('getParentProperty', TrackType::METHOD, new ReflectionTypeExtended(['mixed'])),
-            'property_true'   => new Track('isPropertyTrue', TrackType::METHOD, new ReflectionTypeExtended(['bool'])),
-            '__get'           => new Track('__get', TrackType::METHOD, new ReflectionTypeExtended(['mixed'])),
-            'trait_property'  => new Track('getTraitProperty', TrackType::METHOD, new ReflectionTypeExtended(['mixed'])),
-            'by_constructor'  => new Track('getByConstructor', TrackType::METHOD, new ReflectionTypeExtended(['string'])),
-            'by_setter'       => new Track('getBySetter', TrackType::METHOD, new ReflectionTypeExtended(['string'])),
+            'parent'          => new Track('parent', TrackType::PROPERTY, new ReflectionType(['mixed'])),
+            'public'          => new Track('public', TrackType::PROPERTY, new ReflectionType(['string'])),
+            'trait'           => new Track('trait', TrackType::PROPERTY, new ReflectionType(['mixed'])),
+            'parent_property' => new Track('getParentProperty', TrackType::METHOD, new ReflectionType(['mixed'])),
+            'property_true'   => new Track('isPropertyTrue', TrackType::METHOD, new ReflectionType(['bool'])),
+            '__get'           => new Track('__get', TrackType::METHOD, new ReflectionType(['mixed'])),
+            'trait_property'  => new Track('getTraitProperty', TrackType::METHOD, new ReflectionType(['mixed'])),
+            'by_constructor'  => new Track('getByConstructor', TrackType::METHOD, new ReflectionType(['string'])),
+            'by_setter'       => new Track('getBySetter', TrackType::METHOD, new ReflectionType(['string'])),
         ], $gettablePathMap);
     }
 
@@ -125,13 +125,13 @@ class ClassAnalyzerTest extends TestCase
         $gettablePathMap = $classAnalyzer->getInputTrackList();
 
         $this->assertEquals([
-            'parent'          => new Track('parent', TrackType::PROPERTY, new ReflectionTypeExtended(['mixed'])),
-            'public'          => new Track('public', TrackType::PROPERTY, new ReflectionTypeExtended(['string'])),
-            'trait'           => new Track('trait', TrackType::PROPERTY, new ReflectionTypeExtended(['mixed'])),
-            'parent_property' => new Track('setParentProperty', TrackType::METHOD, new ReflectionTypeExtended(['mixed'])),
-            'by_setter'       => new Track('setBySetter', TrackType::METHOD, new ReflectionTypeExtended(['string'])),
-            '__set'           => new Track('__set', TrackType::METHOD, new ReflectionTypeExtended(['mixed'])),
-            'trait_property'  => new Track('setTraitProperty', TrackType::METHOD, new ReflectionTypeExtended(['mixed'])),
+            'parent'          => new Track('parent', TrackType::PROPERTY, new ReflectionType(['mixed'])),
+            'public'          => new Track('public', TrackType::PROPERTY, new ReflectionType(['string'])),
+            'trait'           => new Track('trait', TrackType::PROPERTY, new ReflectionType(['mixed'])),
+            'parent_property' => new Track('setParentProperty', TrackType::METHOD, new ReflectionType(['mixed'])),
+            'by_setter'       => new Track('setBySetter', TrackType::METHOD, new ReflectionType(['string'])),
+            '__set'           => new Track('__set', TrackType::METHOD, new ReflectionType(['mixed'])),
+            'trait_property'  => new Track('setTraitProperty', TrackType::METHOD, new ReflectionType(['mixed'])),
         ], $gettablePathMap);
     }
 
@@ -152,39 +152,39 @@ class ClassAnalyzerTest extends TestCase
     public function outputTrackProvider(): iterable
     {
         yield 'parent' => [
-            'expected' => new Track('parent', TrackType::PROPERTY, new ReflectionTypeExtended(['mixed'])),
+            'expected' => new Track('parent', TrackType::PROPERTY, new ReflectionType(['mixed'])),
             'track'    => 'parent',
         ];
         yield 'public' => [
-            'expected' => new Track('public', TrackType::PROPERTY, new ReflectionTypeExtended(['string'])),
+            'expected' => new Track('public', TrackType::PROPERTY, new ReflectionType(['string'])),
             'track'    => 'public',
         ];
         yield 'trait' => [
-            'expected' => new Track('trait', TrackType::PROPERTY, new ReflectionTypeExtended(['mixed'])),
+            'expected' => new Track('trait', TrackType::PROPERTY, new ReflectionType(['mixed'])),
             'track'    => 'trait',
         ];
         yield 'parent_property' => [
-            'expected' => new Track('getParentProperty', TrackType::METHOD, new ReflectionTypeExtended(['mixed'])),
+            'expected' => new Track('getParentProperty', TrackType::METHOD, new ReflectionType(['mixed'])),
             'track'    => 'parent_property',
         ];
         yield 'property_true' => [
-            'expected' => new Track('isPropertyTrue', TrackType::METHOD, new ReflectionTypeExtended(['bool'])),
+            'expected' => new Track('isPropertyTrue', TrackType::METHOD, new ReflectionType(['bool'])),
             'track'    => 'property_true',
         ];
         yield '__get' => [
-            'expected' => new Track('__get', TrackType::METHOD, new ReflectionTypeExtended(['mixed'])),
+            'expected' => new Track('__get', TrackType::METHOD, new ReflectionType(['mixed'])),
             'track'    => '__get',
         ];
         yield 'trait_property' => [
-            'expected' => new Track('getTraitProperty', TrackType::METHOD, new ReflectionTypeExtended(['mixed'])),
+            'expected' => new Track('getTraitProperty', TrackType::METHOD, new ReflectionType(['mixed'])),
             'track'    => 'trait_property',
         ];
         yield 'by_constructor' => [
-            'expected' => new Track('getByConstructor', TrackType::METHOD, new ReflectionTypeExtended(['string'])),
+            'expected' => new Track('getByConstructor', TrackType::METHOD, new ReflectionType(['string'])),
             'track'    => 'by_constructor',
         ];
         yield 'by_setter' => [
-            'expected' => new Track('getBySetter', TrackType::METHOD, new ReflectionTypeExtended(['string'])),
+            'expected' => new Track('getBySetter', TrackType::METHOD, new ReflectionType(['string'])),
             'track'    => 'by_setter',
         ];
         yield 'null' => [
@@ -210,31 +210,31 @@ class ClassAnalyzerTest extends TestCase
     public function inputTrackProvider(): iterable
     {
         yield 'parent' => [
-            'element' => new Track('parent', TrackType::PROPERTY, new ReflectionTypeExtended(['mixed'])),
+            'element' => new Track('parent', TrackType::PROPERTY, new ReflectionType(['mixed'])),
             'path'    => 'parent',
         ];
         yield 'public' => [
-            'element' => new Track('public', TrackType::PROPERTY, new ReflectionTypeExtended(['string'])),
+            'element' => new Track('public', TrackType::PROPERTY, new ReflectionType(['string'])),
             'path'    => 'public',
         ];
         yield 'trait' => [
-            'element' => new Track('trait', TrackType::PROPERTY, new ReflectionTypeExtended(['mixed'])),
+            'element' => new Track('trait', TrackType::PROPERTY, new ReflectionType(['mixed'])),
             'path'    => 'trait',
         ];
         yield 'parent_property' => [
-            'element' => new Track('setParentProperty', TrackType::METHOD, new ReflectionTypeExtended(['mixed'])),
+            'element' => new Track('setParentProperty', TrackType::METHOD, new ReflectionType(['mixed'])),
             'path'    => 'parent_property',
         ];
         yield 'by_setter' => [
-            'element' => new Track('setBySetter', TrackType::METHOD, new ReflectionTypeExtended(['string'])),
+            'element' => new Track('setBySetter', TrackType::METHOD, new ReflectionType(['string'])),
             'path'    => 'by_setter',
         ];
         yield '__set' => [
-            'element' => new Track('__set', TrackType::METHOD, new ReflectionTypeExtended(['mixed'])),
+            'element' => new Track('__set', TrackType::METHOD, new ReflectionType(['mixed'])),
             'path'    => '__set',
         ];
         yield 'trait_property' => [
-            'element' => new Track('setTraitProperty', TrackType::METHOD, new ReflectionTypeExtended(['mixed'])),
+            'element' => new Track('setTraitProperty', TrackType::METHOD, new ReflectionType(['mixed'])),
             'path'    => 'trait_property',
         ];
         yield 'null' => [

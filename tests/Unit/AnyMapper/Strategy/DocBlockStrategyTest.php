@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 use WebFu\AnyMapper\MapperException;
 use WebFu\AnyMapper\Strategy\AutodetectStrategy;
 use WebFu\AnyMapper\Strategy\DocBlockDetectStrategy;
-use WebFu\Reflection\ReflectionTypeExtended;
+use WebFu\Reflection\ReflectionType;
 use WebFu\Tests\Fixtures\ClassWithMultipleParameters;
 use WebFu\Tests\Fixtures\ClassWithOneParameter;
 use WebFu\Tests\Fixtures\ClassWithZeroParameters;
@@ -31,7 +31,7 @@ class DocBlockStrategyTest extends TestCase
     public function testCast(): void
     {
         $strategy = new DocBlockDetectStrategy();
-        $actual   = $strategy->cast(Foo::class, new ReflectionTypeExtended(['string'], ['class-string']));
+        $actual   = $strategy->cast(Foo::class, new ReflectionType(['string'], ['class-string']));
 
         $this->assertSame(Foo::class, $actual);
     }
@@ -46,7 +46,7 @@ class DocBlockStrategyTest extends TestCase
         $this->expectException(MapperException::class);
         $this->expectExceptionMessage('Cannot convert type int into any of the following types: string');
 
-        $strategy->cast(1, new ReflectionTypeExtended(['string'], ['class-string']));
+        $strategy->cast(1, new ReflectionType(['string'], ['class-string']));
     }
 
     /**

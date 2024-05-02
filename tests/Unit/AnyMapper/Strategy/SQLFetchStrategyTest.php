@@ -16,7 +16,7 @@ namespace WebFu\Tests\Unit\AnyMapper\Strategy;
 use DateTime;
 use PHPUnit\Framework\TestCase;
 use WebFu\AnyMapper\Strategy\SQLFetchStrategy;
-use WebFu\Reflection\ReflectionTypeExtended;
+use WebFu\Reflection\ReflectionType;
 
 /**
  * @coversNothing
@@ -31,7 +31,7 @@ class SQLFetchStrategyTest extends TestCase
     public function testCast(mixed $value, mixed $expected, array $types): void
     {
         $strategy = new SQLFetchStrategy();
-        $actual   = $strategy->cast($value, new ReflectionTypeExtended($types));
+        $actual   = $strategy->cast($value, new ReflectionType($types));
 
         $this->assertEquals($expected, $actual);
     }

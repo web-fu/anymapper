@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 use WebFu\Analyzer\ArrayAnalyzer;
 use WebFu\Analyzer\Track;
 use WebFu\Analyzer\TrackType;
-use WebFu\Reflection\ReflectionTypeExtended;
+use WebFu\Reflection\ReflectionType;
 
 /**
  * @coversNothing
@@ -60,7 +60,7 @@ class ArrayAnalyzerTest extends TestCase
                 'fooIndex' => 'foo',
             ],
             'expected' => [
-                'foo_index' => new Track('fooIndex', TrackType::STRING_INDEX, new ReflectionTypeExtended(['string'])),
+                'foo_index' => new Track('fooIndex', TrackType::STRING_INDEX, new ReflectionType(['string'])),
             ],
         ];
         yield 'numeric index' => [
@@ -68,7 +68,7 @@ class ArrayAnalyzerTest extends TestCase
                 'foo',
             ],
             'expected' => [
-                '0' => new Track(0, TrackType::NUMERIC_INDEX, new ReflectionTypeExtended(['string'])),
+                '0' => new Track(0, TrackType::NUMERIC_INDEX, new ReflectionType(['string'])),
             ],
         ];
         yield 'mixed indexes' => [
@@ -77,8 +77,8 @@ class ArrayAnalyzerTest extends TestCase
                 'fooIndex' => 'foo',
             ],
             'expected' => [
-                '0'         => new Track(0, TrackType::NUMERIC_INDEX, new ReflectionTypeExtended(['string'])),
-                'foo_index' => new Track('fooIndex', TrackType::STRING_INDEX, new ReflectionTypeExtended(['string'])),
+                '0'         => new Track(0, TrackType::NUMERIC_INDEX, new ReflectionType(['string'])),
+                'foo_index' => new Track('fooIndex', TrackType::STRING_INDEX, new ReflectionType(['string'])),
             ],
         ];
     }
@@ -117,11 +117,11 @@ class ArrayAnalyzerTest extends TestCase
     public function trackDataProvider(): iterable
     {
         yield 'numeric' => [
-            'expected' => new Track(0, TrackType::NUMERIC_INDEX, new ReflectionTypeExtended(['string'])),
+            'expected' => new Track(0, TrackType::NUMERIC_INDEX, new ReflectionType(['string'])),
             'track'    => '0',
         ];
         yield 'string' => [
-            'expected' => new Track('bar', TrackType::STRING_INDEX, new ReflectionTypeExtended(['string'])),
+            'expected' => new Track('bar', TrackType::STRING_INDEX, new ReflectionType(['string'])),
             'track'    => 'bar',
         ];
         yield 'null' => [

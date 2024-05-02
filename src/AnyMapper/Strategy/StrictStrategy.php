@@ -17,11 +17,11 @@ use WebFu\AnyMapper\MapperException;
 
 use function WebFu\Internal\get_type;
 
-use WebFu\Reflection\ReflectionTypeExtended;
+use WebFu\Reflection\ReflectionType;
 
 class StrictStrategy implements StrategyInterface
 {
-    public function cast(mixed $value, ReflectionTypeExtended $allowed): mixed
+    public function cast(mixed $value, ReflectionType $allowed): mixed
     {
         $allowedTypes = $allowed->getTypeNames();
         $sourceType   = get_type($value);

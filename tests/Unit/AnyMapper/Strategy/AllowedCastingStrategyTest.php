@@ -17,7 +17,7 @@ use DateTime;
 use PHPUnit\Framework\TestCase;
 use WebFu\AnyMapper\MapperException;
 use WebFu\AnyMapper\Strategy\AllowedCastingStrategy;
-use WebFu\Reflection\ReflectionTypeExtended;
+use WebFu\Reflection\ReflectionType;
 use WebFu\Tests\Fixtures\Foo;
 
 /**
@@ -29,7 +29,7 @@ class AllowedCastingStrategyTest extends TestCase
     {
         $strategy = new AllowedCastingStrategy();
         $strategy->allow('string', DateTime::class);
-        $actual = $strategy->cast('2022-12-01', new ReflectionTypeExtended([DateTime::class]));
+        $actual = $strategy->cast('2022-12-01', new ReflectionType([DateTime::class]));
 
         $this->assertEquals(new DateTime('2022-12-01'), $actual);
     }
@@ -42,6 +42,6 @@ class AllowedCastingStrategyTest extends TestCase
         $this->expectException(MapperException::class);
         $this->expectExceptionMessage('Cannot convert type string into any of the following types: '.DateTime::class);
 
-        $strategy->cast('2022-12-01', new ReflectionTypeExtended([DateTime::class]));
+        $strategy->cast('2022-12-01', new ReflectionType([DateTime::class]));
     }
 }

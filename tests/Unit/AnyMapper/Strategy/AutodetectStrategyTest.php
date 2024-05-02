@@ -17,7 +17,7 @@ use DateTime;
 use PHPUnit\Framework\TestCase;
 use WebFu\AnyMapper\MapperException;
 use WebFu\AnyMapper\Strategy\AutodetectStrategy;
-use WebFu\Reflection\ReflectionTypeExtended;
+use WebFu\Reflection\ReflectionType;
 use WebFu\Tests\Fixtures\BackedEnum;
 use WebFu\Tests\Fixtures\BasicEnum;
 use WebFu\Tests\Fixtures\ClassWithMultipleParameters;
@@ -37,7 +37,7 @@ class AutodetectStrategyTest extends TestCase
     public function testCast(mixed $value, mixed $expected, array $types): void
     {
         $strategy = new AutodetectStrategy();
-        $actual   = $strategy->cast($value, new ReflectionTypeExtended($types));
+        $actual   = $strategy->cast($value, new ReflectionType($types));
 
         $this->assertEquals($expected, $actual);
     }
@@ -74,7 +74,7 @@ class AutodetectStrategyTest extends TestCase
         $this->expectException(MapperException::class);
         $this->expectExceptionMessage('Cannot convert type int into any of the following types: '.$className);
 
-        $strategy->cast(1, new ReflectionTypeExtended([$className]));
+        $strategy->cast(1, new ReflectionType([$className]));
     }
 
     /**

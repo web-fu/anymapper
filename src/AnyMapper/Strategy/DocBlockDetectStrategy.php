@@ -18,13 +18,13 @@ use WebFu\AnyMapper\MapperException;
 
 use function WebFu\Internal\get_type;
 
-use WebFu\Reflection\ReflectionTypeExtended;
+use WebFu\Reflection\ReflectionType;
 
 class DocBlockDetectStrategy extends StrictStrategy
 {
-    public function cast(mixed $value, ReflectionTypeExtended $allowed): mixed
+    public function cast(mixed $value, ReflectionType $allowed): mixed
     {
-        $allowedTypes = array_merge($allowed->getTypeNames(), $allowed->getDocBlockTypeNames());
+        $allowedTypes = array_merge($allowed->getTypeNames(), $allowed->getPhpDocTypeNames());
         $sourceType   = get_type($value);
 
         // Remove mixed type

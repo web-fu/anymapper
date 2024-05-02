@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
 use WebFu\Analyzer\ClassAnalyzer;
 use WebFu\Analyzer\Track;
 use WebFu\Analyzer\TrackType;
-use WebFu\Reflection\ReflectionTypeExtended;
+use WebFu\Reflection\ReflectionType;
 use WebFu\Tests\Fixtures\EntityWithAnnotation;
 use WebFu\Tests\Fixtures\Foo;
 
@@ -32,10 +32,10 @@ class ClassAnalyzerTest extends TestCase
         $classAnalyzer = new ClassAnalyzer(EntityWithAnnotation::class);
         $inputTrack    = $classAnalyzer->getInputTrack('d_t_value');
 
-        $this->assertEquals(new Track('setDTValue', TrackType::METHOD, new ReflectionTypeExtended(['mixed'], [DateTime::class])), $inputTrack);
+        $this->assertEquals(new Track('setDTValue', TrackType::METHOD, new ReflectionType(['mixed'], [DateTime::class])), $inputTrack);
 
         $inputTrack = $classAnalyzer->getInputTrack('foo');
 
-        $this->assertEquals(new Track('setFoo', TrackType::METHOD, new ReflectionTypeExtended(['mixed'], [Foo::class])), $inputTrack);
+        $this->assertEquals(new Track('setFoo', TrackType::METHOD, new ReflectionType(['mixed'], [Foo::class])), $inputTrack);
     }
 }
