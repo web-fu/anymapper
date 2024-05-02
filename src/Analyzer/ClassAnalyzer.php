@@ -63,11 +63,7 @@ class ClassAnalyzer implements AnalyzerInterface
     {
         $reflectionClass = new ReflectionClass($this->originalClass);
 
-        try {
-            if (!$reflectionClass->isEnum()) {
-                return false;
-            }
-        } catch (WrongPhpVersionException $e) {
+        if (!$reflectionClass->isEnum()) {
             return false;
         }
 
