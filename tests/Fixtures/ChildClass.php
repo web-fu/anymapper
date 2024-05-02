@@ -2,7 +2,16 @@
 
 declare(strict_types=1);
 
-namespace WebFu\Tests\Fixture;
+/**
+ * This file is part of web-fu/anymapper
+ *
+ * @copyright Web-Fu <info@web-fu.it>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace WebFu\Tests\Fixtures;
 
 /*
  * This class is created as example of the functionality of AnyMapper and for testing purposes.
@@ -36,6 +45,19 @@ class ChildClass extends ParentClass
         $this->byConstructor = $byConstructor.' is set by constructor';
     }
 
+    /*
+     * Magic setter and getter CAN be used for mapping even though their use is no longer recommended
+     */
+    public function __get(string $key): mixed
+    {
+        return $this->data[$key] ?? null;
+    }
+
+    public function __set(string $key, mixed $value): void
+    {
+        $this->data[$key] = $value;
+    }
+
     public function getByConstructor(): string
     {
         return $this->byConstructor;
@@ -57,19 +79,6 @@ class ChildClass extends ParentClass
     public function isPropertyTrue(): bool
     {
         return true;
-    }
-
-    /*
-     * Magic setter and getter CAN be used for mapping even though their use is no longer recommended
-     */
-    public function __get(string $key): mixed
-    {
-        return $this->data[$key] ?? null;
-    }
-
-    public function __set(string $key, mixed $value): void
-    {
-        $this->data[$key] = $value;
     }
 
     /*
@@ -101,9 +110,9 @@ class ChildClass extends ParentClass
         return new self();
     }
 
-    public static function create(): ChildClass
+    public static function create(): self
     {
-        return new ChildClass();
+        return new self();
     }
 
     /*
@@ -124,11 +133,11 @@ class ChildClass extends ParentClass
     {
     }
 
-    private function getPrivateUnreachable(): void
+    protected function setProtectedUnreachable(): void
     {
     }
 
-    protected function setProtectedUnreachable(): void
+    private function getPrivateUnreachable(): void
     {
     }
 

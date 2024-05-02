@@ -2,18 +2,31 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of web-fu/anymapper
+ *
+ * @copyright Web-Fu <info@web-fu.it>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace WebFu\Tests\Unit\Analyzer;
 
 use PHPUnit\Framework\TestCase;
 use WebFu\Analyzer\ArrayAnalyzer;
 use WebFu\Analyzer\Track;
 use WebFu\Analyzer\TrackType;
-use WebFu\Reflection\ReflectionTypeExtended;
+use WebFu\Reflection\ReflectionType;
 
+/**
+ * @coversNothing
+ */
 class ArrayAnalyzerTest extends TestCase
 {
     /**
      * @dataProvider arrayDataProvider
+     *
      * @param mixed[] $array
      * @param mixed[] $expected
      */
@@ -26,6 +39,7 @@ class ArrayAnalyzerTest extends TestCase
 
     /**
      * @dataProvider arrayDataProvider
+     *
      * @param mixed[] $array
      * @param mixed[] $expected
      */
@@ -46,7 +60,7 @@ class ArrayAnalyzerTest extends TestCase
                 'fooIndex' => 'foo',
             ],
             'expected' => [
-                'foo_index' => new Track('fooIndex', TrackType::STRING_INDEX, new ReflectionTypeExtended(['string'])),
+                'foo_index' => new Track('fooIndex', TrackType::STRING_INDEX, new ReflectionType(['string'])),
             ],
         ];
         yield 'numeric index' => [
@@ -54,7 +68,7 @@ class ArrayAnalyzerTest extends TestCase
                 'foo',
             ],
             'expected' => [
-                '0' => new Track(0, TrackType::NUMERIC_INDEX, new ReflectionTypeExtended(['string'])),
+                '0' => new Track(0, TrackType::NUMERIC_INDEX, new ReflectionType(['string'])),
             ],
         ];
         yield 'mixed indexes' => [
@@ -63,8 +77,8 @@ class ArrayAnalyzerTest extends TestCase
                 'fooIndex' => 'foo',
             ],
             'expected' => [
-                '0' => new Track(0, TrackType::NUMERIC_INDEX, new ReflectionTypeExtended(['string'])),
-                'foo_index' => new Track('fooIndex', TrackType::STRING_INDEX, new ReflectionTypeExtended(['string'])),
+                '0'         => new Track(0, TrackType::NUMERIC_INDEX, new ReflectionType(['string'])),
+                'foo_index' => new Track('fooIndex', TrackType::STRING_INDEX, new ReflectionType(['string'])),
             ],
         ];
     }
@@ -103,16 +117,16 @@ class ArrayAnalyzerTest extends TestCase
     public function trackDataProvider(): iterable
     {
         yield 'numeric' => [
-            'expected' => new Track(0, TrackType::NUMERIC_INDEX, new ReflectionTypeExtended(['string'])),
-            'track' => '0',
+            'expected' => new Track(0, TrackType::NUMERIC_INDEX, new ReflectionType(['string'])),
+            'track'    => '0',
         ];
         yield 'string' => [
-            'expected' => new Track('bar', TrackType::STRING_INDEX, new ReflectionTypeExtended(['string'])),
-            'track' => 'bar',
+            'expected' => new Track('bar', TrackType::STRING_INDEX, new ReflectionType(['string'])),
+            'track'    => 'bar',
         ];
         yield 'null' => [
             'expected' => null,
-            'track' => 'does_not_exist',
+            'track'    => 'does_not_exist',
         ];
     }
 }

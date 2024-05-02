@@ -11,9 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace WebFu\AnyMapper\Caster;
+namespace WebFu\Tests\Fixtures;
 
-interface CasterInterface
+class ClassWithMultipleParameters
 {
-    public function cast(mixed $value, string $type): mixed;
+    public function __construct(private string $param1, private int $param2)
+    {
+    }
 }

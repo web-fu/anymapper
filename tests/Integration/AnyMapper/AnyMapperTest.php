@@ -2,22 +2,39 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of web-fu/anymapper
+ *
+ * @copyright Web-Fu <info@web-fu.it>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace WebFu\Tests\Integration\AnyMapper;
 
 use DateTime;
+use PDO;
+use PDOStatement;
 use PHPUnit\Framework\TestCase;
 use Vimeo\MysqlEngine\Php8\FakePdo;
 use WebFu\AnyMapper\AnyMapper;
 use WebFu\AnyMapper\MapperException;
 use WebFu\AnyMapper\Strategy\AllowedCastingStrategy;
+use WebFu\AnyMapper\Strategy\AutodetectStrategy;
 use WebFu\AnyMapper\Strategy\CallbackCastingStrategy;
 use WebFu\AnyMapper\Strategy\DocBlockDetectStrategy;
 use WebFu\AnyMapper\Strategy\SQLFetchStrategy;
-use WebFu\Tests\Fixture\ChildClass;
-use WebFu\Tests\Fixture\EntityWithAnnotation;
-use WebFu\Tests\Fixture\Foo;
-use WebFu\Tests\Fixture\GameScoreEntity;
+use WebFu\Tests\Fixtures\BackedEnum;
+use WebFu\Tests\Fixtures\ChildClass;
+use WebFu\Tests\Fixtures\ClassWithEnumParameters;
+use WebFu\Tests\Fixtures\EntityWithAnnotation;
+use WebFu\Tests\Fixtures\Foo;
+use WebFu\Tests\Fixtures\GameScoreEntity;
 
+/**
+ * @coversNothing
+ */
 class AnyMapperTest extends TestCase
 {
     public function testMapInto(): void
@@ -26,8 +43,8 @@ class AnyMapperTest extends TestCase
 
         (new AnyMapper())->map([
             'byConstructor' => 'byConstructor',
-            'public' => 'public',
-            'bySetter' => 'bySetter',
+            'public'        => 'public',
+            'bySetter'      => 'bySetter',
         ])->into($class)->run();
 
         $this->assertSame('byConstructor is set by constructor', $class->getByConstructor());
@@ -39,8 +56,8 @@ class AnyMapperTest extends TestCase
     {
         $class = (new AnyMapper())->map([
             'byConstructor' => 'byConstructor',
-            'public' => 'public',
-            'bySetter' => 'bySetter',
+            'public'        => 'public',
+            'bySetter'      => 'bySetter',
         ])
             ->as(ChildClass::class)
             ->run();
@@ -52,18 +69,33 @@ class AnyMapperTest extends TestCase
         $this->assertSame('bySetter is set by setter', $class->getBySetter());
     }
 
+    public function testEnum(): void
+    {
+        $class = new ClassWithEnumParameters();
+
+        (new AnyMapper())
+            ->map([
+                'backedEnum' => 1,
+            ])
+            ->using(new AutodetectStrategy())
+            ->into($class)
+            ->run();
+
+        $this->assertSame(BackedEnum::ONE, $class->backedEnum);
+    }
+
     public function testMapAsFail(): void
     {
         $this->expectException(MapperException::class);
         $this->expectExceptionMessage('Class IDoNotExist does not exist');
 
-        /** @phpstan-ignore-next-line */
+        /* @phpstan-ignore-next-line */
         (new AnyMapper())->as('IDoNotExist');
     }
 
     public function testSerialize(): void
     {
-        $class = new class () {
+        $class = new class() {
             public string $public = 'public';
             private string $value;
 
@@ -79,7 +111,7 @@ class AnyMapperTest extends TestCase
 
             public function getClass(): object
             {
-                return new class () {
+                return new class() {
                     public string $element = 'element';
                 };
             }
@@ -100,8 +132,8 @@ class AnyMapperTest extends TestCase
 
         $this->assertEquals([
             'public' => 'public',
-            'value' => 'construct',
-            'class' => [
+            'value'  => 'construct',
+            'class'  => [
                 'element' => 'element',
             ],
             'array' => [
@@ -113,7 +145,7 @@ class AnyMapperTest extends TestCase
 
     public function testUsing(): void
     {
-        $class = new class () {
+        $class = new class() {
             public DateTime $value;
         };
 
@@ -135,9 +167,11 @@ class AnyMapperTest extends TestCase
     public function testDocBlockStrategy(): void
     {
         /** @var EntityWithAnnotation $class */
-        $class = (new AnyMapper())->map([
-            'foo' => 1,
-        ])->using(new DocBlockDetectStrategy())
+        $class = (new AnyMapper())
+            ->map([
+                'foo' => 1,
+            ])
+            ->using(new DocBlockDetectStrategy())
             ->as(EntityWithAnnotation::class)
             ->run();
 
@@ -148,19 +182,19 @@ class AnyMapperTest extends TestCase
     public function testSQLFetchStrategy(): void
     {
         $dbConnection = self::createConnection();
-        /** @var \PDOStatement $stmt */
+        /** @var PDOStatement $stmt */
         $stmt = $dbConnection->query('SELECT * FROM game_scores');
 
         $sqlMapper = (new AnyMapper())
             ->using(new SQLFetchStrategy())
             ->as(GameScoreEntity::class);
 
-        while ($result = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+        while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
             assert(is_array($result));
 
             $entity = $sqlMapper->map($result)->run();
 
-            assert($entity instanceof  GameScoreEntity);
+            assert($entity instanceof GameScoreEntity);
 
             $this->assertIsInt($entity->getId());
             $this->assertIsString($entity->getName());
@@ -170,7 +204,7 @@ class AnyMapperTest extends TestCase
 
     public function testCallbackCastingStrategy(): void
     {
-        $class = new class () {
+        $class = new class() {
             public int $value;
         };
 
@@ -184,12 +218,11 @@ class AnyMapperTest extends TestCase
             )
             ->into($class)
             ->run();
-        ;
 
         $this->assertSame(1, $class->value);
     }
 
-    public static function createConnection(): \PDO
+    public static function createConnection(): PDO
     {
         $dbConnection = new FakePdo('mysql:foo;dbname=test;', '', ' ');
 

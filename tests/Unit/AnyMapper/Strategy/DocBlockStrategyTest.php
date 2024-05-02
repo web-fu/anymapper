@@ -2,24 +2,36 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of web-fu/anymapper
+ *
+ * @copyright Web-Fu <info@web-fu.it>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace WebFu\Tests\Unit\AnyMapper\Strategy;
 
 use PHPUnit\Framework\TestCase;
 use WebFu\AnyMapper\MapperException;
 use WebFu\AnyMapper\Strategy\AutodetectStrategy;
 use WebFu\AnyMapper\Strategy\DocBlockDetectStrategy;
-use WebFu\Reflection\ReflectionTypeExtended;
-use WebFu\Tests\Fixture\ClassWithMultipleParameters;
-use WebFu\Tests\Fixture\ClassWithOneParameter;
-use WebFu\Tests\Fixture\ClassWithZeroParameters;
-use WebFu\Tests\Fixture\Foo;
+use WebFu\Reflection\ReflectionType;
+use WebFu\Tests\Fixtures\ClassWithMultipleParameters;
+use WebFu\Tests\Fixtures\ClassWithOneParameter;
+use WebFu\Tests\Fixtures\ClassWithZeroParameters;
+use WebFu\Tests\Fixtures\Foo;
 
+/**
+ * @coversNothing
+ */
 class DocBlockStrategyTest extends TestCase
 {
     public function testCast(): void
     {
         $strategy = new DocBlockDetectStrategy();
-        $actual = $strategy->cast(Foo::class, new ReflectionTypeExtended(['string'], ['class-string']));
+        $actual   = $strategy->cast(Foo::class, new ReflectionType(['string'], ['class-string']));
 
         $this->assertSame(Foo::class, $actual);
     }
@@ -34,7 +46,7 @@ class DocBlockStrategyTest extends TestCase
         $this->expectException(MapperException::class);
         $this->expectExceptionMessage('Cannot convert type int into any of the following types: string');
 
-        $strategy->cast(1, new ReflectionTypeExtended(['string'], ['class-string']));
+        $strategy->cast(1, new ReflectionType(['string'], ['class-string']));
     }
 
     /**

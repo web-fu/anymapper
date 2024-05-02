@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of web-fu/anymapper
+ *
+ * @copyright Web-Fu <info@web-fu.it>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace WebFu\AnyMapper\Caster;
 
 use DateTime;
@@ -63,19 +72,20 @@ class DefaultCaster implements CasterInterface
             str_ends_with($type, '[]')
             && is_iterable($value)
         ) {
-            $type = str_replace('[]', '', $type);
+            $type   = str_replace('[]', '', $type);
             $result = [];
             foreach ($value as $item) {
                 $result[] = (new self())->cast($item, $type);
             }
+
             return $result;
         }
 
-        if (!in_array($type, self::ALLOWED[$sourceType])) {
+        if (!in_array($type, self::ALLOWED[$sourceType], true)) {
             throw new CasterException('Data casting from '.$sourceType.' to '.$type.' not allowed');
         }
 
-        if (is_null($value)) {
+        if (null === $value) {
             return null;
         }
 
@@ -99,26 +109,27 @@ class DefaultCaster implements CasterInterface
             'int', 'integer' => (int) $value,
             'double', 'float' => (float) $value,
             'bool', 'boolean' => (bool) $value,
-            'string' => (string) $value,
+            'string'   => (string) $value,
             'DateTime' => new DateTime((string) $value),
-            default => throw new CasterException('Unknown error'),
+            default    => throw new CasterException('Unknown error'),
         };
     }
 
     /**
      * @param iterable<mixed>|object $value
+     *
      * @return object|iterable<mixed>|string
      */
     private function complexConversion(iterable|object $value, string $type): object|iterable|string
     {
-        if ($type === 'string') {
+        if ('string' === $type) {
             return var_export($value, true);
         }
 
         return match ($type) {
             'object' => (object) $value,
-            'array' => (array) $value,
-            default => throw new CasterException('Unknown error'),
+            'array'  => (array) $value,
+            default  => throw new CasterException('Unknown error'),
         };
     }
 }

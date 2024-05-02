@@ -2,23 +2,36 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of web-fu/anymapper
+ *
+ * @copyright Web-Fu <info@web-fu.it>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace WebFu\Tests\Unit\AnyMapper\Strategy;
 
 use PHPUnit\Framework\TestCase;
 use WebFu\AnyMapper\MapperException;
 use WebFu\AnyMapper\Strategy\StrictStrategy;
-use WebFu\Reflection\ReflectionTypeExtended;
+use WebFu\Reflection\ReflectionType;
 
+/**
+ * @coversNothing
+ */
 class StrictStrategyTest extends TestCase
 {
     /**
      * @dataProvider typeProvider
+     *
      * @param string[] $types
      */
     public function testCast(mixed $value, array $types): void
     {
         $strategy = new StrictStrategy();
-        $actual = $strategy->cast($value, new ReflectionTypeExtended($types));
+        $actual   = $strategy->cast($value, new ReflectionType($types));
 
         $this->assertSame($value, $actual);
     }
@@ -94,21 +107,21 @@ class StrictStrategyTest extends TestCase
         ];
 
         yield 'anonymous_class_as_object' => [
-            'value' => new class () {
+            'value' => new class() {
                 public string $foo = 'bar';
-            } ,
+            },
             'types' => ['object'],
         ];
         yield 'anonymous_class_as_object_or_string' => [
-            'value' => new class () {
+            'value' => new class() {
                 public string $foo = 'bar';
-            } ,
+            },
             'types' => ['object', 'string'],
         ];
         yield 'anonymous_class_as_mixed' => [
-            'value' => new class () {
+            'value' => new class() {
                 public string $foo = 'bar';
-            } ,
+            },
             'types' => ['mixed'],
         ];
     }
@@ -120,6 +133,6 @@ class StrictStrategyTest extends TestCase
         $this->expectException(MapperException::class);
         $this->expectExceptionMessage('Cannot convert type int into any of the following types: string, boolean');
 
-        $strategy->cast(1, new ReflectionTypeExtended(['string', 'boolean']));
+        $strategy->cast(1, new ReflectionType(['string', 'boolean']));
     }
 }

@@ -2,21 +2,33 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of web-fu/anymapper
+ *
+ * @copyright Web-Fu <info@web-fu.it>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace WebFu\Tests\Unit\Internal;
 
 use PHPUnit\Framework\TestCase;
-use WebFu\Tests\Fixture\Foo;
-
 use stdClass;
 
 use function WebFu\Internal\get_type;
 
+use WebFu\Tests\Fixtures\Foo;
+
+/**
+ * @coversNothing
+ */
 class GetTypeFunctionTest extends TestCase
 {
     /**
      * @dataProvider elementProvider
      */
-    public function test_get_type(mixed $value, string $expected): void
+    public function testGetType(mixed $value, string $expected): void
     {
         $this->assertEquals($expected, get_type($value));
     }
@@ -27,47 +39,47 @@ class GetTypeFunctionTest extends TestCase
     public function elementProvider(): iterable
     {
         yield 'null' => [
-            'value' => null,
+            'value'    => null,
             'expected' => 'null',
         ];
         yield 'bool' => [
-            'value' => true,
+            'value'    => true,
             'expected' => 'bool',
         ];
         yield 'int' => [
-            'value' => 1,
+            'value'    => 1,
             'expected' => 'int',
         ];
         yield 'float' => [
-            'value' => 1.0,
+            'value'    => 1.0,
             'expected' => 'float',
         ];
         yield 'string' => [
-            'value' => 'foo',
+            'value'    => 'foo',
             'expected' => 'string',
         ];
         yield 'array' => [
-            'value' => [],
+            'value'    => [],
             'expected' => 'array',
         ];
         yield 'resource' => [
-            'value' => fopen(__FILE__, 'r'),
+            'value'    => fopen(__FILE__, 'r'),
             'expected' => 'resource',
         ];
         yield 'named_object' => [
-            'value' => new Foo(),
+            'value'    => new Foo(),
             'expected' => Foo::class,
         ];
         yield 'anonymous_object' => [
-            'value' => new class () {},
+            'value'    => new class() {},
             'expected' => 'class@anonymous',
         ];
         yield 'stdClass_object' => [
-            'value' => (object) ['foo' => 'bar'],
+            'value'    => (object) ['foo' => 'bar'],
             'expected' => stdClass::class,
         ];
         yield 'Closure' => [
-            'value' => fn (): bool => true,
+            'value'    => fn (): bool => true,
             'expected' => 'Closure',
         ];
     }

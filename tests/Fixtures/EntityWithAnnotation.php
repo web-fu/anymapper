@@ -2,7 +2,16 @@
 
 declare(strict_types=1);
 
-namespace WebFu\Tests\Fixture;
+/**
+ * This file is part of web-fu/anymapper
+ *
+ * @copyright Web-Fu <info@web-fu.it>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace WebFu\Tests\Fixtures;
 
 use DateTime as DT;
 
@@ -11,12 +20,6 @@ use DateTime as DT;
  */
 class EntityWithAnnotation
 {
-    /** @var DT */
-    private $DT;
-
-    /** @var Foo */
-    private $foo;
-
     /**
      * @var string[]
      */
@@ -26,6 +29,15 @@ class EntityWithAnnotation
     ];
 
     public int|string|null $unionType;
+    /**
+     * @var DT
+     */
+    private $DT;
+
+    /**
+     * @var Foo
+     */
+    private $foo;
 
     /**
      * @return string[]
@@ -40,6 +52,7 @@ class EntityWithAnnotation
 
     /**
      * @param string[] $array
+     *
      * @return $this
      */
     public function setStringArray(array $array): self

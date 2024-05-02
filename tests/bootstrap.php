@@ -11,9 +11,4 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace WebFu\AnyMapper\Caster;
-
-interface CasterInterface
-{
-    public function cast(mixed $value, string $type): mixed;
-}
+require dirname(__DIR__).'/vendor/autoload.php';

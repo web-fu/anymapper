@@ -2,13 +2,23 @@
 
 declare(strict_types=1);
 
+/**
+ * This file is part of web-fu/anymapper
+ *
+ * @copyright Web-Fu <info@web-fu.it>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace WebFu\Tests\Benchmark\AnyMapper;
 
+use PhpBench\Benchmark\Metadata\Annotations\Revs;
 use WebFu\AnyMapper\AnyMapper;
 use WebFu\AnyMapper\Strategy\CallbackCastingStrategy;
 use WebFu\AnyMapper\Strategy\DocBlockDetectStrategy;
-use WebFu\Tests\Fixture\ChildClass;
-use WebFu\Tests\Fixture\EntityWithAnnotation;
+use WebFu\Tests\Fixtures\ChildClass;
+use WebFu\Tests\Fixtures\EntityWithAnnotation;
 
 class AnyMapperBench
 {
@@ -19,8 +29,8 @@ class AnyMapperBench
     {
         (new AnyMapper())->map([
             'byConstructor' => 'byConstructor',
-            'public' => 'public',
-            'bySetter' => 'bySetter',
+            'public'        => 'public',
+            'bySetter'      => 'bySetter',
         ])
             ->as(ChildClass::class)
             ->run();
@@ -35,8 +45,8 @@ class AnyMapperBench
 
         (new AnyMapper())->map([
             'byConstructor' => 'byConstructor',
-            'public' => 'public',
-            'bySetter' => 'bySetter',
+            'public'        => 'public',
+            'bySetter'      => 'bySetter',
         ])
             ->into($class)
             ->run();
@@ -47,7 +57,7 @@ class AnyMapperBench
      */
     public function benchSerialize(): void
     {
-        $class = new class () {
+        $class = new class() {
             public string $public = 'public';
             private string $value;
 
@@ -63,7 +73,7 @@ class AnyMapperBench
 
             public function getClass(): object
             {
-                return new class () {
+                return new class() {
                     public string $element = 'element';
                 };
             }
@@ -90,7 +100,6 @@ class AnyMapperBench
      */
     public function benchDocBlockStrategy(): void
     {
-        /** @var EntityWithAnnotation $class */
         (new AnyMapper())->map([
             'foo' => 1,
         ])->using(new DocBlockDetectStrategy())
@@ -103,7 +112,7 @@ class AnyMapperBench
      */
     public function benchCallbackCastingStrategy(): void
     {
-        $class = new class () {
+        $class = new class() {
             public int $value;
         };
 

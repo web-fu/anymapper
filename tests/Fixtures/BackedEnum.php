@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace WebFu\AnyMapper\Caster;
+namespace WebFu\Tests\Fixtures;
 
-interface CasterInterface
+enum BackedEnum: int
 {
-    public function cast(mixed $value, string $type): mixed;
+    case ONE = 1;
 }
