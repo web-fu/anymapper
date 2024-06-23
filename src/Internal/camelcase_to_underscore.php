@@ -13,18 +13,22 @@ declare(strict_types=1);
 
 namespace WebFu\Internal;
 
-/**
- * @internal
- */
-function camelcase_to_underscore(string $string): string
-{
-    if (empty($string)) {
-        return $string;
+if (!function_exists('WebFu\Internal\camelcase_to_underscore')) {
+    /**
+     * Convert a camelCase string to underscore_case.
+     *
+     * @internal
+     */
+    function camelcase_to_underscore(string $string): string
+    {
+        if (empty($string)) {
+            return $string;
+        }
+        $str = lcfirst($string);
+        $str = preg_replace('/[A-Z]/', '_$0', $str);
+
+        assert(is_string($str));
+
+        return strtolower($str);
     }
-    $str = lcfirst($string);
-    $str = preg_replace('/[A-Z]/', '_$0', $str);
-
-    assert(is_string($str));
-
-    return strtolower($str);
 }
