@@ -19,11 +19,13 @@ use WebFu\AnyMapper\Strategy\SQLFetchStrategy;
 use WebFu\Reflection\ReflectionType;
 
 /**
- * @coversNothing
+ * @coversDefaultClass  \WebFu\AnyMapper\Strategy\SQLFetchStrategy
  */
 class SQLFetchStrategyTest extends TestCase
 {
     /**
+     * @covers ::cast
+     *
      * @dataProvider typeProvider
      *
      * @param string[] $types

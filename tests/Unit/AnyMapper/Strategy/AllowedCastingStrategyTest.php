@@ -21,10 +21,14 @@ use WebFu\Reflection\ReflectionType;
 use WebFu\Tests\Fixtures\Foo;
 
 /**
- * @coversNothing
+ * @coversDefaultClass \WebFu\AnyMapper\Strategy\AllowedCastingStrategy
  */
 class AllowedCastingStrategyTest extends TestCase
 {
+    /**
+     * @covers ::allow
+     * @covers ::cast
+     */
     public function testCast(): void
     {
         $strategy = new AllowedCastingStrategy();
@@ -34,6 +38,10 @@ class AllowedCastingStrategyTest extends TestCase
         $this->assertEquals(new DateTime('2022-12-01'), $actual);
     }
 
+    /**
+     * @covers ::allow
+     * @covers ::cast
+     */
     public function testCastFail(): void
     {
         $strategy = new AllowedCastingStrategy();

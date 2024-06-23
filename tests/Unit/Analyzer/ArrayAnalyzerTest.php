@@ -20,11 +20,13 @@ use WebFu\Analyzer\TrackType;
 use WebFu\Reflection\ReflectionType;
 
 /**
- * @coversNothing
+ * @coversDefaultClass  \WebFu\Analyzer\ArrayAnalyzer
  */
 class ArrayAnalyzerTest extends TestCase
 {
     /**
+     * @covers ::getOutputTrackList
+     *
      * @dataProvider arrayDataProvider
      *
      * @param mixed[] $array
@@ -38,6 +40,8 @@ class ArrayAnalyzerTest extends TestCase
     }
 
     /**
+     * @covers ::getInputTrackList
+     *
      * @dataProvider arrayDataProvider
      *
      * @param mixed[] $array
@@ -84,6 +88,8 @@ class ArrayAnalyzerTest extends TestCase
     }
 
     /**
+     * @covers ::getInputTrack
+     *
      * @dataProvider trackDataProvider
      */
     public function testInputTrack(Track|null $expected, string $track): void
@@ -98,6 +104,8 @@ class ArrayAnalyzerTest extends TestCase
     }
 
     /**
+     * @covers ::getOutputTrack
+     *
      * @dataProvider trackDataProvider
      */
     public function testOutputTrack(Track|null $expected, string $track): void

@@ -24,10 +24,13 @@ use WebFu\Tests\Fixtures\ClassWithZeroParameters;
 use WebFu\Tests\Fixtures\Foo;
 
 /**
- * @coversNothing
+ * @coversDefaultClass  \WebFu\AnyMapper\Strategy\DocBlockDetectStrategy
  */
 class DocBlockStrategyTest extends TestCase
 {
+    /**
+     * @covers ::cast
+     */
     public function testCast(): void
     {
         $strategy = new DocBlockDetectStrategy();
@@ -37,6 +40,8 @@ class DocBlockStrategyTest extends TestCase
     }
 
     /**
+     * @covers ::cast
+     *
      * @dataProvider failTypeProvider
      */
     public function testCastFail(string $className): void

@@ -33,32 +33,43 @@ use WebFu\Tests\Fixtures\Foo;
 use WebFu\Tests\Fixtures\GameScoreEntity;
 
 /**
- * @coversNothing
+ * @coversDefaultClass \WebFu\AnyMapper\AnyMapper
  */
 class AnyMapperTest extends TestCase
 {
+    /**
+     * @covers ::map
+     * @covers ::into
+     */
     public function testMapInto(): void
     {
         $class = new ChildClass();
 
-        (new AnyMapper())->map([
-            'byConstructor' => 'byConstructor',
-            'public'        => 'public',
-            'bySetter'      => 'bySetter',
-        ])->into($class)->run();
+        (new AnyMapper())
+            ->map([
+                'byConstructor' => 'byConstructor',
+                'public'        => 'public',
+                'bySetter'      => 'bySetter',
+            ])
+            ->into($class)->run();
 
         $this->assertSame('byConstructor is set by constructor', $class->getByConstructor());
         $this->assertSame('public', $class->public);
         $this->assertSame('bySetter is set by setter', $class->getBySetter());
     }
 
+    /**
+     * @covers ::map
+     * @covers ::as
+     */
     public function testMapAs(): void
     {
-        $class = (new AnyMapper())->map([
-            'byConstructor' => 'byConstructor',
-            'public'        => 'public',
-            'bySetter'      => 'bySetter',
-        ])
+        $class = (new AnyMapper())
+            ->map([
+                'byConstructor' => 'byConstructor',
+                'public'        => 'public',
+                'bySetter'      => 'bySetter',
+            ])
             ->as(ChildClass::class)
             ->run();
 
@@ -69,6 +80,10 @@ class AnyMapperTest extends TestCase
         $this->assertSame('bySetter is set by setter', $class->getBySetter());
     }
 
+    /**
+     * @covers ::map
+     * @covers ::into
+     */
     public function testEnum(): void
     {
         $class = new ClassWithEnumParameters();
@@ -84,6 +99,10 @@ class AnyMapperTest extends TestCase
         $this->assertSame(BackedEnum::ONE, $class->backedEnum);
     }
 
+    /**
+     * @covers ::map
+     * @covers ::as
+     */
     public function testMapAsFail(): void
     {
         $this->expectException(MapperException::class);
@@ -93,6 +112,10 @@ class AnyMapperTest extends TestCase
         (new AnyMapper())->as('IDoNotExist');
     }
 
+    /**
+     * @covers ::map
+     * @covers ::serialize
+     */
     public function testSerialize(): void
     {
         $class = new class() {
@@ -128,7 +151,9 @@ class AnyMapperTest extends TestCase
             }
         };
 
-        $serialized = (new AnyMapper())->map($class)->serialize();
+        $serialized = (new AnyMapper())
+            ->map($class)
+            ->serialize();
 
         $this->assertEquals([
             'public' => 'public',
@@ -143,6 +168,11 @@ class AnyMapperTest extends TestCase
         ], $serialized);
     }
 
+    /**
+     * @covers ::map
+     * @covers ::using
+     * @covers ::into
+     */
     public function testUsing(): void
     {
         $class = new class() {
@@ -164,6 +194,11 @@ class AnyMapperTest extends TestCase
         $this->assertEquals(new DateTime('2022-12-01'), $class->value);
     }
 
+    /**
+     * @covers ::map
+     * @covers ::using
+     * @covers ::as
+     */
     public function testDocBlockStrategy(): void
     {
         /** @var EntityWithAnnotation $class */
@@ -179,6 +214,11 @@ class AnyMapperTest extends TestCase
         $this->assertSame(1, $class->getFoo()->getValue());
     }
 
+    /**
+     * @covers ::map
+     * @covers ::using
+     * @covers ::as
+     */
     public function testSQLFetchStrategy(): void
     {
         $dbConnection = self::createConnection();
@@ -202,6 +242,11 @@ class AnyMapperTest extends TestCase
         }
     }
 
+    /**
+     * @covers ::map
+     * @covers ::using
+     * @covers ::into
+     */
     public function testCallbackCastingStrategy(): void
     {
         $class = new class() {

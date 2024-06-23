@@ -20,11 +20,13 @@ use WebFu\Proxy\Proxy;
 use WebFu\Proxy\ProxyException;
 
 /**
- * @coversNothing
+ * @coversDefaultClass \WebFu\Proxy\Proxy
  */
 class ProxyTest extends TestCase
 {
     /**
+     * @covers ::get
+     *
      * @dataProvider getDataProvider
      *
      * @param mixed[]|object $element
@@ -116,6 +118,9 @@ class ProxyTest extends TestCase
         ];
     }
 
+    /**
+     * @covers ::get
+     */
     public function testGetFail(): void
     {
         $element = ['foo' => 1];
@@ -129,6 +134,8 @@ class ProxyTest extends TestCase
     }
 
     /**
+     * @covers ::set
+     *
      * @dataProvider setDataProvider
      */
     public function testSet(object $class, string $path, mixed $value, mixed $expected): void
@@ -193,6 +200,9 @@ class ProxyTest extends TestCase
         ];
     }
 
+    /**
+     * @covers ::set
+     */
     public function testSetFail(): void
     {
         $element = ['foo' => 1];

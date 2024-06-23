@@ -19,11 +19,13 @@ use stdClass;
 use WebFu\AnyMapper\Caster\DefaultCaster;
 
 /**
- * @coversNothing
+ * @coversDefaultClass \WebFu\AnyMapper\Caster\DefaultCaster
  */
 class CasterTest extends TestCase
 {
     /**
+     * @covers ::cast
+     *
      * @dataProvider castProvider
      *
      * @param int|float|bool|string|object|mixed[]|null $value

@@ -23,10 +23,13 @@ use WebFu\Tests\Fixtures\EntityWithAnnotation;
 use WebFu\Tests\Fixtures\Foo;
 
 /**
- * @coversNothing
+ * @coversDefaultClass \WebFu\Analyzer\ClassAnalyzer
  */
 class ClassAnalyzerTest extends TestCase
 {
+    /**
+     * @covers ::getInputTrack
+     */
     public function testGetInputTrack(): void
     {
         $classAnalyzer = new ClassAnalyzer(EntityWithAnnotation::class);

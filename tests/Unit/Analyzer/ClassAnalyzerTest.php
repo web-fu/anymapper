@@ -22,10 +22,13 @@ use WebFu\Reflection\ReflectionType;
 use WebFu\Tests\Fixtures\ChildClass;
 
 /**
- * @coversNothing
+ * @coversDefaultClass \WebFu\Analyzer\ClassAnalyzer
  */
 class ClassAnalyzerTest extends TestCase
 {
+    /**
+     * @covers ::getConstructor
+     */
     public function testGetConstructor(): void
     {
         $class         = new ChildClass();
@@ -35,12 +38,18 @@ class ClassAnalyzerTest extends TestCase
         $this->assertNotNull($constructor);
     }
 
+    /**
+     * @covers ::getConstructor
+     */
     public function testGetConstructorReturnNull(): void
     {
         $classAnalyzer = new ClassAnalyzer(stdClass::class);
         $this->assertNull($classAnalyzer->getConstructor());
     }
 
+    /**
+     * @covers ::getSetters
+     */
     public function testGetGetters(): void
     {
         $class         = new ChildClass();
@@ -57,6 +66,9 @@ class ClassAnalyzerTest extends TestCase
         ], array_keys($getters));
     }
 
+    /**
+     * @covers ::getSetters
+     */
     public function testGetSetters(): void
     {
         $class         = new ChildClass();
@@ -71,6 +83,9 @@ class ClassAnalyzerTest extends TestCase
         ], array_keys($setters));
     }
 
+    /**
+     * @covers ::getProperties
+     */
     public function testGetProperties(): void
     {
         $class         = new ChildClass();
@@ -84,6 +99,9 @@ class ClassAnalyzerTest extends TestCase
         ], array_keys($properties));
     }
 
+    /**
+     * @covers ::getGenerators
+     */
     public function testGetGenerators(): void
     {
         $class         = new ChildClass();
@@ -97,6 +115,9 @@ class ClassAnalyzerTest extends TestCase
         ], array_keys($generators));
     }
 
+    /**
+     * @covers ::getOutputTrackList
+     */
     public function testGetOutputTrackList(): void
     {
         $class         = new ChildClass();
@@ -117,6 +138,9 @@ class ClassAnalyzerTest extends TestCase
         ], $gettablePathMap);
     }
 
+    /**
+     * @covers ::getInputTrackList
+     */
     public function testGetInputTrackList(): void
     {
         $class         = new ChildClass();
@@ -136,6 +160,8 @@ class ClassAnalyzerTest extends TestCase
     }
 
     /**
+     * @covers ::getOutputTrack
+     *
      * @dataProvider outputTrackProvider
      */
     public function testGetOutputTrack(Track|null $expected, string $track): void
@@ -194,6 +220,8 @@ class ClassAnalyzerTest extends TestCase
     }
 
     /**
+     * @covers ::getInputTrack
+     *
      * @dataProvider inputTrackProvider
      */
     public function testGetInputTrack(Track|null $expected, string $track): void

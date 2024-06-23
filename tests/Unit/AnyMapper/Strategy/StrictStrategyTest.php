@@ -19,11 +19,13 @@ use WebFu\AnyMapper\Strategy\StrictStrategy;
 use WebFu\Reflection\ReflectionType;
 
 /**
- * @coversNothing
+ * @coversDefaultClass \WebFu\AnyMapper\Strategy\StrictStrategy
  */
 class StrictStrategyTest extends TestCase
 {
     /**
+     * @covers ::cast
+     *
      * @dataProvider typeProvider
      *
      * @param string[] $types
@@ -126,6 +128,9 @@ class StrictStrategyTest extends TestCase
         ];
     }
 
+    /**
+     * @covers ::cast
+     */
     public function testCastFail(): void
     {
         $strategy = new StrictStrategy();

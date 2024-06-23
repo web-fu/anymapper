@@ -25,11 +25,13 @@ use WebFu\Tests\Fixtures\ClassWithOneParameter;
 use WebFu\Tests\Fixtures\ClassWithZeroParameters;
 
 /**
- * @coversNothing
+ * @coversDefaultClass \WebFu\AnyMapper\Strategy\AllowedCastingStrategy
  */
 class AutodetectStrategyTest extends TestCase
 {
     /**
+     * @covers ::cast
+     *
      * @dataProvider typeProvider
      *
      * @param string[] $types
@@ -65,6 +67,8 @@ class AutodetectStrategyTest extends TestCase
     }
 
     /**
+     * @covers ::cast
+     *
      * @dataProvider failTypeProvider
      */
     public function testCastFail(string $className): void

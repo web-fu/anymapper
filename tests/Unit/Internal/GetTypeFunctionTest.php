@@ -21,7 +21,7 @@ use function WebFu\Internal\get_type;
 use WebFu\Tests\Fixtures\Foo;
 
 /**
- * @coversNothing
+ * @covers \WebFu\Internal\get_type
  */
 class GetTypeFunctionTest extends TestCase
 {

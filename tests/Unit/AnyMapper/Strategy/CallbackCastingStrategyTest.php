@@ -20,10 +20,14 @@ use WebFu\AnyMapper\Strategy\CallbackCastingStrategy;
 use WebFu\Reflection\ReflectionType;
 
 /**
- * @coversNothing
+ * @coversDefaultClass \WebFu\AnyMapper\Strategy\CallbackCastingStrategy
  */
 class CallbackCastingStrategyTest extends TestCase
 {
+    /**
+     * @covers ::addMethod
+     * @covers ::cast
+     */
     public function testCast(): void
     {
         $strategy = new CallbackCastingStrategy();
@@ -33,6 +37,10 @@ class CallbackCastingStrategyTest extends TestCase
         $this->assertEquals(1, $actual);
     }
 
+    /**
+     * @covers ::addMethod
+     * @covers ::cast
+     */
     public function testCastFail(): void
     {
         $strategy = new CallbackCastingStrategy();
