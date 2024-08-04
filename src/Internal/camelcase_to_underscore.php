@@ -21,9 +21,6 @@ if (!function_exists('WebFu\Internal\camelcase_to_underscore')) {
      */
     function camelcase_to_underscore(string $string): string
     {
-        if (empty($string)) {
-            return $string;
-        }
         $str = lcfirst($string);
         $str = preg_replace('/[A-Z]/', '_$0', $str);
 
