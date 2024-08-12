@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace WebFu\Tests\Integration\AnyMapper;
+namespace WebFu\Tests\AnyMapper;
 
 use DateTime;
 use PDO;

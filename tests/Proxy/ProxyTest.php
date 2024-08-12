@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace WebFu\Tests\Unit\Proxy;
+namespace WebFu\Tests\Proxy;
 
 use DateTime;
 use PHPUnit\Framework\TestCase;

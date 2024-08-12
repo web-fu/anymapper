@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace WebFu\Tests\Unit\AnyMapper\Strategy;
+namespace WebFu\Tests\AnyMapper\Strategy;
 
 use PHPUnit\Framework\TestCase;
 use WebFu\AnyMapper\MapperException;
