@@ -21,6 +21,8 @@ use WebFu\Proxy\ProxyException;
 
 /**
  * @coversDefaultClass \WebFu\Proxy\Proxy
+ *
+ * @group unit
  */
 class ProxyTest extends TestCase
 {

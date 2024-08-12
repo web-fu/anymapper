@@ -21,6 +21,8 @@ use WebFu\Reflection\ReflectionType;
 
 /**
  * @coversDefaultClass \WebFu\AnyMapper\Strategy\CallbackCastingStrategy
+ *
+ * @group unit
  */
 class CallbackCastingStrategyTest extends TestCase
 {

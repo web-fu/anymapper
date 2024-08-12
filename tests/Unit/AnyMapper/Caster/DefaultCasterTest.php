@@ -20,8 +20,10 @@ use WebFu\AnyMapper\Caster\DefaultCaster;
 
 /**
  * @coversDefaultClass \WebFu\AnyMapper\Caster\DefaultCaster
+ *
+ * @group unit
  */
-class CasterTest extends TestCase
+class DefaultCasterTest extends TestCase
 {
     /**
      * @covers ::cast

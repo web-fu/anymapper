@@ -26,6 +26,8 @@ use WebFu\Tests\Fixtures\ClassWithZeroParameters;
 
 /**
  * @coversDefaultClass \WebFu\AnyMapper\Strategy\AllowedCastingStrategy
+ *
+ * @group unit
  */
 class AutodetectStrategyTest extends TestCase
 {

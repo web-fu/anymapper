@@ -20,6 +20,8 @@ use WebFu\Reflection\ReflectionType;
 
 /**
  * @coversDefaultClass  \WebFu\AnyMapper\Strategy\SQLFetchStrategy
+ *
+ * @group unit
  */
 class SQLFetchStrategyTest extends TestCase
 {

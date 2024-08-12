@@ -19,6 +19,8 @@ use function WebFu\Internal\camelcase_to_underscore;
 
 /**
  * @covers \WebFu\Internal\camelcase_to_underscore
+ *
+ * @group unit
  */
 class CamelCaseToUnderscoreTest extends TestCase
 {

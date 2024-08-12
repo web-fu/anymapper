@@ -24,6 +24,8 @@ use WebFu\Tests\Fixtures\Foo;
 
 /**
  * @coversDefaultClass \WebFu\Analyzer\ClassAnalyzer
+ *
+ * @group integration
  */
 class ClassAnalyzerTest extends TestCase
 {

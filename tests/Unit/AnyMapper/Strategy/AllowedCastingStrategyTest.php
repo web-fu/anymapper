@@ -22,6 +22,8 @@ use WebFu\Tests\Fixtures\Foo;
 
 /**
  * @coversDefaultClass \WebFu\AnyMapper\Strategy\AllowedCastingStrategy
+ *
+ * @group unit
  */
 class AllowedCastingStrategyTest extends TestCase
 {

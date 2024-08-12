@@ -21,6 +21,8 @@ use WebFu\Reflection\ReflectionType;
 
 /**
  * @coversDefaultClass  \WebFu\Analyzer\ArrayAnalyzer
+ *
+ * @group unit
  */
 class ArrayAnalyzerTest extends TestCase
 {

@@ -34,6 +34,8 @@ use WebFu\Tests\Fixtures\GameScoreEntity;
 
 /**
  * @coversDefaultClass \WebFu\AnyMapper\AnyMapper
+ *
+ * @group integration
  */
 class AnyMapperTest extends TestCase
 {

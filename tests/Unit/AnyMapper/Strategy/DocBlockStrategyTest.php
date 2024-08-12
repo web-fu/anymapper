@@ -25,6 +25,8 @@ use WebFu\Tests\Fixtures\Foo;
 
 /**
  * @coversDefaultClass  \WebFu\AnyMapper\Strategy\DocBlockDetectStrategy
+ *
+ * @group unit
  */
 class DocBlockStrategyTest extends TestCase
 {

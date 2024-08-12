@@ -20,6 +20,8 @@ use WebFu\Reflection\ReflectionType;
 
 /**
  * @coversDefaultClass \WebFu\AnyMapper\Strategy\StrictStrategy
+ *
+ * @group unit
  */
 class StrictStrategyTest extends TestCase
 {

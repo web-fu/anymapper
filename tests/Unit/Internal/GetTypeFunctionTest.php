@@ -22,6 +22,8 @@ use WebFu\Tests\Fixtures\Foo;
 
 /**
  * @covers \WebFu\Internal\get_type
+ *
+ * @group unit
  */
 class GetTypeFunctionTest extends TestCase
 {

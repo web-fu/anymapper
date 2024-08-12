@@ -23,6 +23,8 @@ use WebFu\Tests\Fixtures\ChildClass;
 
 /**
  * @coversDefaultClass \WebFu\Analyzer\ClassAnalyzer
+ *
+ * @group unit
  */
 class ClassAnalyzerTest extends TestCase
 {
