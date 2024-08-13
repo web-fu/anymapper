@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace WebFu\Analyzer;
 
-use function WebFu\Internal\camelcase_to_underscore;
+use function WebFu\camelcase_to_underscore;
 
 use WebFu\Reflection\ReflectionClass;
 use WebFu\Reflection\ReflectionEnum;

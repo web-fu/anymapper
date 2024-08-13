@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace WebFu\Internal;
+namespace WebFu;
 
-if (!function_exists('WebFu\Internal\camelcase_to_underscore')) {
+if (!function_exists('camelcase_to_underscore')) {
     /**
      * Convert a camelCase string to underscore_case.
      *

@@ -27,7 +27,8 @@
       "WebFu\\Tests\\": "tests/"
     },
     "files": [
-      "src/bootstrap.php"
+      "src/camelcase_to_underscore.php",
+      "src/get_type.php"
     ]
   },
   "require-dev": {

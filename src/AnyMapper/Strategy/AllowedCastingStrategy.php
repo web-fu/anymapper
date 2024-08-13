@@ -17,7 +17,7 @@ use WebFu\AnyMapper\Caster\CasterInterface;
 use WebFu\AnyMapper\Caster\DefaultCaster;
 use WebFu\AnyMapper\MapperException;
 
-use function WebFu\Internal\get_type;
+use function WebFu\get_type;
 
 use WebFu\Reflection\ReflectionType;
 

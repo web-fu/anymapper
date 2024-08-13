@@ -11,14 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace WebFu\Tests\Internal;
+namespace WebFu\Tests;
 
 use PHPUnit\Framework\TestCase;
-
-use function WebFu\Internal\camelcase_to_underscore;
+use function WebFu\camelcase_to_underscore;
 
 /**
- * @covers \WebFu\Internal\camelcase_to_underscore
+ * @covers \WebFu\camelcase_to_underscore
  *
  * @group unit
  */

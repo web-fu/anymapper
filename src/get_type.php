@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace WebFu\Internal;
+namespace WebFu;
 
-if (!function_exists('WebFu\Internal\get_type')) {
+if (!function_exists('get_type')) {
     /**
      * Get the type of a variable.
      *
