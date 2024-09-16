@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace WebFu\Tests;
 
 use PHPUnit\Framework\TestCase;
+
 use function WebFu\camelcase_to_underscore;
 
 /**

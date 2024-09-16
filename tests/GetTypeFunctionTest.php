@@ -15,8 +15,10 @@ namespace WebFu\Tests;
 
 use PHPUnit\Framework\TestCase;
 use stdClass;
-use WebFu\Tests\Fixtures\Foo;
+
 use function WebFu\get_type;
+
+use WebFu\Tests\Fixtures\Foo;
 
 /**
  * @covers \WebFu\get_type
@@ -71,7 +73,7 @@ class GetTypeFunctionTest extends TestCase
             'expected' => Foo::class,
         ];
         yield 'anonymous_object' => [
-            'value'    => new class() {},
+            'value'    => new class {},
             'expected' => 'class@anonymous',
         ];
         yield 'stdClass_object' => [

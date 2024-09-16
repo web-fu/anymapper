@@ -57,7 +57,7 @@ class AnyMapperBench
      */
     public function benchSerialize(): void
     {
-        $class = new class() {
+        $class = new class {
             public string $public = 'public';
             private string $value;
 
@@ -73,7 +73,7 @@ class AnyMapperBench
 
             public function getClass(): object
             {
-                return new class() {
+                return new class {
                     public string $element = 'element';
                 };
             }
@@ -112,7 +112,7 @@ class AnyMapperBench
      */
     public function benchCallbackCastingStrategy(): void
     {
-        $class = new class() {
+        $class = new class {
             public int $value;
         };
 

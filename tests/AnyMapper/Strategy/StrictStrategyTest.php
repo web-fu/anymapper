@@ -111,19 +111,19 @@ class StrictStrategyTest extends TestCase
         ];
 
         yield 'anonymous_class_as_object' => [
-            'value' => new class() {
+            'value' => new class {
                 public string $foo = 'bar';
             },
             'types' => ['object'],
         ];
         yield 'anonymous_class_as_object_or_string' => [
-            'value' => new class() {
+            'value' => new class {
                 public string $foo = 'bar';
             },
             'types' => ['object', 'string'],
         ];
         yield 'anonymous_class_as_mixed' => [
-            'value' => new class() {
+            'value' => new class {
                 public string $foo = 'bar';
             },
             'types' => ['mixed'],
