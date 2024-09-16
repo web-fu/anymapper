@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace WebFu;
 
-if (!function_exists('get_type')) {
+if (!function_exists('WebFu\get_type')) {
     /**
      * Get the type of a variable.
      *
