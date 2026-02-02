@@ -1,6 +1,6 @@
 name: Code Style
 
-on: [push, pull_request]
+on: [pull_request]
 
 env:
   PHP_CS_FIXER_IGNORE_ENV: 1
@@ -25,5 +25,5 @@ jobs:
                   extensions: mbstring
             - name: Install dependencies
               run: composer install --prefer-dist --no-progress --no-suggest ${{ matrix.composer-options }}
-            - name: Run the tests
+            - name: Run the code style check
               run: composer run cs

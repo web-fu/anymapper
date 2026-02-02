@@ -11,40 +11,43 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace WebFu\Tests\Unit\AnyMapper\Strategy;
+namespace WebFu\Tests\AnyMapper\Strategy;
 
 use DateTime;
 use PHPUnit\Framework\TestCase;
 use WebFu\AnyMapper\MapperException;
-use WebFu\AnyMapper\Strategy\CallbackCastingStrategy;
+use WebFu\AnyMapper\Strategy\AllowedCastingStrategy;
 use WebFu\Reflection\ReflectionType;
+use WebFu\Tests\Fixtures\Foo;
 
 /**
- * @coversDefaultClass \WebFu\AnyMapper\Strategy\CallbackCastingStrategy
+ * @coversDefaultClass \WebFu\AnyMapper\Strategy\AllowedCastingStrategy
+ *
+ * @group unit
  */
-class CallbackCastingStrategyTest extends TestCase
+class AllowedCastingStrategyTest extends TestCase
 {
     /**
-     * @covers ::addMethod
+     * @covers ::allow
      * @covers ::cast
      */
     public function testCast(): void
     {
-        $strategy = new CallbackCastingStrategy();
-        $strategy->addMethod('string', 'int', fn (string $value) => (int) $value);
-        $actual = $strategy->cast('1', new ReflectionType(['int']));
+        $strategy = new AllowedCastingStrategy();
+        $strategy->allow('string', DateTime::class);
+        $actual = $strategy->cast('2022-12-01', new ReflectionType([DateTime::class]));
 
-        $this->assertEquals(1, $actual);
+        $this->assertEquals(new DateTime('2022-12-01'), $actual);
     }
 
     /**
-     * @covers ::addMethod
+     * @covers ::allow
      * @covers ::cast
      */
     public function testCastFail(): void
     {
-        $strategy = new CallbackCastingStrategy();
-        $strategy->addMethod('string', 'int', fn (string $value) => (int) $value);
+        $strategy = new AllowedCastingStrategy();
+        $strategy->allow('string', Foo::class);
 
         $this->expectException(MapperException::class);
         $this->expectExceptionMessage('Cannot convert type string into any of the following types: '.DateTime::class);

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace WebFu\Tests\Unit\AnyMapper\Caster;
+namespace WebFu\Tests\AnyMapper\Caster;
 
 use DateTime;
 use PHPUnit\Framework\TestCase;
@@ -20,8 +20,10 @@ use WebFu\AnyMapper\Caster\DefaultCaster;
 
 /**
  * @coversDefaultClass \WebFu\AnyMapper\Caster\DefaultCaster
+ *
+ * @group unit
  */
-class CasterTest extends TestCase
+class DefaultCasterTest extends TestCase
 {
     /**
      * @covers ::cast

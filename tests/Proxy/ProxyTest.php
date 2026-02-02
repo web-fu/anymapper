@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace WebFu\Tests\Unit\Proxy;
+namespace WebFu\Tests\Proxy;
 
 use DateTime;
 use PHPUnit\Framework\TestCase;
@@ -21,6 +21,8 @@ use WebFu\Proxy\ProxyException;
 
 /**
  * @coversDefaultClass \WebFu\Proxy\Proxy
+ *
+ * @group unit
  */
 class ProxyTest extends TestCase
 {
@@ -44,14 +46,14 @@ class ProxyTest extends TestCase
     public function getDataProvider(): iterable
     {
         yield 'class.scalar' => [
-            'element' => new class() {
+            'element' => new class {
                 public string $scalar = 'scalar';
             },
             'path'     => 'scalar',
             'expected' => 'scalar',
         ];
         yield 'class.array' => [
-            'element' => new class() {
+            'element' => new class {
                 /**
                  * @var int[]
                  */
@@ -61,7 +63,7 @@ class ProxyTest extends TestCase
             'expected' => [0, 1, 2],
         ];
         yield 'class.class' => [
-            'element' => new class() {
+            'element' => new class {
                 public object $object;
 
                 public function __construct()
@@ -74,7 +76,7 @@ class ProxyTest extends TestCase
             'expected' => (object) ['test' => 'test'],
         ];
         yield 'class.complex' => [
-            'element' => new class() {
+            'element' => new class {
                 /**
                  * @var object[]
                  */
@@ -83,7 +85,7 @@ class ProxyTest extends TestCase
                 public function __construct()
                 {
                     $this->objectList = [
-                        new class() {
+                        new class {
                             public string $string = 'test';
                         },
                     ];
@@ -109,7 +111,7 @@ class ProxyTest extends TestCase
         ];
         yield 'array.complex' => [
             'element' => ['objectList' => [
-                new class() {
+                new class {
                     public string $string = 'test';
                 },
             ]],
@@ -152,7 +154,7 @@ class ProxyTest extends TestCase
     public function setDataProvider(): iterable
     {
         yield 'scalar' => [
-            'element' => new class() {
+            'element' => new class {
                 public string $scalar;
             },
             'path'     => 'scalar',
@@ -160,7 +162,7 @@ class ProxyTest extends TestCase
             'expected' => 'scalar',
         ];
         yield 'array' => [
-            'element' => new class() {
+            'element' => new class {
                 /**
                  * @var int[]
                  */
@@ -171,7 +173,7 @@ class ProxyTest extends TestCase
             'expected' => [0, 1, 2],
         ];
         yield 'element' => [
-            'element' => new class() {
+            'element' => new class {
                 public object $object;
             },
             'path'     => 'object',
@@ -179,7 +181,7 @@ class ProxyTest extends TestCase
             'expected' => new DateTime('2022-01-01'),
         ];
         yield 'complex' => [
-            'element' => new class() {
+            'element' => new class {
                 /**
                  * @var object[]
                  */
@@ -188,7 +190,7 @@ class ProxyTest extends TestCase
                 public function __construct()
                 {
                     $this->objectList = [
-                        new class() {
+                        new class {
                             public string $string;
                         },
                     ];

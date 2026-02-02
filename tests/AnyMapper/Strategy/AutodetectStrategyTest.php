@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace WebFu\Tests\Unit\AnyMapper\Strategy;
+namespace WebFu\Tests\AnyMapper\Strategy;
 
 use DateTime;
 use PHPUnit\Framework\TestCase;
@@ -26,6 +26,8 @@ use WebFu\Tests\Fixtures\ClassWithZeroParameters;
 
 /**
  * @coversDefaultClass \WebFu\AnyMapper\Strategy\AllowedCastingStrategy
+ *
+ * @group unit
  */
 class AutodetectStrategyTest extends TestCase
 {

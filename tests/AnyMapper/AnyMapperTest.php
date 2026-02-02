@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace WebFu\Tests\Integration\AnyMapper;
+namespace WebFu\Tests\AnyMapper;
 
 use DateTime;
 use PDO;
@@ -34,6 +34,8 @@ use WebFu\Tests\Fixtures\GameScoreEntity;
 
 /**
  * @coversDefaultClass \WebFu\AnyMapper\AnyMapper
+ *
+ * @group integration
  */
 class AnyMapperTest extends TestCase
 {
@@ -118,7 +120,7 @@ class AnyMapperTest extends TestCase
      */
     public function testSerialize(): void
     {
-        $class = new class() {
+        $class = new class {
             public string $public = 'public';
             private string $value;
 
@@ -134,7 +136,7 @@ class AnyMapperTest extends TestCase
 
             public function getClass(): object
             {
-                return new class() {
+                return new class {
                     public string $element = 'element';
                 };
             }
@@ -175,7 +177,7 @@ class AnyMapperTest extends TestCase
      */
     public function testUsing(): void
     {
-        $class = new class() {
+        $class = new class {
             public DateTime $value;
         };
 
@@ -249,7 +251,7 @@ class AnyMapperTest extends TestCase
      */
     public function testCallbackCastingStrategy(): void
     {
-        $class = new class() {
+        $class = new class {
             public int $value;
         };
 

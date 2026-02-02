@@ -1,10 +1,6 @@
 name: Tests
 
-on:
-  pull_request: ~
-  push: ~
-  schedule:
-    - cron: '0 9 * * 5'
+on: [pull_request]
 
 jobs:
   run:
@@ -27,6 +23,6 @@ jobs:
           ini-values: error_reporting=E_ALL
           extensions: mbstring
       - name: Install dependencies
-        run: composer update --ignore-platform-req=php --prefer-dist --no-progress --no-suggest
+        run: composer install --ignore-platform-req=php --prefer-dist --no-progress --no-suggest
       - name: Run the tests
         run: composer run tests

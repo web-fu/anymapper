@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace WebFu\Internal;
+namespace WebFu;
 
-if (!function_exists('WebFu\Internal\camelcase_to_underscore')) {
+if (!function_exists('WebFu\camelcase_to_underscore')) {
     /**
      * Convert a camelCase string to underscore_case.
      *
@@ -21,9 +21,6 @@ if (!function_exists('WebFu\Internal\camelcase_to_underscore')) {
      */
     function camelcase_to_underscore(string $string): string
     {
-        if (empty($string)) {
-            return $string;
-        }
         $str = lcfirst($string);
         $str = preg_replace('/[A-Z]/', '_$0', $str);
 

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace WebFu\Tests\Unit\Analyzer;
+namespace WebFu\Tests\Analyzer;
 
 use PHPUnit\Framework\TestCase;
 use stdClass;
@@ -23,6 +23,8 @@ use WebFu\Tests\Fixtures\ChildClass;
 
 /**
  * @coversDefaultClass \WebFu\Analyzer\ClassAnalyzer
+ *
+ * @group unit
  */
 class ClassAnalyzerTest extends TestCase
 {
